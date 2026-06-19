@@ -1,0 +1,9 @@
+file_name,rule_id,message
+companies.xlsx,DQ-04,Missing website values found
+profitandloss.xlsx,DQ-05,1 rows have non-positive sales
+profitandloss.xlsx,DQ-06,15 rows have missing OPM percentage
+balancesheet.xlsx,DQ-07,1 rows have non-positive total assets
+balancesheet.xlsx,DQ-08,1 rows have non-positive total liabilities
+cashflow.xlsx,DQ-09,2 rows have missing net cash flow
+documents.xlsx,DQ-13,Missing Annual Report values found
+prosandcons.xlsx,DQ-15,Missing pros values found
