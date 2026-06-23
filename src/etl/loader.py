@@ -1,118 +1,82 @@
-from pathlib import Path
 import pandas as pd
+import sqlite3
 
-RAW_PATH = Path("data/raw")
+DB_PATH = "db/nifty100.db"
 
-CORE_FILES = [
-    "companies.xlsx",
-    "profitandloss.xlsx",
-    "balancesheet.xlsx",
-    "cashflow.xlsx",
-    "analysis.xlsx",
-    "documents.xlsx",
-    "prosandcons.xlsx"
+files = [
+    ("data/raw/companies.xlsx", "companies", 1),
+    ("data/raw/profitandloss.xlsx", "profitandloss", 1),
+    ("data/raw/balancesheet.xlsx", "balancesheet", 1),
+    ("data/raw/cashflow.xlsx", "cashflow", 1),
+    ("data/raw/analysis.xlsx", "analysis", 1),
+    ("data/raw/documents.xlsx", "documents", 1),
+    ("data/raw/prosandcons.xlsx", "prosandcons", 1),
+
+    ("data/raw/supporting datasets/sectors.xlsx", "sectors", 0),
+    ("data/raw/supporting datasets/stock_prices.xlsx", "stock_prices", 0),
+    ("data/raw/supporting datasets/market_cap.xlsx", "market_cap", 0),
+    ("data/raw/supporting datasets/financial_ratios.xlsx", "financial_ratios", 0),
+    ("data/raw/supporting datasets/peer_groups.xlsx", "peer_groups", 0)
 ]
 
-SUPPLEMENTARY_FILES = [
-    "sectors.xlsx",
-    "stock_prices.xlsx",
-    "market_cap.xlsx",
-    "financial_ratios.xlsx",
-    "peer_groups.xlsx"
-]
+audit = []
 
+conn = sqlite3.connect(DB_PATH)
 
-def load_core_files():
+for file_path, table_name, header_row in files:
 
-    results = []
+    try:
 
-    for file in CORE_FILES:
+        print(f"\nLoading -> {table_name}")
 
-        try:
+        df = pd.read_excel(
+            file_path,
+            header=header_row
+        )
 
-            file_path = RAW_PATH / file
+        df.to_sql(
+            table_name,
+            conn,
+            if_exists="append",
+            index=False
+        )
 
-            df = pd.read_excel(
-                file_path,
-                header=1
-            )
+        audit.append(
+            {
+                "table": table_name,
+                "rows_loaded": len(df),
+                "status": "SUCCESS"
+            }
+        )
 
-            results.append(
-                {
-                    "file_name": file,
-                    "rows": df.shape[0],
-                    "columns": df.shape[1],
-                    "status": "SUCCESS"
-                }
-            )
+        print(f"Loaded {table_name} : {len(df)} rows")
 
-            print(f"Loaded {file}")
+    except Exception as e:
 
-        except Exception as e:
+        audit.append(
+            {
+                "table": table_name,
+                "rows_loaded": 0,
+                "status": f"FAILED : {e}"
+            }
+        )
 
-            results.append(
-                {
-                    "file_name": file,
-                    "rows": 0,
-                    "columns": 0,
-                    "status": f"FAILED : {e}"
-                }
-            )
+        print("\n==============================")
+        print(f"ERROR IN TABLE : {table_name}")
+        print(f"FILE : {file_path}")
+        print(f"ERROR : {e}")
+        print("==============================")
 
-    return results
+        break
 
+conn.commit()
+conn.close()
 
-def load_supporting_files():
+audit_df = pd.DataFrame(audit)
 
-    results = []
+audit_df.to_csv(
+    "output/load_audit.csv",
+    index=False
+)
 
-    supporting_path = RAW_PATH / "supporting datasets"
-
-    for file in SUPPLEMENTARY_FILES:
-
-        try:
-
-            file_path = supporting_path / file
-
-            df = pd.read_excel(file_path)
-
-            results.append(
-                {
-                    "file_name": file,
-                    "rows": df.shape[0],
-                    "columns": df.shape[1],
-                    "status": "SUCCESS"
-                }
-            )
-
-            print(f"Loaded {file}")
-
-        except Exception as e:
-
-            results.append(
-                {
-                    "file_name": file,
-                    "rows": 0,
-                    "columns": 0,
-                    "status": f"FAILED : {e}"
-                }
-            )
-
-    return results
-
-
-if __name__ == "__main__":
-
-    core = load_core_files()
-    supporting = load_supporting_files()
-
-    audit = pd.DataFrame(core + supporting)
-
-    Path("output").mkdir(exist_ok=True)
-
-    audit.to_csv(
-        "output/load_audit.csv",
-        index=False
-    )
-
-    print("\nLoad Audit Generated")
+print("\nLoad Audit Generated")

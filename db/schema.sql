@@ -1,7 +1,7 @@
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE companies (
-    id INTEGER PRIMARY KEY,
+    id TEXT PRIMARY KEY,
     company_logo TEXT,
     company_name TEXT,
     chart_link TEXT,
@@ -16,8 +16,8 @@ CREATE TABLE companies (
 );
 
 CREATE TABLE profitandloss (
-    id INTEGER PRIMARY KEY,
-    company_id INTEGER,
+    id TEXT PRIMARY KEY,
+    company_id TEXT,
     year TEXT,
     sales REAL,
     expenses REAL,
@@ -36,8 +36,8 @@ CREATE TABLE profitandloss (
 );
 
 CREATE TABLE balancesheet (
-    id INTEGER PRIMARY KEY,
-    company_id INTEGER,
+    id TEXT PRIMARY KEY,
+    company_id TEXT,
     year TEXT,
     equity_capital REAL,
     reserves REAL,
@@ -54,8 +54,8 @@ CREATE TABLE balancesheet (
 );
 
 CREATE TABLE cashflow (
-    id INTEGER PRIMARY KEY,
-    company_id INTEGER,
+    id TEXT PRIMARY KEY,
+    company_id TEXT,
     year TEXT,
     operating_activity REAL,
     investing_activity REAL,
@@ -66,8 +66,8 @@ CREATE TABLE cashflow (
 );
 
 CREATE TABLE analysis (
-    id INTEGER PRIMARY KEY,
-    company_id INTEGER,
+    id TEXT PRIMARY KEY,
+    company_id TEXT,
     compounded_sales_growth REAL,
     compounded_profit_growth REAL,
     stock_price_cagr REAL,
@@ -77,8 +77,8 @@ CREATE TABLE analysis (
 );
 
 CREATE TABLE documents (
-    id INTEGER PRIMARY KEY,
-    company_id INTEGER,
+    id TEXT PRIMARY KEY,
+    company_id TEXT,
     year TEXT,
     Annual_Report TEXT,
     FOREIGN KEY (company_id)
@@ -86,8 +86,8 @@ CREATE TABLE documents (
 );
 
 CREATE TABLE prosandcons (
-    id INTEGER PRIMARY KEY,
-    company_id INTEGER,
+    id TEXT PRIMARY KEY,
+    company_id TEXT,
     pros TEXT,
     cons TEXT,
     FOREIGN KEY (company_id)
@@ -95,8 +95,8 @@ CREATE TABLE prosandcons (
 );
 
 CREATE TABLE sectors (
-    id INTEGER PRIMARY KEY,
-    company_id INTEGER,
+    id TEXT PRIMARY KEY,
+    company_id TEXT,
     broad_sector TEXT,
     sub_sector TEXT,
     index_weight_pct REAL,
@@ -106,21 +106,22 @@ CREATE TABLE sectors (
 );
 
 CREATE TABLE stock_prices (
-    id INTEGER PRIMARY KEY,
-    company_id INTEGER,
+    id TEXT PRIMARY KEY,
+    company_id TEXT,
     date TEXT,
     open_price REAL,
     high_price REAL,
     low_price REAL,
     close_price REAL,
     volume REAL,
+    adjusted_close REAL,
     FOREIGN KEY (company_id)
         REFERENCES companies(id)
 );
 
 CREATE TABLE financial_ratios (
-    id INTEGER PRIMARY KEY,
-    company_id INTEGER,
+    id TEXT PRIMARY KEY,
+    company_id TEXT,
     year TEXT,
     net_profit_margin_pct REAL,
     operating_profit_margin_pct REAL,
@@ -135,6 +136,29 @@ CREATE TABLE financial_ratios (
     dividend_payout_ratio_pct REAL,
     total_debt_cr REAL,
     cash_from_operations_cr REAL,
+    FOREIGN KEY (company_id)
+        REFERENCES companies(id)
+);
+
+CREATE TABLE market_cap (
+    id TEXT PRIMARY KEY,
+    company_id TEXT,
+    year TEXT,
+    market_cap_crore REAL,
+    enterprise_value_crore REAL,
+    pe_ratio REAL,
+    pb_ratio REAL,
+    ev_ebitda REAL,
+    dividend_yield_pct REAL,
+    FOREIGN KEY (company_id)
+        REFERENCES companies(id)
+);
+
+CREATE TABLE peer_groups (
+    id TEXT PRIMARY KEY,
+    peer_group_name TEXT,
+    company_id TEXT,
+    is_benchmark TEXT,
     FOREIGN KEY (company_id)
         REFERENCES companies(id)
 );
