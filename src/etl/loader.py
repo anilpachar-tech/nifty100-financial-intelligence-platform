@@ -34,6 +34,26 @@ for file_path, table_name, header_row in files:
             header=header_row
         )
 
+        # Day 6 Data Quality Fix
+        if table_name in [
+            "profitandloss",
+            "balancesheet",
+            "cashflow",
+            "financial_ratios"
+        ]:
+
+            before_rows = len(df)
+
+            df = df.drop_duplicates(
+                subset=["company_id", "year"]
+            )
+
+            removed = before_rows - len(df)
+
+            print(
+                f"Removed {removed} duplicate rows from {table_name}"
+            )
+
         df.to_sql(
             table_name,
             conn,
@@ -80,3 +100,4 @@ audit_df.to_csv(
 )
 
 print("\nLoad Audit Generated")
+print("Data Quality Cleaning Applied Successfully")
