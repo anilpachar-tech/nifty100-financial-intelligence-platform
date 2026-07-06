@@ -177,3 +177,29 @@ print("=" * 60)
 print("Edge Case Log Generated")
 print("=" * 60)
 print("output/ratio_edge_cases.log")
+
+print()
+print("=" * 60)
+print("Screener Preview")
+print("=" * 60)
+
+screener = pd.read_sql(
+    """
+    SELECT
+        company_id,
+        MAX(return_on_equity_pct) AS roe,
+        MIN(debt_to_equity) AS debt_to_equity
+    FROM financial_ratios
+    GROUP BY company_id
+    HAVING
+        MAX(return_on_equity_pct) > 15
+        AND MIN(debt_to_equity) < 1
+    ORDER BY roe DESC
+    """,
+    conn
+)
+print("Companies Found :", len(screener))
+print()
+print(screener.head(50))
+
+conn.close()
