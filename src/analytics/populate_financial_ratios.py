@@ -105,6 +105,13 @@ for _, row in master.iterrows():
             row["reserves"]
         )
 
+        roce = return_on_capital_employed(
+            row["operating_profit"],
+            row["equity_capital"],
+            row["reserves"],
+            row["borrowings"]
+        )
+
         de = debt_to_equity(
             row["borrowings"],
             row["equity_capital"],
@@ -186,6 +193,7 @@ for _, row in master.iterrows():
                 "net_profit_margin_pct": npm,
                 "operating_profit_margin_pct": opm,
                 "return_on_equity_pct": roe,
+                "return_on_capital_employed_pct": roce,
                 "debt_to_equity": de,
                 "interest_coverage": icr,
                 "asset_turnover": turnover,
@@ -320,6 +328,7 @@ for _, row in result_df.iterrows():
             net_profit_margin_pct=?,
             operating_profit_margin_pct=?,
             return_on_equity_pct=?,
+            return_on_capital_employed_pct=?,
             debt_to_equity=?,
             interest_coverage=?,
             asset_turnover=?,
@@ -340,6 +349,7 @@ for _, row in result_df.iterrows():
             row["net_profit_margin_pct"],
             row["operating_profit_margin_pct"],
             row["return_on_equity_pct"],
+            row["return_on_capital_employed_pct"],
             row["debt_to_equity"],
             row["interest_coverage"],
             row["asset_turnover"],
