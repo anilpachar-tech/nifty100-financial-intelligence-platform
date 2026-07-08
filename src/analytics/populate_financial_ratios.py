@@ -74,9 +74,47 @@ master = (
     )
 )
 
+print()
+print("=" * 60)
+print("Loading Latest Stock Prices")
+print("=" * 60)
+
+latest_price = pd.read_sql(
+    """
+    SELECT
+        s.company_id,
+        s.close_price
+    FROM stock_prices s
+    INNER JOIN (
+        SELECT
+            company_id,
+            MAX(date) AS latest_date
+        FROM stock_prices
+        GROUP BY company_id
+    ) t
+    ON s.company_id = t.company_id
+    AND s.date = t.latest_date
+    """,
+    conn
+)
+
+master = master.merge(
+    latest_price,
+    on="company_id",
+    how="left"
+)
+
+print("Price Records :", len(latest_price))
+
 print("Merged Records :", len(master))
 print()
 print(master[["company_id", "year"]].head())
+
+print()
+print("=" * 60)
+print("Master Columns")
+print("=" * 60)
+print(master.columns.tolist())
 
 print()
 print("=" * 60)
@@ -157,6 +195,42 @@ for _, row in master.iterrows():
 
         # Dividend Payout Ratio
         dividend = row["dividend_payout"]
+        
+        # Dividend Yield
+        if (
+            row["close_price"] not in [0, None]
+            and row["close_price"] == row["close_price"]
+        ):
+            dividend_yield = round(
+                (dividend / row["close_price"]) * 100,
+                2
+            )
+        else:
+            dividend_yield = None
+
+        # Price to Earnings
+        if (
+            eps not in [0, None]
+            and row["close_price"] == row["close_price"]
+        ):
+            pe = round(
+                row["close_price"] / eps,
+                2
+            )
+        else:
+            pe = None
+
+        # Price to Book
+        if (
+            book_value not in [0, None]
+            and row["close_price"] == row["close_price"]
+        ):
+            pb = round(
+                row["close_price"] / book_value,
+                2
+            )
+        else:
+            pb = None
 
         # Total Debt
         total_debt = row["borrowings"]
@@ -205,6 +279,10 @@ for _, row in master.iterrows():
                 "book_value_per_share": book_value,
                 "dividend_payout_ratio_pct": dividend,
 
+                "pe": pe,
+                "pb": pb,
+                "dividend_yield": dividend_yield,
+
                 "total_debt_cr": total_debt,
                 "cash_from_operations_cr": cfo,
 
@@ -236,6 +314,8 @@ print("=" * 60)
 result_df["revenue_cagr_5yr"] = None
 result_df["pat_cagr_5yr"] = None
 result_df["eps_cagr_5yr"] = None
+result_df["revenue_cagr_3yr"] = None
+result_df["debt_declining"] = None
 
 for company in result_df["company_id"].unique():
 
@@ -248,6 +328,36 @@ for company in result_df["company_id"].unique():
 
     if len(company_data) < 6:
         continue
+
+    # ---------- 3-Year Revenue CAGR ----------
+    if len(company_data) >= 4:
+
+        start3 = company_data.iloc[-4]
+        end3 = company_data.iloc[-1]
+
+        revenue3, _ = revenue_cagr(
+            start3["sales"],
+            end3["sales"],
+            3
+        )
+
+        result_df.loc[
+            result_df["company_id"] == company,
+            "revenue_cagr_3yr"
+        ] = revenue3
+
+        # ---------- Debt Declining ----------
+        if len(company_data) >= 2:
+
+            previous_debt = company_data.iloc[-2]["borrowings"]
+            current_debt = company_data.iloc[-1]["borrowings"]
+
+            debt_declining = int(current_debt < previous_debt)
+
+            result_df.loc[
+                result_df["company_id"] == company,
+                "debt_declining"
+            ] = debt_declining
 
     start = company_data.iloc[-6]
     end = company_data.iloc[-1]
@@ -337,11 +447,18 @@ for _, row in result_df.iterrows():
             earnings_per_share=?,
             book_value_per_share=?,
             dividend_payout_ratio_pct=?,
+
+            pe=?,
+            pb=?,
+            dividend_yield=?,
+
             total_debt_cr=?,
             cash_from_operations_cr=?,
             revenue_cagr_5yr=?,
             pat_cagr_5yr=?,
             eps_cagr_5yr=?,
+            revenue_cagr_3yr=?,
+            debt_declining=?,
             composite_quality_score=?
         WHERE id=?
         """,
@@ -358,11 +475,18 @@ for _, row in result_df.iterrows():
             row["earnings_per_share"],
             row["book_value_per_share"],
             row["dividend_payout_ratio_pct"],
+
+            row["pe"],
+            row["pb"],
+            row["dividend_yield"],
+
             row["total_debt_cr"],
             row["cash_from_operations_cr"],
             row["revenue_cagr_5yr"],
             row["pat_cagr_5yr"],
             row["eps_cagr_5yr"],
+            row["revenue_cagr_3yr"],
+            row["debt_declining"],
             row["composite_quality_score"],
             row["id"]
         )

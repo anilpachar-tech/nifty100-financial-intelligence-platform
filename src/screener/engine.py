@@ -8,6 +8,11 @@ import sqlite3
 from warnings import filters
 import pandas as pd
 import yaml
+import os
+from src.screener.composite_score import calculate_composite_score
+from openpyxl import Workbook
+from openpyxl.styles import PatternFill, Font
+from openpyxl.utils import get_column_letter
 
 DB_PATH = "db/nifty100.db"
 CONFIG_PATH = "config/screener_config.yaml"
@@ -147,6 +152,19 @@ def apply_filters(
             filters["revenue_cagr_5yr_min"]
         ]
 
+    # Revenue CAGR 3 Year
+    if "revenue_cagr_3yr_min" in filters:
+        result = result[
+            result["revenue_cagr_3yr"] >=
+            filters["revenue_cagr_3yr_min"]
+        ]
+
+    # Debt Declining
+    if filters.get("debt_declining"):
+        result = result[
+            result["debt_declining"] == 1
+        ]
+
     # PAT CAGR
     if "pat_cagr_5yr_min" in filters:
         result = result[
@@ -183,11 +201,31 @@ def apply_filters(
                 result["sales"] >=
                 filters["sales_min"]
             ]
+    # P/E
+    if "pe_max" in filters:
+        result = result[
+            result["pe"] <= filters["pe_max"]
+        ]
+
+    # P/B
+    if "pb_max" in filters:
+        result = result[
+            result["pb"] <= filters["pb_max"]
+        ]
+
+    # Dividend Yield
+    if "dividend_yield_min" in filters:
+        result = result[
+            result["dividend_yield"] >=
+            filters["dividend_yield_min"]
+        ]
     return result
 
 if __name__ == "__main__":
 
     master = prepare_master_dataset()
+
+    master = calculate_composite_score(master)
 
     config = load_config()
 
@@ -205,6 +243,8 @@ if __name__ == "__main__":
             "sales",
             "return_on_equity_pct",
             "debt_to_equity",
+            "composite_score",
+            "sector_relative_score",
             "broad_sector"
         ]
     ].head())
@@ -217,6 +257,11 @@ if __name__ == "__main__":
     quality = apply_filters(
         master,
         config["quality_compounder"]
+    )
+
+    quality = quality.sort_values(
+    "composite_score",
+    ascending=False
     )
 
     print("Companies Found :", len(quality))
@@ -246,6 +291,11 @@ if __name__ == "__main__":
         config["growth_accelerator"]
     )
 
+    growth = growth.sort_values(
+        "composite_score",
+        ascending=False
+    )
+
     print("Companies Found :", len(growth))
     print()
 
@@ -257,7 +307,99 @@ if __name__ == "__main__":
                 "sales",
                 "pat_cagr_5yr",
                 "revenue_cagr_5yr",
-                "debt_to_equity"
+                "debt_to_equity",
+                "composite_score"
+            ]
+        ].head(20)
+    )
+    
+    print()
+    print("=" * 60)
+    print("Value Pick Screener")
+    print("=" * 60)
+
+    value = apply_filters(
+        master,
+        config["value_pick"]
+    )
+
+    print("Companies Found :", len(value))
+    print()
+
+    print(
+        value[
+            [
+                "company_id",
+                "year",
+                "sales",
+                "pe",
+                "pb",
+                "dividend_yield",
+                "debt_to_equity",
+                "composite_score"
+            ]
+        ].head(20)
+    )
+
+    print()
+    print("=" * 60)
+    print("Turnaround Watch Screener")
+    print("=" * 60)
+
+    turnaround = apply_filters(
+        master,
+        config["turnaround_watch"]
+    )
+
+    turnaround = turnaround.sort_values(
+        "composite_score",
+        ascending=False
+    )
+
+    print("Companies Found :", len(turnaround))
+    print()
+
+    print(
+        turnaround[
+            [
+                "company_id",
+                "year",
+                "revenue_cagr_3yr",
+                "debt_declining",
+                "return_on_equity_pct",
+                "composite_score"
+            ]
+        ].head(20)
+    )
+
+    print()
+    print("=" * 60)
+    print("Dividend Champion Screener")
+    print("=" * 60)
+
+    dividend = apply_filters(
+        master,
+        config["dividend_champion"]
+    )
+
+    dividend = dividend.sort_values(
+        "composite_score",
+        ascending=False
+    )
+
+    print("Companies Found :", len(dividend))
+    print()
+
+    print(
+        dividend[
+            [
+                "company_id",
+                "year",
+                "sales",
+                "dividend_yield",
+                "dividend_payout_ratio_pct",
+                "free_cash_flow_cr",
+                "composite_score"
             ]
         ].head(20)
     )
@@ -273,6 +415,11 @@ if __name__ == "__main__":
     skip_financial_de=False
     )
 
+    bluechip = bluechip.sort_values(
+        "composite_score",
+        ascending=False
+    )
+
     print("Companies Found :", len(bluechip))
     print()
 
@@ -283,8 +430,144 @@ if __name__ == "__main__":
             "year",
             "sales",
             "return_on_equity_pct",
-            "debt_to_equity"
+            "debt_to_equity",
+            "composite_score"
         ]
     ].head(20)
     
 )
+print()
+print("=" * 60)
+print("Generating Excel Report")
+print("=" * 60)
+
+os.makedirs("output", exist_ok=True)
+
+green_fill = PatternFill(
+    start_color="C6EFCE",
+    end_color="C6EFCE",
+    fill_type="solid"
+)
+
+red_fill = PatternFill(
+    start_color="FFC7CE",
+    end_color="FFC7CE",
+    fill_type="solid"
+)
+
+header_fill = PatternFill(
+    start_color="4F81BD",
+    end_color="4F81BD",
+    fill_type="solid"
+)
+
+header_font = Font(
+    bold=True,
+    color="FFFFFF"
+)
+
+wb = Workbook()
+
+def format_sheet(ws):
+
+    # Header Formatting
+    for cell in ws[1]:
+        cell.fill = header_fill
+        cell.font = header_font
+
+    # Auto Width
+    for column in ws.columns:
+
+        max_length = 0
+        column_letter = get_column_letter(column[0].column)
+
+        for cell in column:
+
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(str(cell.value))
+            except:
+                pass
+
+        ws.column_dimensions[column_letter].width = max_length + 2
+
+    # Cell Colors
+    for row in ws.iter_rows(min_row=2):
+
+        for cell in row:
+
+            if isinstance(cell.value, (int, float)):
+
+                if cell.value >= 0:
+                    cell.fill = green_fill
+                else:
+                    cell.fill = red_fill
+
+# ---------- Quality Compounder ----------
+ws = wb.active
+ws.title = "Quality Compounder"
+
+for row in quality.itertuples(index=False):
+    if ws.max_row == 1:
+        ws.append(list(quality.columns))
+    ws.append(list(row))
+
+format_sheet(ws)
+
+
+# ---------- Growth Accelerator ----------
+ws = wb.create_sheet("Growth Accelerator")
+
+for row in growth.itertuples(index=False):
+    if ws.max_row == 1:
+        ws.append(list(growth.columns))
+    ws.append(list(row))
+
+format_sheet(ws)
+
+# ---------- Value Pick ----------
+ws = wb.create_sheet("Value Pick")
+
+for row in value.itertuples(index=False):
+    if ws.max_row == 1:
+        ws.append(list(value.columns))
+    ws.append(list(row))
+
+format_sheet(ws)
+
+# ---------- Turnaround Watch ----------
+ws = wb.create_sheet("Turnaround Watch")
+
+for row in turnaround.itertuples(index=False):
+    if ws.max_row == 1:
+        ws.append(list(turnaround.columns))
+    ws.append(list(row))
+
+format_sheet(ws)
+
+# ---------- Dividend Champion ----------
+ws = wb.create_sheet("Dividend Champion")
+
+for row in dividend.itertuples(index=False):
+    if ws.max_row == 1:
+        ws.append(list(dividend.columns))
+    ws.append(list(row))
+
+format_sheet(ws)
+
+# ---------- Debt-Free Blue Chip ----------
+ws = wb.create_sheet("Debt Free Blue Chip")
+
+for row in bluechip.itertuples(index=False):
+    if ws.max_row == 1:
+        ws.append(list(bluechip.columns))
+    ws.append(list(row))
+
+format_sheet(ws)
+
+output_file = "output/screener_output.xlsx"
+
+wb.save(output_file)
+
+print("Excel Generated Successfully")
+print(output_file)

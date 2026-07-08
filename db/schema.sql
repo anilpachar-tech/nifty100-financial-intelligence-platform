@@ -137,6 +137,20 @@ CREATE TABLE financial_ratios (
     dividend_payout_ratio_pct REAL,
     total_debt_cr REAL,
     cash_from_operations_cr REAL,
+
+    revenue_cagr_5yr REAL,
+    pat_cagr_5yr REAL,
+    eps_cagr_5yr REAL,
+
+    revenue_cagr_3yr REAL,
+    debt_declining INTEGER,
+
+    composite_quality_score REAL,
+
+    pe REAL,
+    pb REAL,
+    dividend_yield REAL,
+
     FOREIGN KEY (company_id)
         REFERENCES companies(id)
 );
