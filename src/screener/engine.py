@@ -492,16 +492,46 @@ def format_sheet(ws):
         ws.column_dimensions[column_letter].width = max_length + 2
 
     # Cell Colors
+    headers = [cell.value for cell in ws[1]]
+
     for row in ws.iter_rows(min_row=2):
 
         for cell in row:
 
-            if isinstance(cell.value, (int, float)):
+            column = headers[cell.column - 1]
 
-                if cell.value >= 0:
+            if not isinstance(cell.value, (int, float)):
+                continue
+
+            # Higher is Better
+            if column in [
+                "return_on_equity_pct",
+                "return_on_capital_employed_pct",
+                "free_cash_flow_cr",
+                "revenue_cagr_5yr",
+                "pat_cagr_5yr",
+                "composite_score",
+                "interest_coverage",
+                "sector_relative_score"
+            ]:
+
+                if cell.value >= 15:
                     cell.fill = green_fill
                 else:
                     cell.fill = red_fill
+
+            # Lower is Better
+            elif column in [
+                "debt_to_equity",
+                "pe",
+                "pb"
+            ]:
+
+                if cell.value <= 1:
+                    cell.fill = green_fill
+                else:
+                    cell.fill = red_fill
+
 
 # ---------- Quality Compounder ----------
 ws = wb.active
