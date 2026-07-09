@@ -177,3 +177,16 @@ CREATE TABLE peer_groups (
     FOREIGN KEY (company_id)
         REFERENCES companies(id)
 );
+
+CREATE TABLE peer_percentiles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    company_id TEXT,
+    peer_group_name TEXT,
+    metric TEXT,
+    value REAL,
+    percentile_rank REAL,
+    year TEXT,
+
+    FOREIGN KEY (company_id)
+        REFERENCES companies(id)
+);
