@@ -377,3 +377,154 @@ def get_pros_cons(company_id):
     conn.close()
 
     return df
+
+@st.cache_data(ttl=600)
+def get_screener_data():
+
+    conn = sqlite3.connect(DB_PATH)
+
+    query = """
+    SELECT
+
+        c.id,
+        c.company_name,
+
+        s.broad_sector,
+
+        f.year,
+
+        f.return_on_equity_pct,
+        f.return_on_capital_employed_pct,
+        f.net_profit_margin_pct,
+        f.debt_to_equity,
+        f.interest_coverage,
+        f.asset_turnover,
+        f.free_cash_flow_cr,
+        f.revenue_cagr_5yr,
+        f.pat_cagr_5yr,
+        f.operating_profit_margin_pct,
+        f.pe,
+        f.pb,
+        f.dividend_yield,
+        f.composite_quality_score
+
+    FROM financial_ratios f
+
+    INNER JOIN companies c
+        ON f.company_id = c.id
+
+    LEFT JOIN sectors s
+        ON c.id = s.company_id
+    """
+
+    df = pd.read_sql(
+        query,
+        conn
+    )
+
+    conn.close()
+
+    return df
+
+@st.cache_data(ttl=600)
+def get_peer_groups():
+
+    conn = sqlite3.connect(DB_PATH)
+
+    query = """
+    SELECT DISTINCT
+        peer_group_name
+    FROM peer_groups
+    WHERE peer_group_name IS NOT NULL
+    ORDER BY peer_group_name
+    """
+
+    df = pd.read_sql(query, conn)
+
+    conn.close()
+
+    return df
+
+
+@st.cache_data(ttl=600)
+def get_peer_companies(peer_group):
+
+    conn = sqlite3.connect(DB_PATH)
+
+    query = """
+    SELECT
+
+        pg.peer_group_name,
+        pg.is_benchmark,
+
+        c.id,
+        c.company_name,
+
+        fr.year,
+        fr.return_on_equity_pct,
+        fr.return_on_capital_employed_pct,
+        fr.net_profit_margin_pct,
+        fr.debt_to_equity,
+        fr.free_cash_flow_cr,
+        fr.revenue_cagr_5yr,
+        fr.pat_cagr_5yr,
+        fr.composite_quality_score
+
+    FROM peer_groups pg
+
+    INNER JOIN companies c
+        ON pg.company_id = c.id
+
+    INNER JOIN financial_ratios fr
+        ON fr.company_id = c.id
+
+    WHERE pg.peer_group_name = ?
+
+    ORDER BY
+        c.company_name,
+        fr.year
+    """
+
+    df = pd.read_sql(
+        query,
+        conn,
+        params=(peer_group,)
+    )
+
+    conn.close()
+
+    return df
+
+
+@st.cache_data(ttl=600)
+def get_latest_peer_data(peer_group):
+
+    df = get_peer_companies(peer_group)
+
+    latest = (
+        df
+        .sort_values("year")
+        .groupby("id")
+        .tail(1)
+        .reset_index(drop=True)
+    )
+
+    return latest
+
+@st.cache_data(ttl=600)
+def get_peer_average(peer_group):
+
+    df = get_latest_peer_data(peer_group)
+
+    metrics = [
+        "return_on_equity_pct",
+        "return_on_capital_employed_pct",
+        "net_profit_margin_pct",
+        "debt_to_equity",
+        "free_cash_flow_cr",
+        "revenue_cagr_5yr",
+        "pat_cagr_5yr",
+        "composite_quality_score"
+    ]
+
+    return df[metrics].mean()
