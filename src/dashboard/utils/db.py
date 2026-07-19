@@ -528,3 +528,147 @@ def get_peer_average(peer_group):
     ]
 
     return df[metrics].mean()
+
+@st.cache_data(ttl=600)
+def get_trend_data():
+
+    conn = sqlite3.connect(DB_PATH)
+
+    query = """
+    SELECT
+
+        c.id,
+        c.company_name,
+
+        fr.year,
+
+        pl.sales,
+        pl.net_profit,
+
+        fr.return_on_equity_pct,
+        fr.return_on_capital_employed_pct,
+        fr.net_profit_margin_pct,
+        fr.debt_to_equity,
+        fr.free_cash_flow_cr
+
+    FROM financial_ratios fr
+
+    INNER JOIN companies c
+        ON fr.company_id = c.id
+
+    LEFT JOIN profitandloss pl
+        ON fr.company_id = pl.company_id
+       AND fr.year = pl.year
+
+    ORDER BY
+        c.company_name,
+        fr.year
+    """
+
+    df = pd.read_sql(query, conn)
+
+    conn.close()
+
+    return df
+
+@st.cache_data(ttl=600)
+def get_sector_analysis_data():
+
+    conn = sqlite3.connect(DB_PATH)
+
+    query = """
+    SELECT
+
+        c.company_name,
+
+        s.broad_sector,
+        s.sub_sector,
+
+        pl.sales,
+
+        fr.return_on_equity_pct,
+
+        mc.market_cap_crore
+
+    FROM companies c
+
+    LEFT JOIN sectors s
+        ON c.id = s.company_id
+
+    LEFT JOIN profitandloss pl
+        ON c.id = pl.company_id
+       AND pl.year = 'Mar 2024'
+
+    LEFT JOIN financial_ratios fr
+        ON c.id = fr.company_id
+       AND fr.year = 'Mar 2024'
+
+    LEFT JOIN market_cap mc
+        ON c.id = mc.company_id
+       AND mc.year = '2024'
+    """
+
+    df = pd.read_sql(query, conn)
+
+    conn.close()
+
+    return df
+
+@st.cache_data(ttl=600)
+def get_capital_allocation_data():
+    import sqlite3
+    import pandas as pd
+
+    conn = sqlite3.connect(DB_PATH)
+
+    query = """
+    WITH latest_ratio AS (
+        SELECT *
+        FROM financial_ratios fr
+        WHERE rowid IN (
+            SELECT MAX(rowid)
+            FROM financial_ratios
+            GROUP BY company_id
+        )
+    )
+
+    SELECT
+        c.id,
+        c.company_name,
+        lr.return_on_equity_pct AS roe,
+        lr.revenue_cagr_5yr AS sales_growth,
+        lr.pat_cagr_5yr AS profit_growth
+    FROM companies c
+    LEFT JOIN latest_ratio lr
+        ON c.id = lr.company_id
+    ORDER BY c.company_name
+    """
+
+    df = pd.read_sql(query, conn)
+    conn.close()
+
+    df["roe"] = pd.to_numeric(df["roe"], errors="coerce").fillna(0)
+    df["sales_growth"] = pd.to_numeric(df["sales_growth"], errors="coerce").fillna(0)
+    df["profit_growth"] = pd.to_numeric(df["profit_growth"], errors="coerce").fillna(0)
+
+    # Treemap size
+    df["Size"] = df["roe"].clip(lower=1)
+
+    return df
+
+def get_annual_reports(company_id):
+    conn = sqlite3.connect(DB_PATH)
+
+    query = """
+    SELECT
+        year,
+        Annual_Report
+    FROM documents
+    WHERE company_id = ?
+    ORDER BY year DESC
+    """
+
+    df = pd.read_sql(query, conn, params=(company_id,))
+    conn.close()
+
+    return df
