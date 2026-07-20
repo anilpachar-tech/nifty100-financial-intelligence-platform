@@ -1,0 +1,82 @@
+company_id,company_name,sector,P/E,P/B,EV/EBITDA,FCF_yield_pct,5yr_median_PE,PE_vs_sector_median_pct,flag
+ABB,Abbott India Ltd,Industrials,8.7,27.89,12.63,0.05,60.485,-89.99,Discount
+ADANIENSOL,Adani Energy Solutions Ltd,Energy,370.18,326.44,14.83,0.31,59.075,64.84,Caution
+ADANIENT,Adani Enterprises Ltd,Industrials,310.23,25.34,33.01,-4.5,57.5,256.89,Caution
+ADANIGREEN,Adani Green Energy Ltd,Energy,1031.95,1163.23,21.78,-2.61,33.34,359.52,Caution
+ADANIPORTS,"Adani Ports & Special Economic Zone Ltd
+",Industrials,35.34,10.99,31.76,1.22,49.83,-59.34,Discount
+ADANIPOWER,Adani Power Ltd,Energy,46.05,222.2,24.76,1.29,48.4,-79.49,Discount
+APOLLOHOSP,"Apollo Hospitals
+Chain of Indian private hospitals",Healthcare,45.89,30.01,16.74,0.02,38.055,-42.23,Discount
+ASIANPAINT,"Asian Paints
+Indian Multi-National Paint and Coating Manufacturing Company",Materials,59.65,17.43,23.94,0.17,44.905,58.1,Caution
+DMART,Avenue Supermarts Ltd,Consumer Discretionary,9.72,13.2,36.84,0.01,45.655,-59.48,Discount
+AXISBANK,Axis Bank Ltd,Financials,4.76,1.52,16.87,-1.53,47.88,-92.79,Discount
+BAJFINANCE,Bajaj Finance Ltd,Financials,7.74,2.91,15.96,-3.23,50.870000000000005,-88.28,Discount
+BAJAJFINSV,Bajaj Finserv Ltd,Financials,107.87,14.5,39.72,-4.18,47.335,63.37,Caution
+BAJAJHLDNG,Bajaj Holdings & Investment Ltd,Financials,3.77,5.03,27.47,0.07,44.245,-94.29,Discount
+BEL,Bharat Electronics Ltd,Industrials,399.75,261.61,23.14,-0.09,56.305,359.88,Caution
+BHEL,"Bharat Heavy Electricals Limited
+",Industrials,3121.86,88.92,21.59,-0.44,35.98,3491.44,Caution
+BPCL,Bharat Petroleum Corporation Ltd,Energy,79.57,139.33,26.59,5.42,30.585,-64.57,Discount
+BHARTIARTL,Bharti Airtel Ltd,Communication Services,410.95,186.02,39.71,7.35,65.33500000000001,56.42,Caution
+BOSCHLTD,Bosch Ltd,Consumer Discretionary,4.11,8.62,16.07,0.06,34.555,-82.87,Discount
+BRITANNIA,Britannia Industries Ltd,Consumer Staples,3.97,2.15,33.95,0.94,36.775000000000006,-84.23,Discount
+CANBK,Canara Bank,Financials,103.58,34.67,25.23,2.68,34.745000000000005,56.87,Caution
+DABUR,Dabur India Ltd,Consumer Staples,228.76,41.04,12.02,1.84,41.055,808.86,Caution
+EICHERMOT,Eicher Motors Ltd,Consumer Discretionary,11.22,2.45,19.29,0.4,21.865000000000002,-53.23,Discount
+GAIL,GAIL (India) Ltd,Energy,25.58,32.76,33.07,0.28,28.259999999999998,-88.61,Discount
+GODREJCP,Godrej Consumer Products Ltd,Consumer Staples,-1511.23,61.18,23.55,-0.1,37.19,-6104.09,Discount
+HCLTECH,HCL Technologies Ltd,Information Technology,16.63,7.67,31.21,3.84,62.05,-58.13,Discount
+HDFCLIFE,HDFC Life Insurance Company Ltd,Financials,489.56,502.48,31.63,-6.15,52.28,641.42,Caution
+HEROMOTOCO,"Hero MotoCorp Ltd
+",Consumer Discretionary,6.43,2.72,28.27,0.19,60.275000000000006,-73.2,Discount
+HINDALCO,Hindalco Industries Ltd,Materials,64.68,6.09,27.63,1.36,51.02,71.43,Caution
+HINDUNILVR,"Hindustan Unilever Ltd
+",Consumer Staples,6.94,1.4,7.52,1.85,21.805,-72.43,Discount
+ICICIBANK,ICICI Bank Ltd,Financials,115.62,39.95,38.28,0.95,50.57,75.1,Caution
+ICICIPRULI,ICICI Prudential Life Insurance Company Ltd,Financials,789.82,620.28,22.57,0.01,44.31,1096.15,Caution
+ITC,"ITC Ltd
+",Consumer Staples,840.78,225.33,17.19,5.64,62.555,3240.41,Caution
+IOC,"Indian Oil Corporation
+",Energy,29.92,67.39,33.71,2.79,49.11,-86.68,Discount
+IRCTC,Indian Railway Catering & Tourism Corporation Ltd,Consumer Discretionary,799.93,554.68,32.47,0.05,45.585,3234.43,Caution
+IRFC,Indian Railway Finance Corporation Ltd,Financials,1084.11,1441.63,16.66,0.3,36.519999999999996,1541.84,Caution
+NAUKRI,Info Edge (India) Ltd,Communication Services,114.5,21.48,11.87,-0.03,34.885000000000005,-56.42,Discount
+INFY,Infosys Ltd,Information Technology,100.32,148.53,36.7,1.81,34.31,152.57,Caution
+JSWENERGY,JSW Energy Ltd,Energy,733.91,578.34,35.95,-1.77,37.545,226.81,Caution
+JINDALSTEL,Jindal Steel & Power Ltd,Materials,160.73,21.04,20.22,-0.59,43.26,326.0,Caution
+JIOFIN,Jio Financial Services Ltd,Financials,3315.17,454.13,26.41,0.05,50.11,4920.7,Caution
+KOTAKBANK,"Kotak Mahindra Bank Ltd
+",Financials,19.28,13.56,15.52,1.57,46.535,-70.8,Discount
+LTIM,LTIMindtree Ltd,Information Technology,14.13,3.28,18.9,0.13,60.765,-64.43,Discount
+LT,Larsen & Toubro Ltd,Industrials,30.16,4.29,16.63,1.82,24.09,-65.3,Discount
+LICI,Life Insurance Corporation of India,Financials,4.8,24.2,12.21,0.46,34.485,-92.73,Discount
+M&M,"Mahindra & Mahindra Ltd
+",Consumer Discretionary,65.01,49.79,29.08,-0.27,43.58,170.99,Caution
+MARUTI,Maruti Suzuki India Ltd,Consumer Discretionary,11.71,9.21,29.97,0.33,28.565,-51.19,Discount
+NHPC,"NHPC Ltd
+",Energy,2216.78,2303.15,18.26,0.06,59.83,887.12,Caution
+NTPC,NTPC Ltd,Energy,23.42,29.68,37.12,0.95,44.12,-89.57,Discount
+PIDILITIND,Pidilite Industries Ltd,Materials,20.14,4.15,5.36,0.59,37.114999999999995,-46.62,Discount
+PFC,Power Finance Corporation Ltd,Financials,131.06,256.56,15.67,-5.03,35.95,98.49,Caution
+POWERGRID,Power Grid Corporation of India Ltd,Energy,399.64,725.07,23.07,6.49,50.86,77.96,Caution
+PNB,Punjab National Bank,Financials,32.6,4.54,23.64,-1.61,20.58,-50.63,Discount
+RECLTD,REC Ltd,Financials,129.45,265.39,23.95,-20.4,43.339999999999996,96.05,Caution
+RELIANCE,"Reliance Industries Ltd
+",Energy,50.32,21.89,24.96,10.45,50.5,-77.59,Discount
+SBILIFE,SBI Life Insurance Company Ltd,Financials,422.54,539.18,31.04,-0.24,54.025,539.92,Caution
+MOTHERSON,Samvardhana Motherson International Ltd,Consumer Discretionary,893.15,92.6,33.39,0.63,31.5,3623.01,Caution
+SHREECEM,Shree Cement Ltd,Materials,5.08,4.24,26.58,0.06,33.97,-86.54,Discount
+SHRIRAMFIN,"Shriram Finance Ltd
+",Financials,35.87,10.75,28.82,-3.61,47.260000000000005,-45.68,Discount
+SIEMENS,Siemens Ltd,Industrials,39.4,13.84,30.88,0.1,37.225,-54.67,Discount
+TVSMOTOR,TVS Motor Company Ltd,Consumer Discretionary,212.24,54.06,7.1,-0.85,35.19,784.7,Caution
+TATACONSUM,Tata Consumer Products Ltd,Consumer Staples,320.46,22.75,24.84,0.01,37.655,1173.18,Caution
+TATAMOTORS,Tata Motors Ltd,Consumer Discretionary,5.32,4.51,15.35,3.0,31.715000000000003,-77.82,Discount
+TATASTEEL,"Tata Steel Ltd
+",Materials,-1229.27,66.62,38.87,1.64,50.555,-3358.07,Discount
+TECHM,Tech Mahindra Ltd,Information Technology,242.19,96.12,7.85,0.17,49.445,509.74,Caution
+TITAN,"Titan Company Ltd
+",Consumer Discretionary,135.66,50.13,21.0,0.08,27.58,465.49,Caution
+TORNTPHARM,Torrent Pharmaceuticals Ltd,Healthcare,45.88,55.42,27.93,0.17,48.83,-42.24,Discount

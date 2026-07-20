@@ -205,25 +205,31 @@ st.caption(
     f"Showing {len(filtered)} of {len(data)} records"
 )
 
-st.dataframe(
-    filtered[
-        [
-            "id",
-            "company_name",
-            "broad_sector",
-            "composite_quality_score",
-            "return_on_equity_pct",
-            "debt_to_equity",
-            "revenue_cagr_5yr",
-            "pat_cagr_5yr",
-            "operating_profit_margin_pct",
-            "pe",
-            "pb",
-            "dividend_yield"
-        ]
-    ],
-    use_container_width=True
-)
+if filtered.empty:
+    st.warning(
+        "⚠️ No companies match the selected filter criteria.\n\n"
+        "Try relaxing one or more filters."
+    )
+else:
+    st.dataframe(
+        filtered[
+            [
+                "id",
+                "company_name",
+                "broad_sector",
+                "composite_quality_score",
+                "return_on_equity_pct",
+                "debt_to_equity",
+                "revenue_cagr_5yr",
+                "pat_cagr_5yr",
+                "operating_profit_margin_pct",
+                "pe",
+                "pb",
+                "dividend_yield"
+            ]
+        ],
+        use_container_width=True
+    )
 
 csv = filtered[
     [
@@ -247,9 +253,10 @@ filtered = filtered.sort_values(
     ascending=False
 )
 
-st.download_button(
-    label="📥 Download CSV",
-    data=csv,
-    file_name="screener_results.csv",
-    mime="text/csv"
-)
+if not filtered.empty:
+    st.download_button(
+        label="📥 Download CSV",
+        data=csv,
+        file_name="screener_results.csv",
+        mime="text/csv"
+    )
