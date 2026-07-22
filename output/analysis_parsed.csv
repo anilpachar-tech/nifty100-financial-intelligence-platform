@@ -1,0 +1,6 @@
+company_id,compounded_sales_growth_10_years,compounded_profit_growth_10_years,stock_price_cagr_10_years,roe_10_years,compounded_sales_growth_5_years,compounded_profit_growth_5_years,stock_price_cagr_5_years,roe_5_years,compounded_sales_growth_3_years,compounded_profit_growth_3_years,stock_price_cagr_3_years,roe_3_years,compounded_sales_growth_ttm,compounded_profit_growth_ttm,stock_price_cagr_1_years,roe_last_years
+HDFCBANK,21.0,22.0,15.0,17.0,22.0,23.0,8.0,17.0,30.0,26.0,8.0,17.0,47.0,27.0,13.0,17.0
+SBILIFE,23.0,9.0,9.0,16.0,24.0,6.0,8.0,14.0,17.0,9.0,7.0,13.0,43.0,18.0,-2.0,12.0
+TCS,11.0,9.0,14.0,40.0,10.0,8.0,16.0,44.0,14.0,12.0,8.0,47.0,5.0,8.0,16.0,52.0
+WIPRO,8.0,3.0,12.0,18.0,9.0,4.0,20.0,17.0,13.0,0.0,-1.0,17.0,-3.0,1.0,39.0,14.0
+INFY,12.0,9.0,15.0,27.0,13.0,11.0,22.0,29.0,5.0,10.0,4.0,31.0,3.0,8.0,27.0,32.0

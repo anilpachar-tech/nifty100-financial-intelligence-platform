@@ -1,0 +1,36 @@
+2026-07-22 18:10:27,069 | INFO | ============================================================
+2026-07-22 18:10:27,070 | INFO | Sprint 5 Day 29 Parser Started
+2026-07-22 18:10:27,070 | INFO | ============================================================
+2026-07-22 18:10:27,070 | INFO | Loading analysis.xlsx
+2026-07-22 18:10:27,698 | INFO | Loaded 20 rows and 6 columns
+2026-07-22 18:10:27,699 | INFO | Column validation successful.
+2026-07-22 18:10:27,699 | INFO | Parsing analysis text fields...
+2026-07-22 18:10:27,702 | INFO | Parsed Records : 20
+2026-07-22 18:10:27,703 | INFO | Failed Records : 0
+2026-07-22 18:10:27,714 | INFO | Saved parsed output : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\analysis_parsed.csv
+2026-07-22 18:10:27,715 | INFO | Saved failed output : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\parse_failures.csv
+2026-07-22 18:10:27,716 | INFO | Parser completed successfully.
+2026-07-22 18:15:08,819 | INFO | ============================================================
+2026-07-22 18:15:08,820 | INFO | Sprint 5 Day 29 Parser Started
+2026-07-22 18:15:08,820 | INFO | ============================================================
+2026-07-22 18:15:08,820 | INFO | Loading analysis.xlsx
+2026-07-22 18:15:09,240 | INFO | Loaded 20 rows and 6 columns
+2026-07-22 18:15:09,240 | INFO | Column validation successful.
+2026-07-22 18:15:09,240 | INFO | Parsing analysis text fields...
+2026-07-22 18:15:09,243 | INFO | Companies Parsed : 5
+2026-07-22 18:15:09,244 | INFO | Failed Records : 0
+2026-07-22 18:15:09,248 | INFO | Saved parsed output : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\analysis_parsed.csv
+2026-07-22 18:15:09,249 | INFO | Saved failed output : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\parse_failures.csv
+2026-07-22 18:15:09,250 | INFO | Parser completed successfully.
+2026-07-22 18:24:37,522 | INFO | ============================================================
+2026-07-22 18:24:37,523 | INFO | Sprint 5 Day 29 Parser Started
+2026-07-22 18:24:37,523 | INFO | ============================================================
+2026-07-22 18:24:37,523 | INFO | Loading analysis.xlsx
+2026-07-22 18:24:37,977 | INFO | Loaded 20 rows and 6 columns
+2026-07-22 18:24:37,978 | INFO | Column validation successful.
+2026-07-22 18:24:37,978 | INFO | Parsing analysis text fields...
+2026-07-22 18:24:37,982 | INFO | Companies Parsed : 5
+2026-07-22 18:24:37,982 | INFO | Failed Records : 0
+2026-07-22 18:24:37,989 | INFO | Saved parsed output : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\analysis_parsed.csv
+2026-07-22 18:24:37,989 | INFO | Saved failed output : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\parse_failures.csv
+2026-07-22 18:24:37,990 | INFO | Parser completed successfully.

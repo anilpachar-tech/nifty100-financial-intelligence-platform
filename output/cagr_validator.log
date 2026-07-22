@@ -1,0 +1,19 @@
+2026-07-22 18:42:36,221 | INFO | ============================================================
+2026-07-22 18:42:36,221 | INFO | CAGR Validation Started
+2026-07-22 18:42:36,221 | INFO | Connected to SQLite database.
+2026-07-22 18:42:36,253 | INFO | Loaded parser output (5 companies).
+2026-07-22 18:42:36,264 | INFO | Loaded latest ratio records (92 companies).
+2026-07-22 18:42:36,286 | INFO | Merged companies : 5
+2026-07-22 18:42:36,303 | INFO | Validation CSV saved.
+2026-07-22 18:42:36,304 | INFO | Divergence CSV saved.
+2026-07-22 18:42:36,307 | INFO | Validation Completed Successfully.
+2026-07-22 18:54:45,161 | INFO | ============================================================
+2026-07-22 18:54:45,162 | INFO | CAGR Validation Started
+2026-07-22 18:54:45,163 | INFO | Connected to SQLite database.
+2026-07-22 18:54:45,211 | INFO | Loaded parser output (5 companies).
+2026-07-22 18:54:45,227 | INFO | Loaded latest ratio records (92 companies).
+2026-07-22 18:54:45,261 | INFO | Merged companies : 5
+2026-07-22 18:54:45,265 | WARNING | Ratio data missing for companies: WIPRO
+2026-07-22 18:54:45,289 | INFO | Validation CSV saved.
+2026-07-22 18:54:45,289 | INFO | Divergence CSV saved.
+2026-07-22 18:54:45,290 | INFO | Validation Completed Successfully.

@@ -1,0 +1,6 @@
+company_id,compounded_sales_growth_5_years,compounded_profit_growth_5_years,roe_5_years,revenue_cagr_5yr,pat_cagr_5yr,return_on_equity_pct,sales_difference,profit_difference,roe_difference
+HDFCBANK,22.0,23.0,17.0,21.95,23.87,14.34,0.05,0.87,2.66
+INFY,13.0,11.0,29.0,13.2,11.24,29.79,0.2,0.24,0.79
+SBILIFE,24.0,6.0,14.0,24.23,7.37,12.7,0.23,1.37,1.3
+TCS,10.0,8.0,44.0,10.46,7.87,50.94,0.46,0.13,6.94
+WIPRO,9.0,4.0,17.0,,,,,,
