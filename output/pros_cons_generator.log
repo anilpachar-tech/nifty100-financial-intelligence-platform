@@ -1,0 +1,432 @@
+2026-07-23 18:11:39,282 | INFO | ============================================================
+2026-07-23 18:11:39,282 | INFO | Pros & Cons Generator Started
+2026-07-23 18:11:39,283 | INFO | Connected to SQLite database.
+2026-07-23 18:11:39,289 | ERROR | Execution failed on sql '
+    SELECT
+        company_id,
+        company_name
+    FROM companies
+    ORDER BY company_id
+    ': no such column: company_id
+Traceback (most recent call last):
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\io\sql.py", line 2702, in execute
+    cur.execute(sql, *args)
+    ~~~~~~~~~~~^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: company_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\nlp\pros_cons_generator.py", line 1423, in main
+    companies_df = load_companies(conn)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\nlp\pros_cons_generator.py", line 81, in load_companies
+    companies = pd.read_sql(query, conn)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\io\sql.py", line 702, in read_sql
+    return pandas_sql.read_query(
+           ~~~~~~~~~~~~~~~~~~~~~^
+        sql,
+        ^^^^
+    ...<6 lines>...
+        dtype=dtype,
+        ^^^^^^^^^^^^
+    )
+    ^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\io\sql.py", line 2766, in read_query
+    cursor = self.execute(sql, params)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\io\sql.py", line 2714, in execute
+    raise ex from exc
+pandas.errors.DatabaseError: Execution failed on sql '
+    SELECT
+        company_id,
+        company_name
+    FROM companies
+    ORDER BY company_id
+    ': no such column: company_id
+2026-07-23 18:21:26,527 | INFO | ============================================================
+2026-07-23 18:21:26,528 | INFO | Pros & Cons Generator Started
+2026-07-23 18:21:26,528 | INFO | Connected to SQLite database.
+2026-07-23 18:21:26,557 | INFO | Loaded 92 companies.
+2026-07-23 18:21:26,569 | INFO | Financial Ratios : 1065 rows
+2026-07-23 18:21:26,576 | INFO | Profit & Loss : 1263 rows
+2026-07-23 18:21:26,582 | INFO | Balance Sheet : 1225 rows
+2026-07-23 18:21:26,587 | INFO | Cash Flow : 1164 rows
+2026-07-23 18:21:26,587 | INFO | Generating Pro Rules...
+2026-07-23 18:21:26,624 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,630 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,635 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,642 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,648 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,653 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,660 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,666 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,672 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,681 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,687 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,696 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,702 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,710 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,715 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,724 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,731 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,739 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,747 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,754 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,764 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,770 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,780 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,791 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,797 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,802 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,807 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,813 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,818 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,824 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,830 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,836 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,841 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,846 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,851 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,856 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,861 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,866 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,871 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,877 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,882 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,887 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,892 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,896 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,901 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,906 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,911 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,915 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,920 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,925 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,930 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,934 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,940 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,944 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,949 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,954 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,959 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,964 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,968 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,974 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,979 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,983 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,989 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,994 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:26,999 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,003 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,008 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,013 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,017 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,022 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,026 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,031 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,036 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,044 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,049 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,053 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,061 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,066 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,071 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,077 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,081 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,086 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,091 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,096 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,101 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,106 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,111 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,116 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,121 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,126 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:21:27,127 | INFO | Generating Con Rules...
+2026-07-23 18:21:27,131 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,136 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,141 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,146 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,151 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,156 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,160 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,165 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,170 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,177 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,181 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,186 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,191 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,195 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,199 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,204 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,209 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,213 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,217 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,222 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,226 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,231 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,235 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,240 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,245 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,249 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,254 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,259 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,263 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,268 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,273 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,277 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,282 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,286 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,292 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,296 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,300 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,305 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,310 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,314 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,318 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,323 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,328 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,332 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,337 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,342 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,347 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,351 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,356 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,360 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,365 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,369 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,374 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,378 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,382 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,387 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,392 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,397 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,401 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,406 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,410 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,415 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,419 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,423 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,428 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,432 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,436 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,441 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,445 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,450 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,454 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,458 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,464 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,468 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,473 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,478 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,485 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,489 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,494 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,498 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,503 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,509 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,513 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,517 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,522 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,527 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,532 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,536 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,542 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,546 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:21:27,564 | INFO | Generated 479 records.
+2026-07-23 18:21:27,564 | INFO | Verifying generated output...
+2026-07-23 18:21:27,644 | WARNING | Companies failing verification: ABB, ADANIENT, ADANIPORTS, ADANIPOWER, APOLLOHOSP, ATGL, BAJAJ-AUTO, BEL, BHEL, BOSCHLTD, BRITANNIA, DMART, DRREDDY, EICHERMOT, GODREJCP, HAVELLS, HDFCLIFE, HINDALCO, HINDUNILVR, ICICIPRULI, ITC, JINDALSTEL, JSWSTEEL, LICI, M&M, MARUTI, MOTHERSON, NESTLEIND, NTPC, ONGC, PIDILITIND, POWERGRID, RELIANCE, SBIN, SHREECEM, SIEMENS, SUNPHARMA, TATAMOTORS, TATAPOWER, TCS, TORNTPHARM, TRENT
+2026-07-23 18:21:27,647 | INFO | Day 30 Completed Successfully.
+2026-07-23 18:39:17,663 | INFO | ============================================================
+2026-07-23 18:39:17,664 | INFO | Pros & Cons Generator Started
+2026-07-23 18:39:17,664 | INFO | Connected to SQLite database.
+2026-07-23 18:39:17,701 | INFO | Loaded 92 companies.
+2026-07-23 18:39:17,718 | INFO | Financial Ratios : 1065 rows
+2026-07-23 18:39:17,726 | INFO | Profit & Loss : 1263 rows
+2026-07-23 18:39:17,733 | INFO | Balance Sheet : 1225 rows
+2026-07-23 18:39:17,739 | INFO | Cash Flow : 1164 rows
+2026-07-23 18:39:17,739 | INFO | Generating Pro Rules...
+2026-07-23 18:39:17,778 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,786 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,794 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,801 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,808 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,815 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,823 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,830 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,840 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,852 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,859 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,867 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,874 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,882 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,889 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,896 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,902 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,912 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,920 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,927 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,934 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,941 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,948 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,955 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,962 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,968 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,976 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,983 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,990 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:17,996 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,004 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,011 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,019 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,026 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,033 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,040 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,048 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,055 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,064 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,071 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,080 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,087 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,095 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,102 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,108 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,114 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,121 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,128 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,136 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,143 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,150 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,159 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,166 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,174 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,180 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,190 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,199 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,206 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,212 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,219 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,228 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,234 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,240 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,246 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,253 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,260 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,268 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,274 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,281 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,287 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,293 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,300 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,306 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,315 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,320 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,326 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,336 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,342 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,350 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,357 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,365 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,372 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,380 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,389 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,396 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,402 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,408 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,418 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,426 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,434 | INFO | Pro Rules 1-6 completed.
+2026-07-23 18:39:18,435 | INFO | Generating Con Rules...
+2026-07-23 18:39:18,441 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,448 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,453 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,461 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,467 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,474 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,480 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,486 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,491 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,500 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,506 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,511 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,517 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,522 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,527 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,533 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,538 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,544 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,549 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,554 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,559 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,565 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,570 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,576 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,582 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,588 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,592 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,598 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,603 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,608 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,613 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,619 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,624 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,629 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,635 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,641 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,647 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,653 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,659 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,664 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,670 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,675 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,680 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,685 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,690 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,695 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,700 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,705 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,711 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,716 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,721 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,727 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,732 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,737 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,742 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,747 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,754 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,759 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,764 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,770 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,774 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,780 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,785 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,790 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,796 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,801 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,805 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,811 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,816 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,821 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,826 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,830 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,835 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,840 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,846 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,851 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,860 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,866 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,870 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,876 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,882 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,887 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,893 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,898 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,903 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,908 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,914 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,919 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,924 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:18,928 | INFO | Con Rules 1-6 completed.
+2026-07-23 18:39:19,125 | INFO | Generated 523 records.
+2026-07-23 18:39:19,125 | INFO | Verifying generated output...
+2026-07-23 18:39:19,214 | INFO | Verification Passed.
+2026-07-23 18:39:19,217 | INFO | Day 30 Completed Successfully.
