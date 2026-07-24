@@ -1,0 +1,128 @@
+2026-07-24 15:51:33,493 INFO ============================================================
+2026-07-24 15:51:33,493 INFO Day 31 Started
+2026-07-24 15:51:33,494 INFO Connecting to database...
+2026-07-24 15:51:33,501 INFO Loading companies...
+2026-07-24 15:51:33,527 INFO Loading sectors...
+2026-07-24 15:51:33,528 INFO Loading cashflow...
+2026-07-24 15:51:33,531 INFO Loading profit & loss...
+2026-07-24 15:51:33,536 INFO Loading balance sheet...
+2026-07-24 15:51:33,540 INFO Loading financial ratios...
+2026-07-24 15:51:33,547 INFO Generating Cash Flow Intelligence...
+2026-07-24 15:51:33,567 ERROR 'sector'
+Traceback (most recent call last):
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'sector'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\analytics\cashflow_kpis.py", line 967, in main
+    generate_cashflow_intelligence(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+    
+    
+    ...<11 lines>...
+    
+    
+    )
+    ^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\analytics\cashflow_kpis.py", line 529, in generate_cashflow_intelligence
+    sector = get_company_sector(
+        sectors_df,
+        company_id
+    )
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\analytics\cashflow_kpis.py", line 500, in get_company_sector
+    return df.iloc[0]["sector"]
+           ~~~~~~~~~~^^^^^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\series.py", line 959, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\series.py", line 1046, in _get_value
+    loc = self.index.get_loc(label)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'sector'
+2026-07-24 15:56:25,812 INFO ============================================================
+2026-07-24 15:56:25,812 INFO Day 31 Started
+2026-07-24 15:56:25,812 INFO Connecting to database...
+2026-07-24 15:56:25,815 INFO Loading companies...
+2026-07-24 15:56:25,830 INFO Loading sectors...
+2026-07-24 15:56:25,832 INFO Loading cashflow...
+2026-07-24 15:56:25,836 INFO Loading profit & loss...
+2026-07-24 15:56:25,841 INFO Loading balance sheet...
+2026-07-24 15:56:25,845 INFO Loading financial ratios...
+2026-07-24 15:56:25,855 INFO Generating Cash Flow Intelligence...
+2026-07-24 15:56:25,869 ERROR 'board_sector'
+Traceback (most recent call last):
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'board_sector'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\analytics\cashflow_kpis.py", line 967, in main
+    generate_cashflow_intelligence(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+    
+    
+    ...<11 lines>...
+    
+    
+    )
+    ^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\analytics\cashflow_kpis.py", line 529, in generate_cashflow_intelligence
+    sector = get_company_sector(
+        sectors_df,
+        company_id
+    )
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\analytics\cashflow_kpis.py", line 500, in get_company_sector
+    return df.iloc[0]["board_sector"]
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\series.py", line 959, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\series.py", line 1046, in _get_value
+    loc = self.index.get_loc(label)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'board_sector'
+2026-07-24 15:57:27,865 INFO ============================================================
+2026-07-24 15:57:27,865 INFO Day 31 Started
+2026-07-24 15:57:27,865 INFO Connecting to database...
+2026-07-24 15:57:27,865 INFO Loading companies...
+2026-07-24 15:57:27,871 INFO Loading sectors...
+2026-07-24 15:57:27,872 INFO Loading cashflow...
+2026-07-24 15:57:27,875 INFO Loading profit & loss...
+2026-07-24 15:57:27,880 INFO Loading balance sheet...
+2026-07-24 15:57:27,885 INFO Loading financial ratios...
+2026-07-24 15:57:27,893 INFO Generating Cash Flow Intelligence...
+2026-07-24 15:57:28,282 INFO Cash Flow Intelligence Generated for 91 companies.
+2026-07-24 15:57:28,813 INFO Cash Flow Intelligence saved.
+2026-07-24 15:57:28,813 INFO Distress Alerts saved.
+2026-07-24 15:57:28,814 INFO Day 31 Completed Successfully.
+2026-07-24 16:07:09,635 INFO ============================================================
+2026-07-24 16:07:09,636 INFO Day 31 Started
+2026-07-24 16:07:09,636 INFO Connecting to database...
+2026-07-24 16:07:09,639 INFO Loading companies...
+2026-07-24 16:07:09,654 INFO Loading sectors...
+2026-07-24 16:07:09,655 INFO Loading cashflow...
+2026-07-24 16:07:09,659 INFO Loading profit & loss...
+2026-07-24 16:07:09,664 INFO Loading balance sheet...
+2026-07-24 16:07:09,669 INFO Loading financial ratios...
+2026-07-24 16:07:09,679 INFO Generating Cash Flow Intelligence...
+2026-07-24 16:07:10,029 INFO Cash Flow Intelligence Generated for 92 companies.
+2026-07-24 16:07:10,307 INFO Cash Flow Intelligence saved.
+2026-07-24 16:07:10,307 INFO Distress Alerts saved.
+2026-07-24 16:07:10,307 INFO Day 31 Completed Successfully.
