@@ -1,0 +1,1348 @@
+2026-07-26 00:23:13,388 | INFO | ============================================================
+2026-07-26 00:23:13,388 | INFO | Sprint 5 Day 33 Started
+2026-07-26 00:23:13,388 | INFO | Connecting database...
+2026-07-26 00:23:13,395 | INFO | Generating Tearsheet : TCS
+2026-07-26 00:23:13,450 | ERROR | Execution failed on sql '
+    SELECT
+        rule_type,
+        description
+    FROM pros_cons
+    WHERE company_id=?
+    ': no such table: pros_cons
+Traceback (most recent call last):
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\io\sql.py", line 2702, in execute
+    cur.execute(sql, *args)
+    ~~~~~~~~~~~^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: pros_cons
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\reports\tearsheet.py", line 1839, in main
+    build_tearsheet(
+    ~~~~~~~~~~~~~~~^
+    
+    
+    ...<3 lines>...
+    
+    
+    )
+    ^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\reports\tearsheet.py", line 1655, in build_tearsheet
+    pros_cons = load_pros_cons(
+    
+    ...<3 lines>...
+    
+    )
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\reports\tearsheet.py", line 334, in load_pros_cons
+    df = pd.read_sql(
+        query,
+        conn,
+        params=[company_id]
+    )
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\io\sql.py", line 702, in read_sql
+    return pandas_sql.read_query(
+           ~~~~~~~~~~~~~~~~~~~~~^
+        sql,
+        ^^^^
+    ...<6 lines>...
+        dtype=dtype,
+        ^^^^^^^^^^^^
+    )
+    ^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\io\sql.py", line 2766, in read_query
+    cursor = self.execute(sql, params)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\io\sql.py", line 2714, in execute
+    raise ex from exc
+pandas.errors.DatabaseError: Execution failed on sql '
+    SELECT
+        rule_type,
+        description
+    FROM pros_cons
+    WHERE company_id=?
+    ': no such table: pros_cons
+2026-07-26 00:45:28,566 | INFO | ============================================================
+2026-07-26 00:45:28,566 | INFO | Sprint 5 Day 33 Started
+2026-07-26 00:45:28,566 | INFO | Connecting database...
+2026-07-26 00:45:28,576 | INFO | Generating Tearsheet : TCS
+2026-07-26 00:45:28,699 | INFO | Creating PDF : TCS
+2026-07-26 00:45:28,710 | ERROR | cannot convert float NaN to integer
+Traceback (most recent call last):
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\reports\tearsheet.py", line 1824, in main
+    build_tearsheet(
+    ~~~~~~~~~~~~~~~^
+    
+    
+    ...<3 lines>...
+    
+    
+    )
+    ^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\reports\tearsheet.py", line 1684, in build_tearsheet
+    draw_financial_charts(
+    ~~~~~~~~~~~~~~~~~~~~~^
+    
+    
+    ...<3 lines>...
+    
+    
+    )
+    ^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\reports\tearsheet.py", line 809, in draw_financial_charts
+    df = last_10_years(
+        profit_loss_df
+    )
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\reports\tearsheet.py", line 464, in last_10_years
+    .astype(int)
+     ~~~~~~^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\generic.py", line 6541, in astype
+    new_data = self._mgr.astype(dtype=dtype, errors=errors)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\internals\managers.py", line 614, in astype
+    return self.apply("astype", dtype=dtype, errors=errors)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\internals\managers.py", line 445, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 607, in astype
+    new_values = astype_array_safe(values, dtype, errors=errors)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\dtypes\astype.py", line 240, in astype_array_safe
+    new_values = astype_array(values, dtype, copy=copy)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\dtypes\astype.py", line 182, in astype_array
+    values = values.astype(dtype, copy=copy)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\arrays\string_arrow.py", line 338, in astype
+    return super().astype(dtype, copy=copy)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\arrays\base.py", line 881, in astype
+    return np.asarray(self, dtype=dtype)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\arrays\arrow\array.py", line 864, in __array__
+    return self.to_numpy(dtype=dtype, copy=copy)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\pandas\core\arrays\arrow\array.py", line 1741, in to_numpy
+    result[mask] = na_value
+    ~~~~~~^^^^^^
+ValueError: cannot convert float NaN to integer
+2026-07-26 00:49:50,679 | INFO | ============================================================
+2026-07-26 00:49:50,680 | INFO | Sprint 5 Day 33 Started
+2026-07-26 00:49:50,680 | INFO | Connecting database...
+2026-07-26 00:49:50,688 | INFO | Generating Tearsheet : TCS
+2026-07-26 00:49:50,791 | INFO | Creating PDF : TCS
+2026-07-26 00:49:50,841 | ERROR | unsupported operand type(s) for -: 'tuple' and 'float'
+Traceback (most recent call last):
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\reports\tearsheet.py", line 1858, in main
+    build_tearsheet(
+    ~~~~~~~~~~~~~~~^
+    
+    
+    ...<3 lines>...
+    
+    
+    )
+    ^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\reports\tearsheet.py", line 1726, in build_tearsheet
+    draw_ratio_chart(
+    ~~~~~~~~~~~~~~~~^
+    
+    
+    ...<3 lines>...
+    
+    
+    )
+    ^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\src\reports\tearsheet.py", line 1028, in draw_ratio_chart
+    drawing.drawOn(
+    ~~~~~~~~~~~~~~^
+    
+    
+    ...<5 lines>...
+    
+    
+    )
+    ^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\platypus\flowables.py", line 112, in drawOn
+    self._drawOn(canvas)
+    ~~~~~~~~~~~~^^^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\platypus\flowables.py", line 93, in _drawOn
+    self.draw()#this is the bit you overload
+    ~~~~~~~~~^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\graphics\shapes.py", line 632, in draw
+    renderPDF.draw(self, self.canv, 0, 0,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+            showBoundary=showBoundary if showBoundary is not _unset_ else getattr(self,'_showBoundary',_unset_))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\graphics\renderPDF.py", line 30, in draw
+    R.draw(renderScaledDrawing(drawing), canvas, x, y, showBoundary=showBoundary)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\graphics\renderbase.py", line 186, in draw
+    self.drawNode(drawing)
+    ~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\graphics\renderPDF.py", line 55, in drawNode
+    self.drawNodeDispatcher(node)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\graphics\renderbase.py", line 256, in drawNodeDispatcher
+    self.drawGroup(node)
+    ~~~~~~~~~~~~~~^^^^^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\graphics\renderbase.py", line 288, in drawGroup
+    node = _expandUserNode(anode,canvas)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\graphics\renderbase.py", line 147, in _expandUserNode
+    node = node.provideNode()
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\graphics\widgetbase.py", line 151, in provideNode
+    return self.draw()
+           ~~~~~~~~~^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\graphics\charts\linecharts.py", line 446, in draw
+    self.calcPositions()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\graphics\charts\linecharts.py", line 258, in calcPositions
+    v = vscale(datum)
+  File "D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\venv\Lib\site-packages\reportlab\graphics\charts\axes.py", line 1504, in scale
+    return org + sf*(value - self._valueMin)
+                     ~~~~~~^~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for -: 'tuple' and 'float'
+2026-07-26 00:56:34,321 | INFO | ============================================================
+2026-07-26 00:56:34,322 | INFO | Sprint 5 Day 33 Started
+2026-07-26 00:56:34,322 | INFO | Connecting database...
+2026-07-26 00:56:34,329 | INFO | Generating Tearsheet : TCS
+2026-07-26 00:56:34,437 | INFO | Creating PDF : TCS
+2026-07-26 11:25:01,851 | INFO | ============================================================
+2026-07-26 11:25:01,851 | INFO | Sprint 5 Day 33 Started
+2026-07-26 11:25:01,851 | INFO | Connecting database...
+2026-07-26 11:25:01,856 | INFO | Generating Tearsheet : TCS
+2026-07-26 11:25:01,969 | INFO | Creating PDF : TCS
+2026-07-26 11:25:02,111 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TCS_tearsheet.pdf
+2026-07-26 11:25:02,112 | INFO | Generating Tearsheet : HDFCBANK
+2026-07-26 11:25:02,132 | INFO | Creating PDF : HDFCBANK
+2026-07-26 11:25:02,214 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HDFCBANK_tearsheet.pdf
+2026-07-26 11:25:02,215 | INFO | Generating Tearsheet : RELIANCE
+2026-07-26 11:25:02,239 | INFO | Creating PDF : RELIANCE
+2026-07-26 11:25:02,319 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\RELIANCE_tearsheet.pdf
+2026-07-26 11:25:02,319 | INFO | Generating Tearsheet : SUNPHARMA
+2026-07-26 11:25:02,333 | INFO | Creating PDF : SUNPHARMA
+2026-07-26 11:25:02,424 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SUNPHARMA_tearsheet.pdf
+2026-07-26 11:25:02,424 | INFO | Generating Tearsheet : TATASTEEL
+2026-07-26 11:25:02,438 | INFO | Creating PDF : TATASTEEL
+2026-07-26 11:25:02,518 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATASTEEL_tearsheet.pdf
+2026-07-26 11:25:02,519 | INFO | Sprint 5 Day 33 Completed Successfully.
+2026-07-26 11:35:16,048 | INFO | Connecting database...
+2026-07-26 11:35:16,054 | INFO | Generating Tearsheet : ABB
+2026-07-26 11:35:16,119 | INFO | Creating PDF : ABB
+2026-07-26 11:35:16,198 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ABB_tearsheet.pdf
+2026-07-26 11:35:16,198 | INFO | Generating Tearsheet : ADANIENSOL
+2026-07-26 11:35:16,208 | INFO | Creating PDF : ADANIENSOL
+2026-07-26 11:35:16,277 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIENSOL_tearsheet.pdf
+2026-07-26 11:35:16,277 | INFO | Generating Tearsheet : ADANIENT
+2026-07-26 11:35:16,289 | INFO | Creating PDF : ADANIENT
+2026-07-26 11:35:16,362 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIENT_tearsheet.pdf
+2026-07-26 11:35:16,362 | INFO | Generating Tearsheet : ADANIGREEN
+2026-07-26 11:35:16,372 | INFO | Creating PDF : ADANIGREEN
+2026-07-26 11:35:16,435 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIGREEN_tearsheet.pdf
+2026-07-26 11:35:16,436 | INFO | Generating Tearsheet : ADANIPORTS
+2026-07-26 11:35:16,446 | INFO | Creating PDF : ADANIPORTS
+2026-07-26 11:35:16,531 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIPORTS_tearsheet.pdf
+2026-07-26 11:35:16,532 | INFO | Generating Tearsheet : ADANIPOWER
+2026-07-26 11:35:16,542 | INFO | Creating PDF : ADANIPOWER
+2026-07-26 11:35:16,616 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIPOWER_tearsheet.pdf
+2026-07-26 11:35:16,616 | INFO | Generating Tearsheet : AMBUJACEM
+2026-07-26 11:35:16,633 | INFO | Creating PDF : AMBUJACEM
+2026-07-26 11:35:16,713 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\AMBUJACEM_tearsheet.pdf
+2026-07-26 11:35:16,713 | INFO | Generating Tearsheet : APOLLOHOSP
+2026-07-26 11:35:16,723 | INFO | Creating PDF : APOLLOHOSP
+2026-07-26 11:35:16,791 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\APOLLOHOSP_tearsheet.pdf
+2026-07-26 11:35:16,792 | INFO | Generating Tearsheet : ASIANPAINT
+2026-07-26 11:35:16,802 | INFO | Creating PDF : ASIANPAINT
+2026-07-26 11:35:16,883 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ASIANPAINT_tearsheet.pdf
+2026-07-26 11:35:16,883 | INFO | Generating Tearsheet : ATGL
+2026-07-26 11:35:16,893 | INFO | Creating PDF : ATGL
+2026-07-26 11:35:16,928 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ATGL_tearsheet.pdf
+2026-07-26 11:35:16,929 | INFO | Generating Tearsheet : AXISBANK
+2026-07-26 11:35:16,939 | INFO | Creating PDF : AXISBANK
+2026-07-26 11:35:17,007 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\AXISBANK_tearsheet.pdf
+2026-07-26 11:35:17,007 | INFO | Generating Tearsheet : BAJAJ-AUTO
+2026-07-26 11:35:17,019 | INFO | Creating PDF : BAJAJ-AUTO
+2026-07-26 11:35:17,083 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJ-AUTO_tearsheet.pdf
+2026-07-26 11:35:17,083 | INFO | Generating Tearsheet : BAJAJFINSV
+2026-07-26 11:35:17,093 | INFO | Creating PDF : BAJAJFINSV
+2026-07-26 11:35:17,168 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJFINSV_tearsheet.pdf
+2026-07-26 11:35:17,169 | INFO | Generating Tearsheet : BAJAJHLDNG
+2026-07-26 11:35:17,178 | INFO | Creating PDF : BAJAJHLDNG
+2026-07-26 11:35:17,244 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJHLDNG_tearsheet.pdf
+2026-07-26 11:35:17,244 | INFO | Generating Tearsheet : BAJFINANCE
+2026-07-26 11:35:17,255 | INFO | Creating PDF : BAJFINANCE
+2026-07-26 11:35:17,327 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJFINANCE_tearsheet.pdf
+2026-07-26 11:35:17,328 | INFO | Generating Tearsheet : BANKBARODA
+2026-07-26 11:35:17,339 | INFO | Creating PDF : BANKBARODA
+2026-07-26 11:35:17,410 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BANKBARODA_tearsheet.pdf
+2026-07-26 11:35:17,410 | INFO | Generating Tearsheet : BEL
+2026-07-26 11:35:17,422 | INFO | Creating PDF : BEL
+2026-07-26 11:35:17,490 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BEL_tearsheet.pdf
+2026-07-26 11:35:17,490 | INFO | Generating Tearsheet : BHARTIARTL
+2026-07-26 11:35:17,500 | INFO | Creating PDF : BHARTIARTL
+2026-07-26 11:35:17,567 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BHARTIARTL_tearsheet.pdf
+2026-07-26 11:35:17,568 | INFO | Generating Tearsheet : BHEL
+2026-07-26 11:35:17,577 | INFO | Creating PDF : BHEL
+2026-07-26 11:35:17,642 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BHEL_tearsheet.pdf
+2026-07-26 11:35:17,642 | INFO | Generating Tearsheet : BOSCHLTD
+2026-07-26 11:35:17,654 | INFO | Creating PDF : BOSCHLTD
+2026-07-26 11:35:17,718 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BOSCHLTD_tearsheet.pdf
+2026-07-26 11:35:17,719 | INFO | Generating Tearsheet : BPCL
+2026-07-26 11:35:17,729 | INFO | Creating PDF : BPCL
+2026-07-26 11:35:17,803 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BPCL_tearsheet.pdf
+2026-07-26 11:35:17,803 | INFO | Generating Tearsheet : BRITANNIA
+2026-07-26 11:35:17,813 | INFO | Creating PDF : BRITANNIA
+2026-07-26 11:35:17,880 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BRITANNIA_tearsheet.pdf
+2026-07-26 11:35:17,880 | INFO | Generating Tearsheet : CANBK
+2026-07-26 11:35:17,891 | INFO | Creating PDF : CANBK
+2026-07-26 11:35:17,957 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CANBK_tearsheet.pdf
+2026-07-26 11:35:17,958 | INFO | Generating Tearsheet : CHOLAFIN
+2026-07-26 11:35:17,968 | INFO | Creating PDF : CHOLAFIN
+2026-07-26 11:35:18,032 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CHOLAFIN_tearsheet.pdf
+2026-07-26 11:35:18,032 | INFO | Generating Tearsheet : CIPLA
+2026-07-26 11:35:18,042 | INFO | Creating PDF : CIPLA
+2026-07-26 11:35:18,115 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CIPLA_tearsheet.pdf
+2026-07-26 11:35:18,115 | INFO | Generating Tearsheet : COALINDIA
+2026-07-26 11:35:18,126 | INFO | Creating PDF : COALINDIA
+2026-07-26 11:35:18,192 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\COALINDIA_tearsheet.pdf
+2026-07-26 11:35:18,192 | INFO | Generating Tearsheet : DABUR
+2026-07-26 11:35:18,202 | INFO | Creating PDF : DABUR
+2026-07-26 11:35:18,272 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DABUR_tearsheet.pdf
+2026-07-26 11:35:18,273 | INFO | Generating Tearsheet : DIVISLAB
+2026-07-26 11:35:18,284 | INFO | Creating PDF : DIVISLAB
+2026-07-26 11:35:18,348 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DIVISLAB_tearsheet.pdf
+2026-07-26 11:35:18,349 | INFO | Generating Tearsheet : DLF
+2026-07-26 11:35:18,359 | INFO | Creating PDF : DLF
+2026-07-26 11:35:18,431 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DLF_tearsheet.pdf
+2026-07-26 11:35:18,432 | INFO | Generating Tearsheet : DMART
+2026-07-26 11:35:18,442 | INFO | Creating PDF : DMART
+2026-07-26 11:35:18,512 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DMART_tearsheet.pdf
+2026-07-26 11:35:18,512 | INFO | Generating Tearsheet : DRREDDY
+2026-07-26 11:35:18,522 | INFO | Creating PDF : DRREDDY
+2026-07-26 11:35:18,590 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DRREDDY_tearsheet.pdf
+2026-07-26 11:35:18,590 | INFO | Generating Tearsheet : EICHERMOT
+2026-07-26 11:35:18,600 | INFO | Creating PDF : EICHERMOT
+2026-07-26 11:35:18,664 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\EICHERMOT_tearsheet.pdf
+2026-07-26 11:35:18,664 | INFO | Generating Tearsheet : GAIL
+2026-07-26 11:35:18,676 | INFO | Creating PDF : GAIL
+2026-07-26 11:35:18,775 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GAIL_tearsheet.pdf
+2026-07-26 11:35:18,775 | INFO | Generating Tearsheet : GODREJCP
+2026-07-26 11:35:18,786 | INFO | Creating PDF : GODREJCP
+2026-07-26 11:35:18,858 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GODREJCP_tearsheet.pdf
+2026-07-26 11:35:18,858 | INFO | Generating Tearsheet : GRASIM
+2026-07-26 11:35:18,868 | INFO | Creating PDF : GRASIM
+2026-07-26 11:35:18,940 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GRASIM_tearsheet.pdf
+2026-07-26 11:35:18,941 | INFO | Generating Tearsheet : HAL
+2026-07-26 11:35:18,951 | INFO | Creating PDF : HAL
+2026-07-26 11:35:19,016 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HAL_tearsheet.pdf
+2026-07-26 11:35:19,016 | INFO | Generating Tearsheet : HAVELLS
+2026-07-26 11:35:19,027 | INFO | Creating PDF : HAVELLS
+2026-07-26 11:35:19,098 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HAVELLS_tearsheet.pdf
+2026-07-26 11:35:19,099 | INFO | Generating Tearsheet : HCLTECH
+2026-07-26 11:35:19,110 | INFO | Creating PDF : HCLTECH
+2026-07-26 11:35:19,175 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HCLTECH_tearsheet.pdf
+2026-07-26 11:35:19,176 | INFO | Generating Tearsheet : HDFCBANK
+2026-07-26 11:35:19,185 | INFO | Creating PDF : HDFCBANK
+2026-07-26 11:35:19,261 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HDFCBANK_tearsheet.pdf
+2026-07-26 11:35:19,261 | INFO | Generating Tearsheet : HDFCLIFE
+2026-07-26 11:35:19,272 | INFO | Creating PDF : HDFCLIFE
+2026-07-26 11:35:19,338 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HDFCLIFE_tearsheet.pdf
+2026-07-26 11:35:19,338 | INFO | Generating Tearsheet : HEROMOTOCO
+2026-07-26 11:35:19,348 | INFO | Creating PDF : HEROMOTOCO
+2026-07-26 11:35:19,414 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HEROMOTOCO_tearsheet.pdf
+2026-07-26 11:35:19,415 | INFO | Generating Tearsheet : HINDALCO
+2026-07-26 11:35:19,428 | INFO | Creating PDF : HINDALCO
+2026-07-26 11:35:19,499 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HINDALCO_tearsheet.pdf
+2026-07-26 11:35:19,499 | INFO | Generating Tearsheet : HINDUNILVR
+2026-07-26 11:35:19,510 | INFO | Creating PDF : HINDUNILVR
+2026-07-26 11:35:19,576 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HINDUNILVR_tearsheet.pdf
+2026-07-26 11:35:19,576 | INFO | Generating Tearsheet : ICICIBANK
+2026-07-26 11:35:19,586 | INFO | Creating PDF : ICICIBANK
+2026-07-26 11:35:19,657 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIBANK_tearsheet.pdf
+2026-07-26 11:35:19,657 | INFO | Generating Tearsheet : ICICIGI
+2026-07-26 11:35:19,667 | INFO | Creating PDF : ICICIGI
+2026-07-26 11:35:19,740 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIGI_tearsheet.pdf
+2026-07-26 11:35:19,741 | INFO | Generating Tearsheet : ICICIPRULI
+2026-07-26 11:35:19,750 | INFO | Creating PDF : ICICIPRULI
+2026-07-26 11:35:19,824 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIPRULI_tearsheet.pdf
+2026-07-26 11:35:19,824 | INFO | Generating Tearsheet : INDIGO
+2026-07-26 11:35:19,834 | INFO | Creating PDF : INDIGO
+2026-07-26 11:35:19,902 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INDIGO_tearsheet.pdf
+2026-07-26 11:35:19,902 | INFO | Generating Tearsheet : INDUSINDBK
+2026-07-26 11:35:19,912 | INFO | Creating PDF : INDUSINDBK
+2026-07-26 11:35:19,977 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INDUSINDBK_tearsheet.pdf
+2026-07-26 11:35:19,977 | INFO | Generating Tearsheet : INFY
+2026-07-26 11:35:19,987 | INFO | Creating PDF : INFY
+2026-07-26 11:35:20,055 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INFY_tearsheet.pdf
+2026-07-26 11:35:20,055 | INFO | Generating Tearsheet : IOC
+2026-07-26 11:35:20,065 | INFO | Creating PDF : IOC
+2026-07-26 11:35:20,139 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IOC_tearsheet.pdf
+2026-07-26 11:35:20,139 | INFO | Generating Tearsheet : IRCTC
+2026-07-26 11:35:20,149 | INFO | Creating PDF : IRCTC
+2026-07-26 11:35:20,214 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IRCTC_tearsheet.pdf
+2026-07-26 11:35:20,215 | INFO | Generating Tearsheet : IRFC
+2026-07-26 11:35:20,226 | INFO | Creating PDF : IRFC
+2026-07-26 11:35:20,289 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IRFC_tearsheet.pdf
+2026-07-26 11:35:20,290 | INFO | Generating Tearsheet : ITC
+2026-07-26 11:35:20,301 | INFO | Creating PDF : ITC
+2026-07-26 11:35:20,367 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ITC_tearsheet.pdf
+2026-07-26 11:35:20,368 | INFO | Generating Tearsheet : JINDALSTEL
+2026-07-26 11:35:20,378 | INFO | Creating PDF : JINDALSTEL
+2026-07-26 11:35:20,443 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JINDALSTEL_tearsheet.pdf
+2026-07-26 11:35:20,444 | INFO | Generating Tearsheet : JIOFIN
+2026-07-26 11:35:20,453 | INFO | Creating PDF : JIOFIN
+2026-07-26 11:35:20,503 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JIOFIN_tearsheet.pdf
+2026-07-26 11:35:20,504 | INFO | Generating Tearsheet : JSWENERGY
+2026-07-26 11:35:20,516 | INFO | Creating PDF : JSWENERGY
+2026-07-26 11:35:20,580 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JSWENERGY_tearsheet.pdf
+2026-07-26 11:35:20,580 | INFO | Generating Tearsheet : JSWSTEEL
+2026-07-26 11:35:20,590 | INFO | Creating PDF : JSWSTEEL
+2026-07-26 11:35:20,654 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JSWSTEEL_tearsheet.pdf
+2026-07-26 11:35:20,654 | INFO | Generating Tearsheet : KOTAKBANK
+2026-07-26 11:35:20,665 | INFO | Creating PDF : KOTAKBANK
+2026-07-26 11:35:20,737 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\KOTAKBANK_tearsheet.pdf
+2026-07-26 11:35:20,737 | INFO | Generating Tearsheet : LICI
+2026-07-26 11:35:20,747 | INFO | Creating PDF : LICI
+2026-07-26 11:35:20,828 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LICI_tearsheet.pdf
+2026-07-26 11:35:20,828 | INFO | Generating Tearsheet : LODHA
+2026-07-26 11:35:20,840 | INFO | Creating PDF : LODHA
+2026-07-26 11:35:20,913 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LODHA_tearsheet.pdf
+2026-07-26 11:35:20,913 | INFO | Generating Tearsheet : LT
+2026-07-26 11:35:20,923 | INFO | Creating PDF : LT
+2026-07-26 11:35:21,001 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LT_tearsheet.pdf
+2026-07-26 11:35:21,002 | INFO | Generating Tearsheet : LTIM
+2026-07-26 11:35:21,012 | INFO | Creating PDF : LTIM
+2026-07-26 11:35:21,079 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LTIM_tearsheet.pdf
+2026-07-26 11:35:21,080 | INFO | Generating Tearsheet : M&M
+2026-07-26 11:35:21,091 | INFO | Creating PDF : M&M
+2026-07-26 11:35:21,155 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\M&M_tearsheet.pdf
+2026-07-26 11:35:21,155 | INFO | Generating Tearsheet : MARUTI
+2026-07-26 11:35:21,166 | INFO | Creating PDF : MARUTI
+2026-07-26 11:35:21,231 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\MARUTI_tearsheet.pdf
+2026-07-26 11:35:21,232 | INFO | Generating Tearsheet : MOTHERSON
+2026-07-26 11:35:21,242 | INFO | Creating PDF : MOTHERSON
+2026-07-26 11:35:21,309 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\MOTHERSON_tearsheet.pdf
+2026-07-26 11:35:21,309 | INFO | Generating Tearsheet : NAUKRI
+2026-07-26 11:35:21,320 | INFO | Creating PDF : NAUKRI
+2026-07-26 11:35:21,393 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NAUKRI_tearsheet.pdf
+2026-07-26 11:35:21,393 | INFO | Generating Tearsheet : NESTLEIND
+2026-07-26 11:35:21,404 | INFO | Creating PDF : NESTLEIND
+2026-07-26 11:35:21,469 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NESTLEIND_tearsheet.pdf
+2026-07-26 11:35:21,469 | INFO | Generating Tearsheet : NHPC
+2026-07-26 11:35:21,479 | INFO | Creating PDF : NHPC
+2026-07-26 11:35:21,548 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NHPC_tearsheet.pdf
+2026-07-26 11:35:21,548 | INFO | Generating Tearsheet : NTPC
+2026-07-26 11:35:21,560 | INFO | Creating PDF : NTPC
+2026-07-26 11:35:21,624 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NTPC_tearsheet.pdf
+2026-07-26 11:35:21,624 | INFO | Generating Tearsheet : ONGC
+2026-07-26 11:35:21,635 | INFO | Creating PDF : ONGC
+2026-07-26 11:35:21,707 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ONGC_tearsheet.pdf
+2026-07-26 11:35:21,707 | INFO | Generating Tearsheet : PFC
+2026-07-26 11:35:21,717 | INFO | Creating PDF : PFC
+2026-07-26 11:35:21,784 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PFC_tearsheet.pdf
+2026-07-26 11:35:21,784 | INFO | Generating Tearsheet : PIDILITIND
+2026-07-26 11:35:21,795 | INFO | Creating PDF : PIDILITIND
+2026-07-26 11:35:21,859 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PIDILITIND_tearsheet.pdf
+2026-07-26 11:35:21,859 | INFO | Generating Tearsheet : PNB
+2026-07-26 11:35:21,870 | INFO | Creating PDF : PNB
+2026-07-26 11:35:21,943 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PNB_tearsheet.pdf
+2026-07-26 11:35:21,943 | INFO | Generating Tearsheet : POWERGRID
+2026-07-26 11:35:21,953 | INFO | Creating PDF : POWERGRID
+2026-07-26 11:35:22,024 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\POWERGRID_tearsheet.pdf
+2026-07-26 11:35:22,024 | INFO | Generating Tearsheet : RECLTD
+2026-07-26 11:35:22,036 | INFO | Creating PDF : RECLTD
+2026-07-26 11:35:22,099 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\RECLTD_tearsheet.pdf
+2026-07-26 11:35:22,100 | INFO | Generating Tearsheet : RELIANCE
+2026-07-26 11:35:22,111 | INFO | Creating PDF : RELIANCE
+2026-07-26 11:35:22,176 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\RELIANCE_tearsheet.pdf
+2026-07-26 11:35:22,176 | INFO | Generating Tearsheet : SBILIFE
+2026-07-26 11:35:22,187 | INFO | Creating PDF : SBILIFE
+2026-07-26 11:35:22,258 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SBILIFE_tearsheet.pdf
+2026-07-26 11:35:22,259 | INFO | Generating Tearsheet : SBIN
+2026-07-26 11:35:22,270 | INFO | Creating PDF : SBIN
+2026-07-26 11:35:22,311 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SBIN_tearsheet.pdf
+2026-07-26 11:35:22,311 | INFO | Generating Tearsheet : SHREECEM
+2026-07-26 11:35:22,322 | INFO | Creating PDF : SHREECEM
+2026-07-26 11:35:22,394 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SHREECEM_tearsheet.pdf
+2026-07-26 11:35:22,395 | INFO | Generating Tearsheet : SHRIRAMFIN
+2026-07-26 11:35:22,406 | INFO | Creating PDF : SHRIRAMFIN
+2026-07-26 11:35:22,473 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SHRIRAMFIN_tearsheet.pdf
+2026-07-26 11:35:22,473 | INFO | Generating Tearsheet : SIEMENS
+2026-07-26 11:35:22,483 | INFO | Creating PDF : SIEMENS
+2026-07-26 11:35:22,551 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SIEMENS_tearsheet.pdf
+2026-07-26 11:35:22,551 | INFO | Generating Tearsheet : SUNPHARMA
+2026-07-26 11:35:22,562 | INFO | Creating PDF : SUNPHARMA
+2026-07-26 11:35:22,627 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SUNPHARMA_tearsheet.pdf
+2026-07-26 11:35:22,627 | INFO | Generating Tearsheet : TATACONSUM
+2026-07-26 11:35:22,639 | INFO | Creating PDF : TATACONSUM
+2026-07-26 11:35:22,700 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATACONSUM_tearsheet.pdf
+2026-07-26 11:35:22,701 | INFO | Generating Tearsheet : TATAMOTORS
+2026-07-26 11:35:22,713 | INFO | Creating PDF : TATAMOTORS
+2026-07-26 11:35:22,785 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATAMOTORS_tearsheet.pdf
+2026-07-26 11:35:22,785 | INFO | Generating Tearsheet : TATAPOWER
+2026-07-26 11:35:22,797 | INFO | Creating PDF : TATAPOWER
+2026-07-26 11:35:22,867 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATAPOWER_tearsheet.pdf
+2026-07-26 11:35:22,867 | INFO | Generating Tearsheet : TATASTEEL
+2026-07-26 11:35:22,884 | INFO | Creating PDF : TATASTEEL
+2026-07-26 11:35:22,966 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATASTEEL_tearsheet.pdf
+2026-07-26 11:35:22,966 | INFO | Generating Tearsheet : TCS
+2026-07-26 11:35:22,979 | INFO | Creating PDF : TCS
+2026-07-26 11:35:23,047 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TCS_tearsheet.pdf
+2026-07-26 11:35:23,047 | INFO | Generating Tearsheet : TECHM
+2026-07-26 11:35:23,059 | INFO | Creating PDF : TECHM
+2026-07-26 11:35:23,129 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TECHM_tearsheet.pdf
+2026-07-26 11:35:23,130 | INFO | Generating Tearsheet : TITAN
+2026-07-26 11:35:23,141 | INFO | Creating PDF : TITAN
+2026-07-26 11:35:23,206 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TITAN_tearsheet.pdf
+2026-07-26 11:35:23,206 | INFO | Generating Tearsheet : TORNTPHARM
+2026-07-26 11:35:23,218 | INFO | Creating PDF : TORNTPHARM
+2026-07-26 11:35:23,284 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TORNTPHARM_tearsheet.pdf
+2026-07-26 11:35:23,284 | INFO | Generating Tearsheet : TRENT
+2026-07-26 11:35:23,294 | INFO | Creating PDF : TRENT
+2026-07-26 11:35:23,357 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TRENT_tearsheet.pdf
+2026-07-26 11:35:23,358 | INFO | Generating Tearsheet : TVSMOTOR
+2026-07-26 11:35:23,368 | INFO | Creating PDF : TVSMOTOR
+2026-07-26 11:35:23,433 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TVSMOTOR_tearsheet.pdf
+2026-07-26 11:45:40,602 | INFO | Connecting database...
+2026-07-26 11:45:40,626 | INFO | Generating Tearsheet : ABB
+2026-07-26 11:45:40,680 | INFO | Creating PDF : ABB
+2026-07-26 11:45:40,768 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ABB_tearsheet.pdf
+2026-07-26 11:45:57,377 | INFO | Connecting database...
+2026-07-26 11:45:57,389 | INFO | Generating Tearsheet : ABB
+2026-07-26 11:45:57,429 | INFO | Creating PDF : ABB
+2026-07-26 11:45:57,541 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ABB_tearsheet.pdf
+2026-07-26 11:50:59,178 | INFO | Connecting database...
+2026-07-26 11:50:59,189 | INFO | Generating Tearsheet : ABB
+2026-07-26 11:50:59,210 | INFO | Creating PDF : ABB
+2026-07-26 11:50:59,306 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ABB_tearsheet.pdf
+2026-07-26 11:50:59,308 | INFO | Generating Tearsheet : ADANIENSOL
+2026-07-26 11:50:59,324 | INFO | Creating PDF : ADANIENSOL
+2026-07-26 11:50:59,414 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIENSOL_tearsheet.pdf
+2026-07-26 11:50:59,415 | INFO | Generating Tearsheet : ADANIENT
+2026-07-26 11:50:59,429 | INFO | Creating PDF : ADANIENT
+2026-07-26 11:50:59,514 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIENT_tearsheet.pdf
+2026-07-26 11:50:59,516 | INFO | Generating Tearsheet : ADANIGREEN
+2026-07-26 11:50:59,528 | INFO | Creating PDF : ADANIGREEN
+2026-07-26 11:50:59,606 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIGREEN_tearsheet.pdf
+2026-07-26 11:50:59,607 | INFO | Generating Tearsheet : ADANIPORTS
+2026-07-26 11:50:59,617 | INFO | Creating PDF : ADANIPORTS
+2026-07-26 11:50:59,720 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIPORTS_tearsheet.pdf
+2026-07-26 11:50:59,722 | INFO | Generating Tearsheet : ADANIPOWER
+2026-07-26 11:50:59,733 | INFO | Creating PDF : ADANIPOWER
+2026-07-26 11:50:59,811 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIPOWER_tearsheet.pdf
+2026-07-26 11:50:59,812 | INFO | Generating Tearsheet : AMBUJACEM
+2026-07-26 11:50:59,824 | INFO | Creating PDF : AMBUJACEM
+2026-07-26 11:50:59,900 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\AMBUJACEM_tearsheet.pdf
+2026-07-26 11:50:59,901 | INFO | Generating Tearsheet : APOLLOHOSP
+2026-07-26 11:50:59,912 | INFO | Creating PDF : APOLLOHOSP
+2026-07-26 11:50:59,988 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\APOLLOHOSP_tearsheet.pdf
+2026-07-26 11:50:59,989 | INFO | Generating Tearsheet : ASIANPAINT
+2026-07-26 11:51:00,000 | INFO | Creating PDF : ASIANPAINT
+2026-07-26 11:51:00,076 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ASIANPAINT_tearsheet.pdf
+2026-07-26 11:51:00,078 | INFO | Generating Tearsheet : ATGL
+2026-07-26 11:51:00,089 | INFO | Creating PDF : ATGL
+2026-07-26 11:51:00,125 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ATGL_tearsheet.pdf
+2026-07-26 11:51:00,126 | INFO | Generating Tearsheet : AXISBANK
+2026-07-26 11:51:00,136 | INFO | Creating PDF : AXISBANK
+2026-07-26 11:51:00,200 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\AXISBANK_tearsheet.pdf
+2026-07-26 11:51:00,201 | INFO | Generating Tearsheet : BAJAJ-AUTO
+2026-07-26 11:51:00,211 | INFO | Creating PDF : BAJAJ-AUTO
+2026-07-26 11:51:00,277 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJ-AUTO_tearsheet.pdf
+2026-07-26 11:51:00,278 | INFO | Generating Tearsheet : BAJAJFINSV
+2026-07-26 11:51:00,289 | INFO | Creating PDF : BAJAJFINSV
+2026-07-26 11:51:00,354 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJFINSV_tearsheet.pdf
+2026-07-26 11:51:00,356 | INFO | Generating Tearsheet : BAJAJHLDNG
+2026-07-26 11:51:00,365 | INFO | Creating PDF : BAJAJHLDNG
+2026-07-26 11:51:00,431 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJHLDNG_tearsheet.pdf
+2026-07-26 11:51:00,432 | INFO | Generating Tearsheet : BAJFINANCE
+2026-07-26 11:51:00,443 | INFO | Creating PDF : BAJFINANCE
+2026-07-26 11:51:00,510 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJFINANCE_tearsheet.pdf
+2026-07-26 11:51:00,512 | INFO | Generating Tearsheet : BANKBARODA
+2026-07-26 11:51:00,523 | INFO | Creating PDF : BANKBARODA
+2026-07-26 11:51:00,588 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BANKBARODA_tearsheet.pdf
+2026-07-26 11:51:00,589 | INFO | Generating Tearsheet : BEL
+2026-07-26 11:51:00,598 | INFO | Creating PDF : BEL
+2026-07-26 11:51:00,667 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BEL_tearsheet.pdf
+2026-07-26 11:51:00,668 | INFO | Generating Tearsheet : BHARTIARTL
+2026-07-26 11:51:00,679 | INFO | Creating PDF : BHARTIARTL
+2026-07-26 11:51:00,747 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BHARTIARTL_tearsheet.pdf
+2026-07-26 11:51:00,748 | INFO | Generating Tearsheet : BHEL
+2026-07-26 11:51:00,758 | INFO | Creating PDF : BHEL
+2026-07-26 11:51:00,824 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BHEL_tearsheet.pdf
+2026-07-26 11:51:00,825 | INFO | Generating Tearsheet : BOSCHLTD
+2026-07-26 11:51:00,834 | INFO | Creating PDF : BOSCHLTD
+2026-07-26 11:51:00,903 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BOSCHLTD_tearsheet.pdf
+2026-07-26 11:51:00,904 | INFO | Generating Tearsheet : BPCL
+2026-07-26 11:51:00,915 | INFO | Creating PDF : BPCL
+2026-07-26 11:51:00,980 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BPCL_tearsheet.pdf
+2026-07-26 11:51:00,982 | INFO | Generating Tearsheet : BRITANNIA
+2026-07-26 11:51:00,992 | INFO | Creating PDF : BRITANNIA
+2026-07-26 11:51:01,063 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BRITANNIA_tearsheet.pdf
+2026-07-26 11:51:01,064 | INFO | Generating Tearsheet : CANBK
+2026-07-26 11:51:01,075 | INFO | Creating PDF : CANBK
+2026-07-26 11:51:01,143 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CANBK_tearsheet.pdf
+2026-07-26 11:51:01,145 | INFO | Generating Tearsheet : CHOLAFIN
+2026-07-26 11:51:01,154 | INFO | Creating PDF : CHOLAFIN
+2026-07-26 11:51:01,218 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CHOLAFIN_tearsheet.pdf
+2026-07-26 11:51:01,219 | INFO | Generating Tearsheet : CIPLA
+2026-07-26 11:51:01,230 | INFO | Creating PDF : CIPLA
+2026-07-26 11:51:01,299 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CIPLA_tearsheet.pdf
+2026-07-26 11:51:01,300 | INFO | Generating Tearsheet : COALINDIA
+2026-07-26 11:51:01,312 | INFO | Creating PDF : COALINDIA
+2026-07-26 11:51:01,381 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\COALINDIA_tearsheet.pdf
+2026-07-26 11:51:01,382 | INFO | Generating Tearsheet : DABUR
+2026-07-26 11:51:01,395 | INFO | Creating PDF : DABUR
+2026-07-26 11:51:01,462 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DABUR_tearsheet.pdf
+2026-07-26 11:51:01,463 | INFO | Generating Tearsheet : DIVISLAB
+2026-07-26 11:51:01,475 | INFO | Creating PDF : DIVISLAB
+2026-07-26 11:51:01,547 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DIVISLAB_tearsheet.pdf
+2026-07-26 11:51:01,548 | INFO | Generating Tearsheet : DLF
+2026-07-26 11:51:01,560 | INFO | Creating PDF : DLF
+2026-07-26 11:51:01,652 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DLF_tearsheet.pdf
+2026-07-26 11:51:01,654 | INFO | Generating Tearsheet : DMART
+2026-07-26 11:51:01,668 | INFO | Creating PDF : DMART
+2026-07-26 11:51:01,756 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DMART_tearsheet.pdf
+2026-07-26 11:51:01,758 | INFO | Generating Tearsheet : DRREDDY
+2026-07-26 11:51:01,769 | INFO | Creating PDF : DRREDDY
+2026-07-26 11:51:01,856 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DRREDDY_tearsheet.pdf
+2026-07-26 11:51:01,857 | INFO | Generating Tearsheet : EICHERMOT
+2026-07-26 11:51:01,867 | INFO | Creating PDF : EICHERMOT
+2026-07-26 11:51:01,951 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\EICHERMOT_tearsheet.pdf
+2026-07-26 11:51:01,952 | INFO | Generating Tearsheet : GAIL
+2026-07-26 11:51:01,962 | INFO | Creating PDF : GAIL
+2026-07-26 11:51:02,046 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GAIL_tearsheet.pdf
+2026-07-26 11:51:02,047 | INFO | Generating Tearsheet : GODREJCP
+2026-07-26 11:51:02,058 | INFO | Creating PDF : GODREJCP
+2026-07-26 11:51:02,136 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GODREJCP_tearsheet.pdf
+2026-07-26 11:51:02,137 | INFO | Generating Tearsheet : GRASIM
+2026-07-26 11:51:02,147 | INFO | Creating PDF : GRASIM
+2026-07-26 11:51:02,225 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GRASIM_tearsheet.pdf
+2026-07-26 11:51:02,227 | INFO | Generating Tearsheet : HAL
+2026-07-26 11:51:02,236 | INFO | Creating PDF : HAL
+2026-07-26 11:51:02,307 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HAL_tearsheet.pdf
+2026-07-26 11:51:02,308 | INFO | Generating Tearsheet : HAVELLS
+2026-07-26 11:51:02,318 | INFO | Creating PDF : HAVELLS
+2026-07-26 11:51:02,385 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HAVELLS_tearsheet.pdf
+2026-07-26 11:51:02,386 | INFO | Generating Tearsheet : HCLTECH
+2026-07-26 11:51:02,396 | INFO | Creating PDF : HCLTECH
+2026-07-26 11:51:02,467 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HCLTECH_tearsheet.pdf
+2026-07-26 11:51:02,469 | INFO | Generating Tearsheet : HDFCBANK
+2026-07-26 11:51:02,480 | INFO | Creating PDF : HDFCBANK
+2026-07-26 11:51:02,556 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HDFCBANK_tearsheet.pdf
+2026-07-26 11:51:02,557 | INFO | Generating Tearsheet : HDFCLIFE
+2026-07-26 11:51:02,567 | INFO | Creating PDF : HDFCLIFE
+2026-07-26 11:51:02,633 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HDFCLIFE_tearsheet.pdf
+2026-07-26 11:51:02,635 | INFO | Generating Tearsheet : HEROMOTOCO
+2026-07-26 11:51:02,647 | INFO | Creating PDF : HEROMOTOCO
+2026-07-26 11:51:02,720 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HEROMOTOCO_tearsheet.pdf
+2026-07-26 11:51:02,721 | INFO | Generating Tearsheet : HINDALCO
+2026-07-26 11:51:02,732 | INFO | Creating PDF : HINDALCO
+2026-07-26 11:51:02,801 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HINDALCO_tearsheet.pdf
+2026-07-26 11:51:02,803 | INFO | Generating Tearsheet : HINDUNILVR
+2026-07-26 11:51:02,814 | INFO | Creating PDF : HINDUNILVR
+2026-07-26 11:51:02,884 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HINDUNILVR_tearsheet.pdf
+2026-07-26 11:51:02,885 | INFO | Generating Tearsheet : ICICIBANK
+2026-07-26 11:51:02,896 | INFO | Creating PDF : ICICIBANK
+2026-07-26 11:51:02,966 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIBANK_tearsheet.pdf
+2026-07-26 11:51:02,968 | INFO | Generating Tearsheet : ICICIGI
+2026-07-26 11:51:02,979 | INFO | Creating PDF : ICICIGI
+2026-07-26 11:51:03,046 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIGI_tearsheet.pdf
+2026-07-26 11:51:03,050 | INFO | Generating Tearsheet : ICICIPRULI
+2026-07-26 11:51:03,061 | INFO | Creating PDF : ICICIPRULI
+2026-07-26 11:51:03,138 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIPRULI_tearsheet.pdf
+2026-07-26 11:51:03,139 | INFO | Generating Tearsheet : INDIGO
+2026-07-26 11:51:03,150 | INFO | Creating PDF : INDIGO
+2026-07-26 11:51:03,221 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INDIGO_tearsheet.pdf
+2026-07-26 11:51:03,222 | INFO | Generating Tearsheet : INDUSINDBK
+2026-07-26 11:51:03,233 | INFO | Creating PDF : INDUSINDBK
+2026-07-26 11:51:03,303 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INDUSINDBK_tearsheet.pdf
+2026-07-26 11:51:03,304 | INFO | Generating Tearsheet : INFY
+2026-07-26 11:51:03,315 | INFO | Creating PDF : INFY
+2026-07-26 11:51:03,383 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INFY_tearsheet.pdf
+2026-07-26 11:51:03,384 | INFO | Generating Tearsheet : IOC
+2026-07-26 11:51:03,395 | INFO | Creating PDF : IOC
+2026-07-26 11:51:03,461 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IOC_tearsheet.pdf
+2026-07-26 11:51:03,462 | INFO | Generating Tearsheet : IRCTC
+2026-07-26 11:51:03,472 | INFO | Creating PDF : IRCTC
+2026-07-26 11:51:03,538 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IRCTC_tearsheet.pdf
+2026-07-26 11:51:03,539 | INFO | Generating Tearsheet : IRFC
+2026-07-26 11:51:03,550 | INFO | Creating PDF : IRFC
+2026-07-26 11:51:03,615 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IRFC_tearsheet.pdf
+2026-07-26 11:51:03,616 | INFO | Generating Tearsheet : ITC
+2026-07-26 11:51:03,627 | INFO | Creating PDF : ITC
+2026-07-26 11:51:03,692 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ITC_tearsheet.pdf
+2026-07-26 11:51:03,695 | INFO | Generating Tearsheet : JINDALSTEL
+2026-07-26 11:51:03,708 | INFO | Creating PDF : JINDALSTEL
+2026-07-26 11:51:03,782 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JINDALSTEL_tearsheet.pdf
+2026-07-26 11:51:03,784 | INFO | Generating Tearsheet : JIOFIN
+2026-07-26 11:51:03,794 | INFO | Creating PDF : JIOFIN
+2026-07-26 11:51:03,843 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JIOFIN_tearsheet.pdf
+2026-07-26 11:51:03,844 | INFO | Generating Tearsheet : JSWENERGY
+2026-07-26 11:51:03,855 | INFO | Creating PDF : JSWENERGY
+2026-07-26 11:51:03,919 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JSWENERGY_tearsheet.pdf
+2026-07-26 11:51:03,921 | INFO | Generating Tearsheet : JSWSTEEL
+2026-07-26 11:51:03,932 | INFO | Creating PDF : JSWSTEEL
+2026-07-26 11:51:03,997 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JSWSTEEL_tearsheet.pdf
+2026-07-26 11:51:03,998 | INFO | Generating Tearsheet : KOTAKBANK
+2026-07-26 11:51:04,007 | INFO | Creating PDF : KOTAKBANK
+2026-07-26 11:51:04,076 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\KOTAKBANK_tearsheet.pdf
+2026-07-26 11:51:04,078 | INFO | Generating Tearsheet : LICI
+2026-07-26 11:51:04,089 | INFO | Creating PDF : LICI
+2026-07-26 11:51:04,152 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LICI_tearsheet.pdf
+2026-07-26 11:51:04,153 | INFO | Generating Tearsheet : LODHA
+2026-07-26 11:51:04,163 | INFO | Creating PDF : LODHA
+2026-07-26 11:51:04,227 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LODHA_tearsheet.pdf
+2026-07-26 11:51:04,228 | INFO | Generating Tearsheet : LT
+2026-07-26 11:51:04,238 | INFO | Creating PDF : LT
+2026-07-26 11:51:04,304 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LT_tearsheet.pdf
+2026-07-26 11:51:04,306 | INFO | Generating Tearsheet : LTIM
+2026-07-26 11:51:04,316 | INFO | Creating PDF : LTIM
+2026-07-26 11:51:04,382 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LTIM_tearsheet.pdf
+2026-07-26 11:51:04,384 | INFO | Generating Tearsheet : M&M
+2026-07-26 11:51:04,393 | INFO | Creating PDF : M&M
+2026-07-26 11:51:04,457 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\M&M_tearsheet.pdf
+2026-07-26 11:51:04,459 | INFO | Generating Tearsheet : MARUTI
+2026-07-26 11:51:04,469 | INFO | Creating PDF : MARUTI
+2026-07-26 11:51:04,533 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\MARUTI_tearsheet.pdf
+2026-07-26 11:51:04,534 | INFO | Generating Tearsheet : MOTHERSON
+2026-07-26 11:51:04,544 | INFO | Creating PDF : MOTHERSON
+2026-07-26 11:51:04,610 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\MOTHERSON_tearsheet.pdf
+2026-07-26 11:51:04,612 | INFO | Generating Tearsheet : NAUKRI
+2026-07-26 11:51:04,622 | INFO | Creating PDF : NAUKRI
+2026-07-26 11:51:04,686 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NAUKRI_tearsheet.pdf
+2026-07-26 11:51:04,687 | INFO | Generating Tearsheet : NESTLEIND
+2026-07-26 11:51:04,697 | INFO | Creating PDF : NESTLEIND
+2026-07-26 11:51:04,762 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NESTLEIND_tearsheet.pdf
+2026-07-26 11:51:04,763 | INFO | Generating Tearsheet : NHPC
+2026-07-26 11:51:04,772 | INFO | Creating PDF : NHPC
+2026-07-26 11:51:04,839 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NHPC_tearsheet.pdf
+2026-07-26 11:51:04,840 | INFO | Generating Tearsheet : NTPC
+2026-07-26 11:51:04,850 | INFO | Creating PDF : NTPC
+2026-07-26 11:51:04,915 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NTPC_tearsheet.pdf
+2026-07-26 11:51:04,917 | INFO | Generating Tearsheet : ONGC
+2026-07-26 11:51:04,927 | INFO | Creating PDF : ONGC
+2026-07-26 11:51:04,995 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ONGC_tearsheet.pdf
+2026-07-26 11:51:04,996 | INFO | Generating Tearsheet : PFC
+2026-07-26 11:51:05,006 | INFO | Creating PDF : PFC
+2026-07-26 11:51:05,080 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PFC_tearsheet.pdf
+2026-07-26 11:51:05,081 | INFO | Generating Tearsheet : PIDILITIND
+2026-07-26 11:51:05,091 | INFO | Creating PDF : PIDILITIND
+2026-07-26 11:51:05,163 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PIDILITIND_tearsheet.pdf
+2026-07-26 11:51:05,164 | INFO | Generating Tearsheet : PNB
+2026-07-26 11:51:05,174 | INFO | Creating PDF : PNB
+2026-07-26 11:51:05,253 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PNB_tearsheet.pdf
+2026-07-26 11:51:05,254 | INFO | Generating Tearsheet : POWERGRID
+2026-07-26 11:51:05,264 | INFO | Creating PDF : POWERGRID
+2026-07-26 11:51:05,335 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\POWERGRID_tearsheet.pdf
+2026-07-26 11:51:05,336 | INFO | Generating Tearsheet : RECLTD
+2026-07-26 11:51:05,348 | INFO | Creating PDF : RECLTD
+2026-07-26 11:51:05,415 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\RECLTD_tearsheet.pdf
+2026-07-26 11:51:05,416 | INFO | Generating Tearsheet : RELIANCE
+2026-07-26 11:51:05,427 | INFO | Creating PDF : RELIANCE
+2026-07-26 11:51:05,489 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\RELIANCE_tearsheet.pdf
+2026-07-26 11:51:05,490 | INFO | Generating Tearsheet : SBILIFE
+2026-07-26 11:51:05,500 | INFO | Creating PDF : SBILIFE
+2026-07-26 11:51:05,573 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SBILIFE_tearsheet.pdf
+2026-07-26 11:51:05,575 | INFO | Generating Tearsheet : SBIN
+2026-07-26 11:51:05,585 | INFO | Creating PDF : SBIN
+2026-07-26 11:51:05,622 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SBIN_tearsheet.pdf
+2026-07-26 11:51:05,623 | INFO | Generating Tearsheet : SHREECEM
+2026-07-26 11:51:05,634 | INFO | Creating PDF : SHREECEM
+2026-07-26 11:51:05,700 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SHREECEM_tearsheet.pdf
+2026-07-26 11:51:05,701 | INFO | Generating Tearsheet : SHRIRAMFIN
+2026-07-26 11:51:05,711 | INFO | Creating PDF : SHRIRAMFIN
+2026-07-26 11:51:05,862 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SHRIRAMFIN_tearsheet.pdf
+2026-07-26 11:51:05,863 | INFO | Generating Tearsheet : SIEMENS
+2026-07-26 11:51:05,874 | INFO | Creating PDF : SIEMENS
+2026-07-26 11:51:05,941 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SIEMENS_tearsheet.pdf
+2026-07-26 11:51:05,942 | INFO | Generating Tearsheet : SUNPHARMA
+2026-07-26 11:51:05,954 | INFO | Creating PDF : SUNPHARMA
+2026-07-26 11:51:06,025 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SUNPHARMA_tearsheet.pdf
+2026-07-26 11:51:06,027 | INFO | Generating Tearsheet : TATACONSUM
+2026-07-26 11:51:06,039 | INFO | Creating PDF : TATACONSUM
+2026-07-26 11:51:06,105 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATACONSUM_tearsheet.pdf
+2026-07-26 11:51:06,106 | INFO | Generating Tearsheet : TATAMOTORS
+2026-07-26 11:51:06,118 | INFO | Creating PDF : TATAMOTORS
+2026-07-26 11:51:06,184 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATAMOTORS_tearsheet.pdf
+2026-07-26 11:51:06,186 | INFO | Generating Tearsheet : TATAPOWER
+2026-07-26 11:51:06,195 | INFO | Creating PDF : TATAPOWER
+2026-07-26 11:51:06,264 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATAPOWER_tearsheet.pdf
+2026-07-26 11:51:06,265 | INFO | Generating Tearsheet : TATASTEEL
+2026-07-26 11:51:06,275 | INFO | Creating PDF : TATASTEEL
+2026-07-26 11:51:06,345 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATASTEEL_tearsheet.pdf
+2026-07-26 11:51:06,346 | INFO | Generating Tearsheet : TCS
+2026-07-26 11:51:06,356 | INFO | Creating PDF : TCS
+2026-07-26 11:51:06,424 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TCS_tearsheet.pdf
+2026-07-26 11:51:06,425 | INFO | Generating Tearsheet : TECHM
+2026-07-26 11:51:06,437 | INFO | Creating PDF : TECHM
+2026-07-26 11:51:06,514 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TECHM_tearsheet.pdf
+2026-07-26 11:51:06,516 | INFO | Generating Tearsheet : TITAN
+2026-07-26 11:51:06,528 | INFO | Creating PDF : TITAN
+2026-07-26 11:51:06,595 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TITAN_tearsheet.pdf
+2026-07-26 11:51:06,596 | INFO | Generating Tearsheet : TORNTPHARM
+2026-07-26 11:51:06,606 | INFO | Creating PDF : TORNTPHARM
+2026-07-26 11:51:06,671 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TORNTPHARM_tearsheet.pdf
+2026-07-26 11:51:06,672 | INFO | Generating Tearsheet : TRENT
+2026-07-26 11:51:06,683 | INFO | Creating PDF : TRENT
+2026-07-26 11:51:06,748 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TRENT_tearsheet.pdf
+2026-07-26 11:51:06,750 | INFO | Generating Tearsheet : TVSMOTOR
+2026-07-26 11:51:06,759 | INFO | Creating PDF : TVSMOTOR
+2026-07-26 11:51:06,825 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TVSMOTOR_tearsheet.pdf
+2026-07-26 11:54:07,284 | INFO | Connecting database...
+2026-07-26 11:54:07,295 | INFO | Generating Tearsheet : ABB
+2026-07-26 11:54:07,318 | INFO | Creating PDF : ABB
+2026-07-26 11:54:07,414 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ABB_tearsheet.pdf
+2026-07-26 11:54:07,416 | INFO | Generating Tearsheet : ADANIENSOL
+2026-07-26 11:54:07,430 | INFO | Creating PDF : ADANIENSOL
+2026-07-26 11:54:07,528 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIENSOL_tearsheet.pdf
+2026-07-26 11:54:07,530 | INFO | Generating Tearsheet : ADANIENT
+2026-07-26 11:54:07,545 | INFO | Creating PDF : ADANIENT
+2026-07-26 11:54:07,623 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIENT_tearsheet.pdf
+2026-07-26 11:54:07,625 | INFO | Generating Tearsheet : ADANIGREEN
+2026-07-26 11:54:07,638 | INFO | Creating PDF : ADANIGREEN
+2026-07-26 11:54:07,721 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIGREEN_tearsheet.pdf
+2026-07-26 11:54:07,722 | INFO | Generating Tearsheet : ADANIPORTS
+2026-07-26 11:54:07,737 | INFO | Creating PDF : ADANIPORTS
+2026-07-26 11:54:07,815 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIPORTS_tearsheet.pdf
+2026-07-26 11:54:07,816 | INFO | Generating Tearsheet : ADANIPOWER
+2026-07-26 11:54:07,830 | INFO | Creating PDF : ADANIPOWER
+2026-07-26 11:54:07,906 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIPOWER_tearsheet.pdf
+2026-07-26 11:54:07,908 | INFO | Generating Tearsheet : AMBUJACEM
+2026-07-26 11:54:07,919 | INFO | Creating PDF : AMBUJACEM
+2026-07-26 11:54:07,994 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\AMBUJACEM_tearsheet.pdf
+2026-07-26 11:54:07,995 | INFO | Generating Tearsheet : APOLLOHOSP
+2026-07-26 11:54:08,006 | INFO | Creating PDF : APOLLOHOSP
+2026-07-26 11:54:08,081 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\APOLLOHOSP_tearsheet.pdf
+2026-07-26 11:54:08,083 | INFO | Generating Tearsheet : ASIANPAINT
+2026-07-26 11:54:08,097 | INFO | Creating PDF : ASIANPAINT
+2026-07-26 11:54:08,168 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ASIANPAINT_tearsheet.pdf
+2026-07-26 11:54:08,170 | INFO | Generating Tearsheet : ATGL
+2026-07-26 11:54:08,181 | INFO | Creating PDF : ATGL
+2026-07-26 11:54:08,220 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ATGL_tearsheet.pdf
+2026-07-26 11:54:08,222 | INFO | Generating Tearsheet : AXISBANK
+2026-07-26 11:54:08,234 | INFO | Creating PDF : AXISBANK
+2026-07-26 11:54:08,301 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\AXISBANK_tearsheet.pdf
+2026-07-26 11:54:08,303 | INFO | Generating Tearsheet : BAJAJ-AUTO
+2026-07-26 11:54:08,313 | INFO | Creating PDF : BAJAJ-AUTO
+2026-07-26 11:54:08,376 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJ-AUTO_tearsheet.pdf
+2026-07-26 11:54:08,377 | INFO | Generating Tearsheet : BAJAJFINSV
+2026-07-26 11:54:08,386 | INFO | Creating PDF : BAJAJFINSV
+2026-07-26 11:54:08,457 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJFINSV_tearsheet.pdf
+2026-07-26 11:54:08,458 | INFO | Generating Tearsheet : BAJAJHLDNG
+2026-07-26 11:54:08,469 | INFO | Creating PDF : BAJAJHLDNG
+2026-07-26 11:54:08,540 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJHLDNG_tearsheet.pdf
+2026-07-26 11:54:08,541 | INFO | Generating Tearsheet : BAJFINANCE
+2026-07-26 11:54:08,553 | INFO | Creating PDF : BAJFINANCE
+2026-07-26 11:54:08,630 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJFINANCE_tearsheet.pdf
+2026-07-26 11:54:08,631 | INFO | Generating Tearsheet : BANKBARODA
+2026-07-26 11:54:08,644 | INFO | Creating PDF : BANKBARODA
+2026-07-26 11:54:08,716 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BANKBARODA_tearsheet.pdf
+2026-07-26 11:54:08,718 | INFO | Generating Tearsheet : BEL
+2026-07-26 11:54:08,729 | INFO | Creating PDF : BEL
+2026-07-26 11:54:08,815 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BEL_tearsheet.pdf
+2026-07-26 11:54:08,816 | INFO | Generating Tearsheet : BHARTIARTL
+2026-07-26 11:54:08,827 | INFO | Creating PDF : BHARTIARTL
+2026-07-26 11:54:08,905 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BHARTIARTL_tearsheet.pdf
+2026-07-26 11:54:08,906 | INFO | Generating Tearsheet : BHEL
+2026-07-26 11:54:08,917 | INFO | Creating PDF : BHEL
+2026-07-26 11:54:08,995 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BHEL_tearsheet.pdf
+2026-07-26 11:54:08,996 | INFO | Generating Tearsheet : BOSCHLTD
+2026-07-26 11:54:09,008 | INFO | Creating PDF : BOSCHLTD
+2026-07-26 11:54:09,083 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BOSCHLTD_tearsheet.pdf
+2026-07-26 11:54:09,085 | INFO | Generating Tearsheet : BPCL
+2026-07-26 11:54:09,097 | INFO | Creating PDF : BPCL
+2026-07-26 11:54:09,182 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BPCL_tearsheet.pdf
+2026-07-26 11:54:09,183 | INFO | Generating Tearsheet : BRITANNIA
+2026-07-26 11:54:09,195 | INFO | Creating PDF : BRITANNIA
+2026-07-26 11:54:09,270 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BRITANNIA_tearsheet.pdf
+2026-07-26 11:54:09,271 | INFO | Generating Tearsheet : CANBK
+2026-07-26 11:54:09,281 | INFO | Creating PDF : CANBK
+2026-07-26 11:54:09,356 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CANBK_tearsheet.pdf
+2026-07-26 11:54:09,357 | INFO | Generating Tearsheet : CHOLAFIN
+2026-07-26 11:54:09,369 | INFO | Creating PDF : CHOLAFIN
+2026-07-26 11:54:09,437 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CHOLAFIN_tearsheet.pdf
+2026-07-26 11:54:09,438 | INFO | Generating Tearsheet : CIPLA
+2026-07-26 11:54:09,450 | INFO | Creating PDF : CIPLA
+2026-07-26 11:54:09,529 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CIPLA_tearsheet.pdf
+2026-07-26 11:54:09,531 | INFO | Generating Tearsheet : COALINDIA
+2026-07-26 11:54:09,548 | INFO | Creating PDF : COALINDIA
+2026-07-26 11:54:09,618 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\COALINDIA_tearsheet.pdf
+2026-07-26 11:54:09,620 | INFO | Generating Tearsheet : DABUR
+2026-07-26 11:54:09,632 | INFO | Creating PDF : DABUR
+2026-07-26 11:54:09,700 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DABUR_tearsheet.pdf
+2026-07-26 11:54:09,701 | INFO | Generating Tearsheet : DIVISLAB
+2026-07-26 11:54:09,711 | INFO | Creating PDF : DIVISLAB
+2026-07-26 11:54:09,784 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DIVISLAB_tearsheet.pdf
+2026-07-26 11:54:09,785 | INFO | Generating Tearsheet : DLF
+2026-07-26 11:54:09,795 | INFO | Creating PDF : DLF
+2026-07-26 11:54:09,867 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DLF_tearsheet.pdf
+2026-07-26 11:54:09,868 | INFO | Generating Tearsheet : DMART
+2026-07-26 11:54:09,878 | INFO | Creating PDF : DMART
+2026-07-26 11:54:09,946 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DMART_tearsheet.pdf
+2026-07-26 11:54:09,947 | INFO | Generating Tearsheet : DRREDDY
+2026-07-26 11:54:09,957 | INFO | Creating PDF : DRREDDY
+2026-07-26 11:54:10,025 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DRREDDY_tearsheet.pdf
+2026-07-26 11:54:10,027 | INFO | Generating Tearsheet : EICHERMOT
+2026-07-26 11:54:10,037 | INFO | Creating PDF : EICHERMOT
+2026-07-26 11:54:10,105 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\EICHERMOT_tearsheet.pdf
+2026-07-26 11:54:10,106 | INFO | Generating Tearsheet : GAIL
+2026-07-26 11:54:10,116 | INFO | Creating PDF : GAIL
+2026-07-26 11:54:10,183 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GAIL_tearsheet.pdf
+2026-07-26 11:54:10,184 | INFO | Generating Tearsheet : GODREJCP
+2026-07-26 11:54:10,194 | INFO | Creating PDF : GODREJCP
+2026-07-26 11:54:10,260 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GODREJCP_tearsheet.pdf
+2026-07-26 11:54:10,262 | INFO | Generating Tearsheet : GRASIM
+2026-07-26 11:54:10,272 | INFO | Creating PDF : GRASIM
+2026-07-26 11:54:10,335 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GRASIM_tearsheet.pdf
+2026-07-26 11:54:10,337 | INFO | Generating Tearsheet : HAL
+2026-07-26 11:54:10,346 | INFO | Creating PDF : HAL
+2026-07-26 11:54:10,411 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HAL_tearsheet.pdf
+2026-07-26 11:54:10,412 | INFO | Generating Tearsheet : HAVELLS
+2026-07-26 11:54:10,424 | INFO | Creating PDF : HAVELLS
+2026-07-26 11:54:10,487 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HAVELLS_tearsheet.pdf
+2026-07-26 11:54:10,488 | INFO | Generating Tearsheet : HCLTECH
+2026-07-26 11:54:10,499 | INFO | Creating PDF : HCLTECH
+2026-07-26 11:54:10,563 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HCLTECH_tearsheet.pdf
+2026-07-26 11:54:10,565 | INFO | Generating Tearsheet : HDFCBANK
+2026-07-26 11:54:10,575 | INFO | Creating PDF : HDFCBANK
+2026-07-26 11:54:10,641 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HDFCBANK_tearsheet.pdf
+2026-07-26 11:54:10,642 | INFO | Generating Tearsheet : HDFCLIFE
+2026-07-26 11:54:10,652 | INFO | Creating PDF : HDFCLIFE
+2026-07-26 11:54:10,719 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HDFCLIFE_tearsheet.pdf
+2026-07-26 11:54:10,720 | INFO | Generating Tearsheet : HEROMOTOCO
+2026-07-26 11:54:10,730 | INFO | Creating PDF : HEROMOTOCO
+2026-07-26 11:54:10,793 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HEROMOTOCO_tearsheet.pdf
+2026-07-26 11:54:10,794 | INFO | Generating Tearsheet : HINDALCO
+2026-07-26 11:54:10,806 | INFO | Creating PDF : HINDALCO
+2026-07-26 11:54:10,869 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HINDALCO_tearsheet.pdf
+2026-07-26 11:54:10,871 | INFO | Generating Tearsheet : HINDUNILVR
+2026-07-26 11:54:10,881 | INFO | Creating PDF : HINDUNILVR
+2026-07-26 11:54:10,948 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HINDUNILVR_tearsheet.pdf
+2026-07-26 11:54:10,949 | INFO | Generating Tearsheet : ICICIBANK
+2026-07-26 11:54:10,958 | INFO | Creating PDF : ICICIBANK
+2026-07-26 11:54:11,024 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIBANK_tearsheet.pdf
+2026-07-26 11:54:11,025 | INFO | Generating Tearsheet : ICICIGI
+2026-07-26 11:54:11,035 | INFO | Creating PDF : ICICIGI
+2026-07-26 11:54:11,103 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIGI_tearsheet.pdf
+2026-07-26 11:54:11,104 | INFO | Generating Tearsheet : ICICIPRULI
+2026-07-26 11:54:11,115 | INFO | Creating PDF : ICICIPRULI
+2026-07-26 11:54:11,180 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIPRULI_tearsheet.pdf
+2026-07-26 11:54:11,181 | INFO | Generating Tearsheet : INDIGO
+2026-07-26 11:54:11,192 | INFO | Creating PDF : INDIGO
+2026-07-26 11:54:11,257 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INDIGO_tearsheet.pdf
+2026-07-26 11:54:11,258 | INFO | Generating Tearsheet : INDUSINDBK
+2026-07-26 11:54:11,268 | INFO | Creating PDF : INDUSINDBK
+2026-07-26 11:54:11,335 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INDUSINDBK_tearsheet.pdf
+2026-07-26 11:54:11,336 | INFO | Generating Tearsheet : INFY
+2026-07-26 11:54:11,347 | INFO | Creating PDF : INFY
+2026-07-26 11:54:11,413 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INFY_tearsheet.pdf
+2026-07-26 11:54:11,414 | INFO | Generating Tearsheet : IOC
+2026-07-26 11:54:11,424 | INFO | Creating PDF : IOC
+2026-07-26 11:54:11,492 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IOC_tearsheet.pdf
+2026-07-26 11:54:11,493 | INFO | Generating Tearsheet : IRCTC
+2026-07-26 11:54:11,503 | INFO | Creating PDF : IRCTC
+2026-07-26 11:54:11,569 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IRCTC_tearsheet.pdf
+2026-07-26 11:54:11,570 | INFO | Generating Tearsheet : IRFC
+2026-07-26 11:54:11,580 | INFO | Creating PDF : IRFC
+2026-07-26 11:54:11,654 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IRFC_tearsheet.pdf
+2026-07-26 11:54:11,655 | INFO | Generating Tearsheet : ITC
+2026-07-26 11:54:11,668 | INFO | Creating PDF : ITC
+2026-07-26 11:54:11,734 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ITC_tearsheet.pdf
+2026-07-26 11:54:11,735 | INFO | Generating Tearsheet : JINDALSTEL
+2026-07-26 11:54:11,746 | INFO | Creating PDF : JINDALSTEL
+2026-07-26 11:54:11,816 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JINDALSTEL_tearsheet.pdf
+2026-07-26 11:54:11,817 | INFO | Generating Tearsheet : JIOFIN
+2026-07-26 11:54:11,827 | INFO | Creating PDF : JIOFIN
+2026-07-26 11:54:11,882 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JIOFIN_tearsheet.pdf
+2026-07-26 11:54:11,883 | INFO | Generating Tearsheet : JSWENERGY
+2026-07-26 11:54:11,893 | INFO | Creating PDF : JSWENERGY
+2026-07-26 11:54:11,959 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JSWENERGY_tearsheet.pdf
+2026-07-26 11:54:11,961 | INFO | Generating Tearsheet : JSWSTEEL
+2026-07-26 11:54:11,971 | INFO | Creating PDF : JSWSTEEL
+2026-07-26 11:54:12,037 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JSWSTEEL_tearsheet.pdf
+2026-07-26 11:54:12,038 | INFO | Generating Tearsheet : KOTAKBANK
+2026-07-26 11:54:12,048 | INFO | Creating PDF : KOTAKBANK
+2026-07-26 11:54:12,115 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\KOTAKBANK_tearsheet.pdf
+2026-07-26 11:54:12,117 | INFO | Generating Tearsheet : LICI
+2026-07-26 11:54:12,127 | INFO | Creating PDF : LICI
+2026-07-26 11:54:12,185 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LICI_tearsheet.pdf
+2026-07-26 11:54:12,186 | INFO | Generating Tearsheet : LODHA
+2026-07-26 11:54:12,197 | INFO | Creating PDF : LODHA
+2026-07-26 11:54:12,263 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LODHA_tearsheet.pdf
+2026-07-26 11:54:12,265 | INFO | Generating Tearsheet : LT
+2026-07-26 11:54:12,277 | INFO | Creating PDF : LT
+2026-07-26 11:54:12,339 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LT_tearsheet.pdf
+2026-07-26 11:54:12,340 | INFO | Generating Tearsheet : LTIM
+2026-07-26 11:54:12,350 | INFO | Creating PDF : LTIM
+2026-07-26 11:54:12,414 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LTIM_tearsheet.pdf
+2026-07-26 11:54:12,415 | INFO | Generating Tearsheet : M&M
+2026-07-26 11:54:12,425 | INFO | Creating PDF : M&M
+2026-07-26 11:54:12,489 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\M&M_tearsheet.pdf
+2026-07-26 11:54:12,490 | INFO | Generating Tearsheet : MARUTI
+2026-07-26 11:54:12,501 | INFO | Creating PDF : MARUTI
+2026-07-26 11:54:12,566 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\MARUTI_tearsheet.pdf
+2026-07-26 11:54:12,567 | INFO | Generating Tearsheet : MOTHERSON
+2026-07-26 11:54:12,577 | INFO | Creating PDF : MOTHERSON
+2026-07-26 11:54:12,641 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\MOTHERSON_tearsheet.pdf
+2026-07-26 11:54:12,642 | INFO | Generating Tearsheet : NAUKRI
+2026-07-26 11:54:12,653 | INFO | Creating PDF : NAUKRI
+2026-07-26 11:54:12,718 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NAUKRI_tearsheet.pdf
+2026-07-26 11:54:12,719 | INFO | Generating Tearsheet : NESTLEIND
+2026-07-26 11:54:12,730 | INFO | Creating PDF : NESTLEIND
+2026-07-26 11:54:12,792 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NESTLEIND_tearsheet.pdf
+2026-07-26 11:54:12,793 | INFO | Generating Tearsheet : NHPC
+2026-07-26 11:54:12,806 | INFO | Creating PDF : NHPC
+2026-07-26 11:54:12,872 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NHPC_tearsheet.pdf
+2026-07-26 11:54:12,874 | INFO | Generating Tearsheet : NTPC
+2026-07-26 11:54:12,886 | INFO | Creating PDF : NTPC
+2026-07-26 11:54:13,021 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NTPC_tearsheet.pdf
+2026-07-26 11:54:13,023 | INFO | Generating Tearsheet : ONGC
+2026-07-26 11:54:13,033 | INFO | Creating PDF : ONGC
+2026-07-26 11:54:13,102 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ONGC_tearsheet.pdf
+2026-07-26 11:54:13,103 | INFO | Generating Tearsheet : PFC
+2026-07-26 11:54:13,113 | INFO | Creating PDF : PFC
+2026-07-26 11:54:13,183 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PFC_tearsheet.pdf
+2026-07-26 11:54:13,184 | INFO | Generating Tearsheet : PIDILITIND
+2026-07-26 11:54:13,194 | INFO | Creating PDF : PIDILITIND
+2026-07-26 11:54:13,262 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PIDILITIND_tearsheet.pdf
+2026-07-26 11:54:13,263 | INFO | Generating Tearsheet : PNB
+2026-07-26 11:54:13,274 | INFO | Creating PDF : PNB
+2026-07-26 11:54:13,338 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PNB_tearsheet.pdf
+2026-07-26 11:54:13,339 | INFO | Generating Tearsheet : POWERGRID
+2026-07-26 11:54:13,349 | INFO | Creating PDF : POWERGRID
+2026-07-26 11:54:13,412 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\POWERGRID_tearsheet.pdf
+2026-07-26 11:54:13,413 | INFO | Generating Tearsheet : RECLTD
+2026-07-26 11:54:13,425 | INFO | Creating PDF : RECLTD
+2026-07-26 11:54:13,489 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\RECLTD_tearsheet.pdf
+2026-07-26 11:54:13,490 | INFO | Generating Tearsheet : RELIANCE
+2026-07-26 11:54:13,500 | INFO | Creating PDF : RELIANCE
+2026-07-26 11:54:13,566 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\RELIANCE_tearsheet.pdf
+2026-07-26 11:54:13,567 | INFO | Generating Tearsheet : SBILIFE
+2026-07-26 11:54:13,577 | INFO | Creating PDF : SBILIFE
+2026-07-26 11:54:13,641 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SBILIFE_tearsheet.pdf
+2026-07-26 11:54:13,642 | INFO | Generating Tearsheet : SBIN
+2026-07-26 11:54:13,653 | INFO | Creating PDF : SBIN
+2026-07-26 11:54:13,695 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SBIN_tearsheet.pdf
+2026-07-26 11:54:13,697 | INFO | Generating Tearsheet : SHREECEM
+2026-07-26 11:54:13,713 | INFO | Creating PDF : SHREECEM
+2026-07-26 11:54:13,786 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SHREECEM_tearsheet.pdf
+2026-07-26 11:54:13,788 | INFO | Generating Tearsheet : SHRIRAMFIN
+2026-07-26 11:54:13,798 | INFO | Creating PDF : SHRIRAMFIN
+2026-07-26 11:54:13,862 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SHRIRAMFIN_tearsheet.pdf
+2026-07-26 11:54:13,864 | INFO | Generating Tearsheet : SIEMENS
+2026-07-26 11:54:13,873 | INFO | Creating PDF : SIEMENS
+2026-07-26 11:54:13,940 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SIEMENS_tearsheet.pdf
+2026-07-26 11:54:13,941 | INFO | Generating Tearsheet : SUNPHARMA
+2026-07-26 11:54:13,952 | INFO | Creating PDF : SUNPHARMA
+2026-07-26 11:54:14,019 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SUNPHARMA_tearsheet.pdf
+2026-07-26 11:54:14,020 | INFO | Generating Tearsheet : TATACONSUM
+2026-07-26 11:54:14,032 | INFO | Creating PDF : TATACONSUM
+2026-07-26 11:54:14,115 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATACONSUM_tearsheet.pdf
+2026-07-26 11:54:14,116 | INFO | Generating Tearsheet : TATAMOTORS
+2026-07-26 11:54:14,128 | INFO | Creating PDF : TATAMOTORS
+2026-07-26 11:54:14,198 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATAMOTORS_tearsheet.pdf
+2026-07-26 11:54:14,199 | INFO | Generating Tearsheet : TATAPOWER
+2026-07-26 11:54:14,209 | INFO | Creating PDF : TATAPOWER
+2026-07-26 11:54:14,276 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATAPOWER_tearsheet.pdf
+2026-07-26 11:54:14,278 | INFO | Generating Tearsheet : TATASTEEL
+2026-07-26 11:54:14,289 | INFO | Creating PDF : TATASTEEL
+2026-07-26 11:54:14,355 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATASTEEL_tearsheet.pdf
+2026-07-26 11:54:14,356 | INFO | Generating Tearsheet : TCS
+2026-07-26 11:54:14,367 | INFO | Creating PDF : TCS
+2026-07-26 11:54:14,435 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TCS_tearsheet.pdf
+2026-07-26 11:54:14,436 | INFO | Generating Tearsheet : TECHM
+2026-07-26 11:54:14,449 | INFO | Creating PDF : TECHM
+2026-07-26 11:54:14,516 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TECHM_tearsheet.pdf
+2026-07-26 11:54:14,517 | INFO | Generating Tearsheet : TITAN
+2026-07-26 11:54:14,529 | INFO | Creating PDF : TITAN
+2026-07-26 11:54:14,595 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TITAN_tearsheet.pdf
+2026-07-26 11:54:14,596 | INFO | Generating Tearsheet : TORNTPHARM
+2026-07-26 11:54:14,607 | INFO | Creating PDF : TORNTPHARM
+2026-07-26 11:54:14,718 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TORNTPHARM_tearsheet.pdf
+2026-07-26 11:54:14,719 | INFO | Generating Tearsheet : TRENT
+2026-07-26 11:54:14,733 | INFO | Creating PDF : TRENT
+2026-07-26 11:54:14,816 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TRENT_tearsheet.pdf
+2026-07-26 11:54:14,819 | INFO | Generating Tearsheet : TVSMOTOR
+2026-07-26 11:54:14,833 | INFO | Creating PDF : TVSMOTOR
+2026-07-26 11:54:14,920 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TVSMOTOR_tearsheet.pdf
+2026-07-26 12:05:05,087 | INFO | Connecting database...
+2026-07-26 12:05:05,115 | INFO | Generating Tearsheet : ABB
+2026-07-26 12:05:05,155 | INFO | Creating PDF : ABB
+2026-07-26 12:05:05,256 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ABB_tearsheet.pdf
+2026-07-26 12:05:05,258 | INFO | Generating Tearsheet : ADANIENSOL
+2026-07-26 12:05:05,273 | INFO | Creating PDF : ADANIENSOL
+2026-07-26 12:05:05,378 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIENSOL_tearsheet.pdf
+2026-07-26 12:05:05,380 | INFO | Generating Tearsheet : ADANIENT
+2026-07-26 12:05:05,395 | INFO | Creating PDF : ADANIENT
+2026-07-26 12:05:05,489 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIENT_tearsheet.pdf
+2026-07-26 12:05:05,491 | INFO | Generating Tearsheet : ADANIGREEN
+2026-07-26 12:05:05,505 | INFO | Creating PDF : ADANIGREEN
+2026-07-26 12:05:05,604 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIGREEN_tearsheet.pdf
+2026-07-26 12:05:05,606 | INFO | Generating Tearsheet : ADANIPORTS
+2026-07-26 12:05:05,620 | INFO | Creating PDF : ADANIPORTS
+2026-07-26 12:05:05,713 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIPORTS_tearsheet.pdf
+2026-07-26 12:05:05,714 | INFO | Generating Tearsheet : ADANIPOWER
+2026-07-26 12:05:05,726 | INFO | Creating PDF : ADANIPOWER
+2026-07-26 12:05:05,813 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ADANIPOWER_tearsheet.pdf
+2026-07-26 12:05:05,815 | INFO | Generating Tearsheet : AMBUJACEM
+2026-07-26 12:05:05,827 | INFO | Creating PDF : AMBUJACEM
+2026-07-26 12:05:05,908 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\AMBUJACEM_tearsheet.pdf
+2026-07-26 12:05:05,909 | INFO | Generating Tearsheet : APOLLOHOSP
+2026-07-26 12:05:05,921 | INFO | Creating PDF : APOLLOHOSP
+2026-07-26 12:05:06,005 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\APOLLOHOSP_tearsheet.pdf
+2026-07-26 12:05:06,006 | INFO | Generating Tearsheet : ASIANPAINT
+2026-07-26 12:05:06,021 | INFO | Creating PDF : ASIANPAINT
+2026-07-26 12:05:06,098 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ASIANPAINT_tearsheet.pdf
+2026-07-26 12:05:06,099 | INFO | Generating Tearsheet : ATGL
+2026-07-26 12:05:06,109 | INFO | Creating PDF : ATGL
+2026-07-26 12:05:06,146 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ATGL_tearsheet.pdf
+2026-07-26 12:05:06,148 | INFO | Generating Tearsheet : AXISBANK
+2026-07-26 12:05:06,166 | INFO | Creating PDF : AXISBANK
+2026-07-26 12:05:06,234 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\AXISBANK_tearsheet.pdf
+2026-07-26 12:05:06,235 | INFO | Generating Tearsheet : BAJAJ-AUTO
+2026-07-26 12:05:06,246 | INFO | Creating PDF : BAJAJ-AUTO
+2026-07-26 12:05:06,318 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJ-AUTO_tearsheet.pdf
+2026-07-26 12:05:06,320 | INFO | Generating Tearsheet : BAJAJFINSV
+2026-07-26 12:05:06,329 | INFO | Creating PDF : BAJAJFINSV
+2026-07-26 12:05:06,400 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJFINSV_tearsheet.pdf
+2026-07-26 12:05:06,401 | INFO | Generating Tearsheet : BAJAJHLDNG
+2026-07-26 12:05:06,410 | INFO | Creating PDF : BAJAJHLDNG
+2026-07-26 12:05:06,484 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJAJHLDNG_tearsheet.pdf
+2026-07-26 12:05:06,485 | INFO | Generating Tearsheet : BAJFINANCE
+2026-07-26 12:05:06,497 | INFO | Creating PDF : BAJFINANCE
+2026-07-26 12:05:06,567 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BAJFINANCE_tearsheet.pdf
+2026-07-26 12:05:06,568 | INFO | Generating Tearsheet : BANKBARODA
+2026-07-26 12:05:06,585 | INFO | Creating PDF : BANKBARODA
+2026-07-26 12:05:06,660 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BANKBARODA_tearsheet.pdf
+2026-07-26 12:05:06,661 | INFO | Generating Tearsheet : BEL
+2026-07-26 12:05:06,671 | INFO | Creating PDF : BEL
+2026-07-26 12:05:06,738 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BEL_tearsheet.pdf
+2026-07-26 12:05:06,739 | INFO | Generating Tearsheet : BHARTIARTL
+2026-07-26 12:05:06,750 | INFO | Creating PDF : BHARTIARTL
+2026-07-26 12:05:06,826 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BHARTIARTL_tearsheet.pdf
+2026-07-26 12:05:06,827 | INFO | Generating Tearsheet : BHEL
+2026-07-26 12:05:06,837 | INFO | Creating PDF : BHEL
+2026-07-26 12:05:06,908 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BHEL_tearsheet.pdf
+2026-07-26 12:05:06,909 | INFO | Generating Tearsheet : BOSCHLTD
+2026-07-26 12:05:06,920 | INFO | Creating PDF : BOSCHLTD
+2026-07-26 12:05:06,994 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BOSCHLTD_tearsheet.pdf
+2026-07-26 12:05:06,995 | INFO | Generating Tearsheet : BPCL
+2026-07-26 12:05:07,005 | INFO | Creating PDF : BPCL
+2026-07-26 12:05:07,078 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BPCL_tearsheet.pdf
+2026-07-26 12:05:07,079 | INFO | Generating Tearsheet : BRITANNIA
+2026-07-26 12:05:07,092 | INFO | Creating PDF : BRITANNIA
+2026-07-26 12:05:07,161 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\BRITANNIA_tearsheet.pdf
+2026-07-26 12:05:07,162 | INFO | Generating Tearsheet : CANBK
+2026-07-26 12:05:07,172 | INFO | Creating PDF : CANBK
+2026-07-26 12:05:07,240 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CANBK_tearsheet.pdf
+2026-07-26 12:05:07,242 | INFO | Generating Tearsheet : CHOLAFIN
+2026-07-26 12:05:07,253 | INFO | Creating PDF : CHOLAFIN
+2026-07-26 12:05:07,319 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CHOLAFIN_tearsheet.pdf
+2026-07-26 12:05:07,320 | INFO | Generating Tearsheet : CIPLA
+2026-07-26 12:05:07,331 | INFO | Creating PDF : CIPLA
+2026-07-26 12:05:07,403 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\CIPLA_tearsheet.pdf
+2026-07-26 12:05:07,404 | INFO | Generating Tearsheet : COALINDIA
+2026-07-26 12:05:07,415 | INFO | Creating PDF : COALINDIA
+2026-07-26 12:05:07,481 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\COALINDIA_tearsheet.pdf
+2026-07-26 12:05:07,482 | INFO | Generating Tearsheet : DABUR
+2026-07-26 12:05:07,493 | INFO | Creating PDF : DABUR
+2026-07-26 12:05:07,558 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DABUR_tearsheet.pdf
+2026-07-26 12:05:07,559 | INFO | Generating Tearsheet : DIVISLAB
+2026-07-26 12:05:07,569 | INFO | Creating PDF : DIVISLAB
+2026-07-26 12:05:07,635 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DIVISLAB_tearsheet.pdf
+2026-07-26 12:05:07,636 | INFO | Generating Tearsheet : DLF
+2026-07-26 12:05:07,646 | INFO | Creating PDF : DLF
+2026-07-26 12:05:07,712 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DLF_tearsheet.pdf
+2026-07-26 12:05:07,713 | INFO | Generating Tearsheet : DMART
+2026-07-26 12:05:07,723 | INFO | Creating PDF : DMART
+2026-07-26 12:05:07,792 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DMART_tearsheet.pdf
+2026-07-26 12:05:07,793 | INFO | Generating Tearsheet : DRREDDY
+2026-07-26 12:05:07,803 | INFO | Creating PDF : DRREDDY
+2026-07-26 12:05:07,870 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\DRREDDY_tearsheet.pdf
+2026-07-26 12:05:07,874 | INFO | Generating Tearsheet : EICHERMOT
+2026-07-26 12:05:07,884 | INFO | Creating PDF : EICHERMOT
+2026-07-26 12:05:07,954 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\EICHERMOT_tearsheet.pdf
+2026-07-26 12:05:07,955 | INFO | Generating Tearsheet : GAIL
+2026-07-26 12:05:07,968 | INFO | Creating PDF : GAIL
+2026-07-26 12:05:08,033 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GAIL_tearsheet.pdf
+2026-07-26 12:05:08,034 | INFO | Generating Tearsheet : GODREJCP
+2026-07-26 12:05:08,044 | INFO | Creating PDF : GODREJCP
+2026-07-26 12:05:08,114 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GODREJCP_tearsheet.pdf
+2026-07-26 12:05:08,115 | INFO | Generating Tearsheet : GRASIM
+2026-07-26 12:05:08,125 | INFO | Creating PDF : GRASIM
+2026-07-26 12:05:08,194 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\GRASIM_tearsheet.pdf
+2026-07-26 12:05:08,195 | INFO | Generating Tearsheet : HAL
+2026-07-26 12:05:08,205 | INFO | Creating PDF : HAL
+2026-07-26 12:05:08,270 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HAL_tearsheet.pdf
+2026-07-26 12:05:08,271 | INFO | Generating Tearsheet : HAVELLS
+2026-07-26 12:05:08,282 | INFO | Creating PDF : HAVELLS
+2026-07-26 12:05:08,346 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HAVELLS_tearsheet.pdf
+2026-07-26 12:05:08,347 | INFO | Generating Tearsheet : HCLTECH
+2026-07-26 12:05:08,357 | INFO | Creating PDF : HCLTECH
+2026-07-26 12:05:08,424 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HCLTECH_tearsheet.pdf
+2026-07-26 12:05:08,425 | INFO | Generating Tearsheet : HDFCBANK
+2026-07-26 12:05:08,435 | INFO | Creating PDF : HDFCBANK
+2026-07-26 12:05:08,502 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HDFCBANK_tearsheet.pdf
+2026-07-26 12:05:08,503 | INFO | Generating Tearsheet : HDFCLIFE
+2026-07-26 12:05:08,513 | INFO | Creating PDF : HDFCLIFE
+2026-07-26 12:05:08,580 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HDFCLIFE_tearsheet.pdf
+2026-07-26 12:05:08,581 | INFO | Generating Tearsheet : HEROMOTOCO
+2026-07-26 12:05:08,591 | INFO | Creating PDF : HEROMOTOCO
+2026-07-26 12:05:08,658 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HEROMOTOCO_tearsheet.pdf
+2026-07-26 12:05:08,660 | INFO | Generating Tearsheet : HINDALCO
+2026-07-26 12:05:08,675 | INFO | Creating PDF : HINDALCO
+2026-07-26 12:05:08,750 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HINDALCO_tearsheet.pdf
+2026-07-26 12:05:08,751 | INFO | Generating Tearsheet : HINDUNILVR
+2026-07-26 12:05:08,761 | INFO | Creating PDF : HINDUNILVR
+2026-07-26 12:05:08,831 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\HINDUNILVR_tearsheet.pdf
+2026-07-26 12:05:08,833 | INFO | Generating Tearsheet : ICICIBANK
+2026-07-26 12:05:08,844 | INFO | Creating PDF : ICICIBANK
+2026-07-26 12:05:08,911 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIBANK_tearsheet.pdf
+2026-07-26 12:05:08,912 | INFO | Generating Tearsheet : ICICIGI
+2026-07-26 12:05:08,922 | INFO | Creating PDF : ICICIGI
+2026-07-26 12:05:08,989 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIGI_tearsheet.pdf
+2026-07-26 12:05:08,990 | INFO | Generating Tearsheet : ICICIPRULI
+2026-07-26 12:05:09,001 | INFO | Creating PDF : ICICIPRULI
+2026-07-26 12:05:09,070 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ICICIPRULI_tearsheet.pdf
+2026-07-26 12:05:09,071 | INFO | Generating Tearsheet : INDIGO
+2026-07-26 12:05:09,084 | INFO | Creating PDF : INDIGO
+2026-07-26 12:05:09,152 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INDIGO_tearsheet.pdf
+2026-07-26 12:05:09,153 | INFO | Generating Tearsheet : INDUSINDBK
+2026-07-26 12:05:09,164 | INFO | Creating PDF : INDUSINDBK
+2026-07-26 12:05:09,231 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INDUSINDBK_tearsheet.pdf
+2026-07-26 12:05:09,232 | INFO | Generating Tearsheet : INFY
+2026-07-26 12:05:09,242 | INFO | Creating PDF : INFY
+2026-07-26 12:05:09,308 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\INFY_tearsheet.pdf
+2026-07-26 12:05:09,310 | INFO | Generating Tearsheet : IOC
+2026-07-26 12:05:09,319 | INFO | Creating PDF : IOC
+2026-07-26 12:05:09,398 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IOC_tearsheet.pdf
+2026-07-26 12:05:09,400 | INFO | Generating Tearsheet : IRCTC
+2026-07-26 12:05:09,409 | INFO | Creating PDF : IRCTC
+2026-07-26 12:05:09,475 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IRCTC_tearsheet.pdf
+2026-07-26 12:05:09,477 | INFO | Generating Tearsheet : IRFC
+2026-07-26 12:05:09,489 | INFO | Creating PDF : IRFC
+2026-07-26 12:05:09,552 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\IRFC_tearsheet.pdf
+2026-07-26 12:05:09,553 | INFO | Generating Tearsheet : ITC
+2026-07-26 12:05:09,564 | INFO | Creating PDF : ITC
+2026-07-26 12:05:09,630 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ITC_tearsheet.pdf
+2026-07-26 12:05:09,631 | INFO | Generating Tearsheet : JINDALSTEL
+2026-07-26 12:05:09,642 | INFO | Creating PDF : JINDALSTEL
+2026-07-26 12:05:09,706 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JINDALSTEL_tearsheet.pdf
+2026-07-26 12:05:09,707 | INFO | Generating Tearsheet : JIOFIN
+2026-07-26 12:05:09,718 | INFO | Creating PDF : JIOFIN
+2026-07-26 12:05:09,774 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JIOFIN_tearsheet.pdf
+2026-07-26 12:05:09,775 | INFO | Generating Tearsheet : JSWENERGY
+2026-07-26 12:05:09,786 | INFO | Creating PDF : JSWENERGY
+2026-07-26 12:05:09,851 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JSWENERGY_tearsheet.pdf
+2026-07-26 12:05:09,853 | INFO | Generating Tearsheet : JSWSTEEL
+2026-07-26 12:05:09,862 | INFO | Creating PDF : JSWSTEEL
+2026-07-26 12:05:09,931 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\JSWSTEEL_tearsheet.pdf
+2026-07-26 12:05:09,932 | INFO | Generating Tearsheet : KOTAKBANK
+2026-07-26 12:05:09,942 | INFO | Creating PDF : KOTAKBANK
+2026-07-26 12:05:10,012 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\KOTAKBANK_tearsheet.pdf
+2026-07-26 12:05:10,014 | INFO | Generating Tearsheet : LICI
+2026-07-26 12:05:10,025 | INFO | Creating PDF : LICI
+2026-07-26 12:05:10,087 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LICI_tearsheet.pdf
+2026-07-26 12:05:10,089 | INFO | Generating Tearsheet : LODHA
+2026-07-26 12:05:10,099 | INFO | Creating PDF : LODHA
+2026-07-26 12:05:10,172 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LODHA_tearsheet.pdf
+2026-07-26 12:05:10,173 | INFO | Generating Tearsheet : LT
+2026-07-26 12:05:10,183 | INFO | Creating PDF : LT
+2026-07-26 12:05:10,247 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LT_tearsheet.pdf
+2026-07-26 12:05:10,248 | INFO | Generating Tearsheet : LTIM
+2026-07-26 12:05:10,258 | INFO | Creating PDF : LTIM
+2026-07-26 12:05:10,326 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\LTIM_tearsheet.pdf
+2026-07-26 12:05:10,328 | INFO | Generating Tearsheet : M&M
+2026-07-26 12:05:10,339 | INFO | Creating PDF : M&M
+2026-07-26 12:05:10,401 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\M&M_tearsheet.pdf
+2026-07-26 12:05:10,403 | INFO | Generating Tearsheet : MARUTI
+2026-07-26 12:05:10,413 | INFO | Creating PDF : MARUTI
+2026-07-26 12:05:10,480 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\MARUTI_tearsheet.pdf
+2026-07-26 12:05:10,481 | INFO | Generating Tearsheet : MOTHERSON
+2026-07-26 12:05:10,491 | INFO | Creating PDF : MOTHERSON
+2026-07-26 12:05:10,570 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\MOTHERSON_tearsheet.pdf
+2026-07-26 12:05:10,571 | INFO | Generating Tearsheet : NAUKRI
+2026-07-26 12:05:10,583 | INFO | Creating PDF : NAUKRI
+2026-07-26 12:05:10,664 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NAUKRI_tearsheet.pdf
+2026-07-26 12:05:10,665 | INFO | Generating Tearsheet : NESTLEIND
+2026-07-26 12:05:10,676 | INFO | Creating PDF : NESTLEIND
+2026-07-26 12:05:10,744 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NESTLEIND_tearsheet.pdf
+2026-07-26 12:05:10,745 | INFO | Generating Tearsheet : NHPC
+2026-07-26 12:05:10,755 | INFO | Creating PDF : NHPC
+2026-07-26 12:05:10,834 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NHPC_tearsheet.pdf
+2026-07-26 12:05:10,835 | INFO | Generating Tearsheet : NTPC
+2026-07-26 12:05:10,844 | INFO | Creating PDF : NTPC
+2026-07-26 12:05:10,911 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\NTPC_tearsheet.pdf
+2026-07-26 12:05:10,913 | INFO | Generating Tearsheet : ONGC
+2026-07-26 12:05:10,924 | INFO | Creating PDF : ONGC
+2026-07-26 12:05:10,991 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\ONGC_tearsheet.pdf
+2026-07-26 12:05:10,992 | INFO | Generating Tearsheet : PFC
+2026-07-26 12:05:11,003 | INFO | Creating PDF : PFC
+2026-07-26 12:05:11,080 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PFC_tearsheet.pdf
+2026-07-26 12:05:11,081 | INFO | Generating Tearsheet : PIDILITIND
+2026-07-26 12:05:11,091 | INFO | Creating PDF : PIDILITIND
+2026-07-26 12:05:11,161 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PIDILITIND_tearsheet.pdf
+2026-07-26 12:05:11,162 | INFO | Generating Tearsheet : PNB
+2026-07-26 12:05:11,173 | INFO | Creating PDF : PNB
+2026-07-26 12:05:11,243 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\PNB_tearsheet.pdf
+2026-07-26 12:05:11,245 | INFO | Generating Tearsheet : POWERGRID
+2026-07-26 12:05:11,260 | INFO | Creating PDF : POWERGRID
+2026-07-26 12:05:11,338 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\POWERGRID_tearsheet.pdf
+2026-07-26 12:05:11,339 | INFO | Generating Tearsheet : RECLTD
+2026-07-26 12:05:11,350 | INFO | Creating PDF : RECLTD
+2026-07-26 12:05:11,420 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\RECLTD_tearsheet.pdf
+2026-07-26 12:05:11,421 | INFO | Generating Tearsheet : RELIANCE
+2026-07-26 12:05:11,431 | INFO | Creating PDF : RELIANCE
+2026-07-26 12:05:11,497 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\RELIANCE_tearsheet.pdf
+2026-07-26 12:05:11,498 | INFO | Generating Tearsheet : SBILIFE
+2026-07-26 12:05:11,509 | INFO | Creating PDF : SBILIFE
+2026-07-26 12:05:11,577 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SBILIFE_tearsheet.pdf
+2026-07-26 12:05:11,578 | INFO | Generating Tearsheet : SBIN
+2026-07-26 12:05:11,589 | INFO | Creating PDF : SBIN
+2026-07-26 12:05:11,627 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SBIN_tearsheet.pdf
+2026-07-26 12:05:11,628 | INFO | Generating Tearsheet : SHREECEM
+2026-07-26 12:05:11,641 | INFO | Creating PDF : SHREECEM
+2026-07-26 12:05:11,705 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SHREECEM_tearsheet.pdf
+2026-07-26 12:05:11,706 | INFO | Generating Tearsheet : SHRIRAMFIN
+2026-07-26 12:05:11,715 | INFO | Creating PDF : SHRIRAMFIN
+2026-07-26 12:05:11,784 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SHRIRAMFIN_tearsheet.pdf
+2026-07-26 12:05:11,785 | INFO | Generating Tearsheet : SIEMENS
+2026-07-26 12:05:11,795 | INFO | Creating PDF : SIEMENS
+2026-07-26 12:05:11,859 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SIEMENS_tearsheet.pdf
+2026-07-26 12:05:11,861 | INFO | Generating Tearsheet : SUNPHARMA
+2026-07-26 12:05:11,871 | INFO | Creating PDF : SUNPHARMA
+2026-07-26 12:05:11,940 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\SUNPHARMA_tearsheet.pdf
+2026-07-26 12:05:11,941 | INFO | Generating Tearsheet : TATACONSUM
+2026-07-26 12:05:11,951 | INFO | Creating PDF : TATACONSUM
+2026-07-26 12:05:12,019 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATACONSUM_tearsheet.pdf
+2026-07-26 12:05:12,020 | INFO | Generating Tearsheet : TATAMOTORS
+2026-07-26 12:05:12,031 | INFO | Creating PDF : TATAMOTORS
+2026-07-26 12:05:12,101 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATAMOTORS_tearsheet.pdf
+2026-07-26 12:05:12,102 | INFO | Generating Tearsheet : TATAPOWER
+2026-07-26 12:05:12,113 | INFO | Creating PDF : TATAPOWER
+2026-07-26 12:05:12,181 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATAPOWER_tearsheet.pdf
+2026-07-26 12:05:12,182 | INFO | Generating Tearsheet : TATASTEEL
+2026-07-26 12:05:12,193 | INFO | Creating PDF : TATASTEEL
+2026-07-26 12:05:12,259 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TATASTEEL_tearsheet.pdf
+2026-07-26 12:05:12,261 | INFO | Generating Tearsheet : TCS
+2026-07-26 12:05:12,271 | INFO | Creating PDF : TCS
+2026-07-26 12:05:12,343 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TCS_tearsheet.pdf
+2026-07-26 12:05:12,344 | INFO | Generating Tearsheet : TECHM
+2026-07-26 12:05:12,353 | INFO | Creating PDF : TECHM
+2026-07-26 12:05:12,423 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TECHM_tearsheet.pdf
+2026-07-26 12:05:12,424 | INFO | Generating Tearsheet : TITAN
+2026-07-26 12:05:12,434 | INFO | Creating PDF : TITAN
+2026-07-26 12:05:12,503 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TITAN_tearsheet.pdf
+2026-07-26 12:05:12,504 | INFO | Generating Tearsheet : TORNTPHARM
+2026-07-26 12:05:12,514 | INFO | Creating PDF : TORNTPHARM
+2026-07-26 12:05:12,582 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TORNTPHARM_tearsheet.pdf
+2026-07-26 12:05:12,583 | INFO | Generating Tearsheet : TRENT
+2026-07-26 12:05:12,594 | INFO | Creating PDF : TRENT
+2026-07-26 12:05:12,657 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TRENT_tearsheet.pdf
+2026-07-26 12:05:12,658 | INFO | Generating Tearsheet : TVSMOTOR
+2026-07-26 12:05:12,668 | INFO | Creating PDF : TVSMOTOR
+2026-07-26 12:05:12,735 | INFO | Saved : D:\BlueStock Internship Project\Nifty100_Financial_Intelligence_Platform\output\tearsheets\TVSMOTOR_tearsheet.pdf
+2026-07-26 12:16:20,652 | INFO | Connecting database...
+2026-07-26 12:18:04,786 | INFO | Connecting database...
+2026-07-26 12:19:47,333 | INFO | Connecting database...
+2026-07-26 12:27:27,545 | INFO | Connecting database...
+2026-07-26 12:52:21,983 | INFO | Connecting database...
+2026-07-26 12:59:36,968 | INFO | Connecting database...
+2026-07-26 14:48:18,638 | INFO | Connecting database...
+2026-07-26 15:01:40,138 | INFO | Connecting database...
+2026-07-26 15:09:16,305 | INFO | Connecting database...
