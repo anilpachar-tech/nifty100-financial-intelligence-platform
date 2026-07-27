@@ -1,0 +1,25 @@
+cluster_name,company_id,company_name,return_on_equity_pct,debt_to_equity,revenue_cagr_5yr,free_cash_flow_cr
+Defensive Dividend Payers,PNB,Punjab National Bank,61.32,3.68,15.9,-29445.0
+Defensive Dividend Payers,PFC,Power Finance Corporation Ltd,26.16,8.52,11.08,-101229.0
+Defensive Dividend Payers,BAJAJFINSV,Bajaj Finserv Ltd,25.85,4.79,20.97,-79634.0
+Defensive Dividend Payers,RECLTD,REC Ltd,20.4,6.42,13.34,-59554.0
+Defensive Dividend Payers,BAJFINANCE,Bajaj Finance Ltd,18.84,3.82,24.35,-79931.0
+Distressed / Turnaround,ICICIBANK,ICICI Bank Ltd,17.99,6.45,17.25,12547.0
+Distressed / Turnaround,CANBK,Canara Bank,16.72,14.87,18.18,13296.0
+Distressed / Turnaround,AXISBANK,Axis Bank Ltd,15.83,8.25,14.74,-14556.0
+Distressed / Turnaround,BANKBARODA,Bank of Baroda,15.76,12.14,17.48,-7559.0
+Distressed / Turnaround,HDFCBANK,HDFC Bank Ltd,14.34,6.81,21.95,35669.0
+Emerging Growth,INDIGO,Interglobe Aviation Ltd,892.57,0.02,19.31,9424.0
+Emerging Growth,COALINDIA,Coal India Ltd,45.17,0.08,7.4,13617.0
+Emerging Growth,HEROMOTOCO,"Hero MotoCorp Ltd
+",21.14,0.03,2.15,3095.0
+Emerging Growth,HINDUNILVR,"Hindustan Unilever Ltd
+",20.07,0.03,9.5,10145.0
+Emerging Growth,POWERGRID,Power Grid Corporation of India Ltd,17.87,1.42,5.51,24176.0
+High-Quality Compounders,BEL,Bharat Electronics Ltd,4744.05,0.51,10.75,-1265.0
+High-Quality Compounders,HAL,Hindustan Aeronautics Ltd,3816.58,0.62,8.71,1814.0
+Value Cyclicals,NESTLEIND,Nestle India Ltd,117.75,0.1,14.55,2938.0
+Value Cyclicals,LT,Larsen & Toubro Ltd,77.67,0.1,10.34,20445.0
+Value Cyclicals,BRITANNIA,Britannia Industries Ltd,54.15,0.52,8.69,3050.0
+Value Cyclicals,TCS,Tata Consultancy Services Ltd,50.94,0.09,10.46,50429.0
+Value Cyclicals,LICI,Life Insurance Corporation of India,49.45,0.0,8.16,853.0

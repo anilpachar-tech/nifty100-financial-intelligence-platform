@@ -1,0 +1,6 @@
+cluster_id,cluster_name,companies,average_roe,average_debt,average_revenue_cagr,average_fcf,average_opm
+0,Value Cyclicals,59,22.05,0.55,11.23,6069.91,19.92
+1,Defensive Dividend Payers,7,26.45,5.44,18.02,-59955.71,43.47
+2,Emerging Growth,15,74.04,0.66,13.77,7610.2,81.03
+3,Distressed / Turnaround,9,15.09,8.8,19.89,2061.0,56.9
+4,High-Quality Compounders,2,4280.32,0.56,9.73,274.5,28.51
