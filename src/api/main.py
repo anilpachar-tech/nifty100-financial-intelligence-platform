@@ -211,6 +211,213 @@ def get_clusters():
 
     return clusters.to_dict(orient="records")
 
+# ==========================================================
+# Latest Financial Ratios Endpoint
+# ==========================================================
+
+@app.get(
+    "/financials/{company_id}",
+    tags=["Financials"],
+    summary="Get latest financial ratios"
+)
+def get_financials(company_id: str):
+
+    conn = get_connection()
+
+    query = """
+    SELECT
+
+        company_id,
+        year,
+
+        return_on_equity_pct,
+        operating_profit_margin_pct,
+        net_profit_margin_pct,
+
+        debt_to_equity,
+        interest_coverage,
+
+        earnings_per_share,
+        book_value_per_share,
+
+        pe,
+        pb,
+        dividend_yield,
+
+        composite_quality_score
+
+    FROM financial_ratios
+
+    WHERE company_id = ?
+
+    ORDER BY year DESC
+
+    LIMIT 1
+    """
+
+    financials = pd.read_sql(
+        query,
+        conn,
+        params=(company_id,)
+    )
+
+    conn.close()
+
+    if financials.empty:
+
+        return JSONResponse(
+            status_code=404,
+            content={
+                "message": "Financial data not found."
+            }
+        )
+
+    return financials.iloc[0].to_dict()
+
+# ==========================================================
+# Cluster Summary Endpoint
+# ==========================================================
+
+@app.get(
+    "/clusters/summary",
+    tags=["Analytics"],
+    summary="Get cluster summary statistics"
+)
+def get_cluster_summary():
+
+    summary_file = PROJECT_ROOT / "output" / "cluster_summary.csv"
+
+    if not summary_file.exists():
+
+        return JSONResponse(
+            status_code=404,
+            content={
+                "message": "cluster_summary.csv not found."
+            }
+        )
+
+    summary = pd.read_csv(summary_file)
+
+    return summary.to_dict(orient="records")
+
+
+# ==========================================================
+# Sector Distribution Endpoint
+# ==========================================================
+
+@app.get(
+    "/clusters/sectors",
+    tags=["Analytics"],
+    summary="Get sector distribution by cluster"
+)
+def get_cluster_sectors():
+
+    sector_file = PROJECT_ROOT / "output" / "cluster_sector_distribution.csv"
+
+    if not sector_file.exists():
+
+        return JSONResponse(
+            status_code=404,
+            content={
+                "message": "cluster_sector_distribution.csv not found."
+            }
+        )
+
+    sectors = pd.read_csv(sector_file)
+
+    return sectors.to_dict(orient="records")
+
+
+# ==========================================================
+# Top Companies Endpoint
+# ==========================================================
+
+@app.get(
+    "/clusters/top-companies",
+    tags=["Analytics"],
+    summary="Get top companies from each cluster"
+)
+def get_top_companies():
+
+    top_file = PROJECT_ROOT / "output" / "cluster_top_companies.csv"
+
+    if not top_file.exists():
+
+        return JSONResponse(
+            status_code=404,
+            content={
+                "message": "cluster_top_companies.csv not found."
+            }
+        )
+
+    top_companies = pd.read_csv(top_file)
+
+    top_companies["company_name"] = (
+        top_companies["company_name"]
+        .str.replace("\n", " ", regex=False)
+        .str.strip()
+    )
+
+    return top_companies.to_dict(orient="records")
+
+# ==========================================================
+# API Information Endpoint
+# ==========================================================
+
+@app.get(
+    "/info",
+    tags=["System"],
+    summary="API information"
+)
+def api_info():
+
+    return {
+        "project": "Nifty100 Financial Intelligence Platform",
+        "version": "1.0.0",
+        "framework": "FastAPI",
+        "database": "SQLite",
+        "status": "Running",
+        "available_endpoints": [
+            "/",
+            "/health",
+            "/companies",
+            "/companies/{company_id}",
+            "/financials/{company_id}",
+            "/clusters",
+            "/clusters/summary",
+            "/clusters/sectors",
+            "/clusters/top-companies"
+        ]
+    }
+
+
+# ==========================================================
+# API Validation Endpoint
+# ==========================================================
+
+@app.get(
+    "/validate",
+    tags=["System"],
+    summary="Validate API resources"
+)
+def validate_api():
+
+    output_dir = PROJECT_ROOT / "output"
+
+    validation = {
+        "database_exists": DATABASE_PATH.exists(),
+        "cluster_labels": (output_dir / "cluster_labels.csv").exists(),
+        "cluster_summary": (output_dir / "cluster_summary.csv").exists(),
+        "cluster_sector_distribution": (
+            output_dir / "cluster_sector_distribution.csv"
+        ).exists(),
+        "cluster_top_companies": (
+            output_dir / "cluster_top_companies.csv"
+        ).exists()
+    }
+
+    return validation
+
 
 # ==========================================================
 # Run API
