@@ -5,6 +5,18 @@ import pandas as pd
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
+from fastapi import Request
+from fastapi.exceptions import RequestValidationError
+
+from typing import List
+
+from src.api.models import (
+    Company,
+    CompanyDetails,
+    Financials,
+    ClusterSummary
+)
+
 
 # ==========================================================
 # Project Paths
@@ -83,7 +95,12 @@ def home():
 # Companies List Endpoint
 # ==========================================================
 
-@app.get("/companies")
+@app.get(
+    "/companies",
+    tags=["Companies"],
+    summary="Get all companies",
+    response_model=List[Company]
+)
 def get_companies():
 
     conn = get_connection()
@@ -108,7 +125,12 @@ def get_companies():
 
     return companies.to_dict(orient="records")
 
-@app.get("/companies/{company_id}")
+@app.get(
+    "/companies/{company_id}",
+    tags=["Companies"],
+    summary="Get company details",
+    response_model=CompanyDetails
+)
 def get_company(company_id: str):
 
     conn = get_connection()
@@ -218,7 +240,8 @@ def get_clusters():
 @app.get(
     "/financials/{company_id}",
     tags=["Financials"],
-    summary="Get latest financial ratios"
+    summary="Get latest financial ratios",
+    response_model=Financials
 )
 def get_financials(company_id: str):
 
@@ -281,7 +304,8 @@ def get_financials(company_id: str):
 @app.get(
     "/clusters/summary",
     tags=["Analytics"],
-    summary="Get cluster summary statistics"
+    summary="Get cluster summary statistics",
+    response_model=List[ClusterSummary]
 )
 def get_cluster_summary():
 
@@ -418,6 +442,42 @@ def validate_api():
 
     return validation
 
+# ==========================================================
+# Global Exception Handler
+# ==========================================================
+
+@app.exception_handler(Exception)
+async def global_exception_handler(
+    request: Request,
+    exc: Exception
+):
+
+    return JSONResponse(
+        status_code=500,
+        content={
+            "status": "error",
+            "message": str(exc)
+        }
+    )
+
+
+# ==========================================================
+# Request Validation Handler
+# ==========================================================
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(
+    request: Request,
+    exc: RequestValidationError
+):
+
+    return JSONResponse(
+        status_code=422,
+        content={
+            "status": "validation_error",
+            "errors": exc.errors()
+        }
+    )
 
 # ==========================================================
 # Run API
