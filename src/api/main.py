@@ -8,6 +8,17 @@ from fastapi.responses import JSONResponse
 from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 
+import logging
+
+from src.api.config import (
+    PROJECT_ROOT,
+    API_TITLE,
+    API_VERSION,
+    API_DESCRIPTION,
+    DATABASE_PATH,
+    OUTPUT_DIR,
+)
+
 from typing import List
 
 from src.api.models import (
@@ -17,14 +28,16 @@ from src.api.models import (
     ClusterSummary
 )
 
-
 # ==========================================================
-# Project Paths
+# Logging
 # ==========================================================
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s"
+)
 
-DATABASE_PATH = PROJECT_ROOT / "db" / "nifty100.db"
+logger = logging.getLogger(__name__)
 
 
 # ==========================================================
@@ -32,10 +45,17 @@ DATABASE_PATH = PROJECT_ROOT / "db" / "nifty100.db"
 # ==========================================================
 
 app = FastAPI(
-    title="Nifty100 Financial Intelligence API",
-    description="REST API for company analytics, clustering, financial ratios, and reports.",
-    version="1.0.0"
+    title=API_TITLE,
+    version=API_VERSION,
+    description=API_DESCRIPTION,
 )
+
+logger.info("========================================")
+logger.info("Nifty100 Financial Intelligence API")
+logger.info("Database : %s", DATABASE_PATH)
+logger.info("Output   : %s", OUTPUT_DIR)
+logger.info("API Ready")
+logger.info("========================================")
 
 
 # ==========================================================
@@ -43,6 +63,8 @@ app = FastAPI(
 # ==========================================================
 
 def get_connection():
+
+    logger.info("Connecting to database: %s", DATABASE_PATH)
 
     return sqlite3.connect(DATABASE_PATH)
 
