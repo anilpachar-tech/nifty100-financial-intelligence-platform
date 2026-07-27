@@ -1,32 +1,68 @@
 # 📊 Nifty100 Financial Intelligence Platform
 
-A comprehensive Financial Intelligence Platform built using **Python, SQLite, Pandas, Plotly, and Streamlit** to analyze the financial performance of Nifty 100 companies.
+A comprehensive Financial Intelligence Platform built using **Python, SQLite, Pandas, Plotly, Streamlit, and FastAPI** to analyze the financial performance of Nifty 100 companies.
 
-The platform provides interactive dashboards, financial analytics, valuation analysis, stock screening, peer comparison, sector insights, and annual report management using a structured ETL pipeline.
+This project provides an end-to-end financial analytics solution, including ETL pipelines, data quality validation, financial ratio analysis, interactive dashboards, clustering analytics, PDF report generation, and REST APIs.
 
 ---
 
-# 🚀 Features
+# 🚀 Key Features
 
+### 📂 Data Engineering
 - ETL pipeline for financial datasets
-- SQLite-based centralized database
+- SQLite centralized database
 - Data Quality validation
-- Financial ratio analysis
-- Valuation analytics
-- Interactive Streamlit Dashboard
-- Company Profile Analytics
+- Duplicate detection
+- Foreign key validation
+- ETL audit reporting
+
+### 📈 Financial Analytics
+- Financial Ratio Analysis
+- CAGR Analysis
+- Growth Analytics
+- Profitability Metrics
+- Valuation Analytics
+- Capital Allocation Analysis
+
+### 📊 Interactive Dashboard
+- Company Profile
 - Stock Screener
 - Peer Comparison
 - Trend Analysis
 - Sector Analysis
-- Capital Allocation Analysis
+- Capital Allocation Dashboard
 - Annual Reports Browser
 - CSV Export
-- Cached database loading for faster performance
+- Interactive Plotly Charts
+
+### 📄 Report Generation
+- Company PDF Tearsheets
+- Sector Summary Reports
+- Portfolio Summary Report
+
+### 🤖 Machine Learning
+- Company Clustering
+- Cluster Profiling
+- Sector Distribution Analysis
+
+### 🌐 REST API
+- FastAPI backend
+- Swagger Documentation
+- ReDoc Documentation
+- Company APIs
+- Financial APIs
+- Cluster APIs
+- Validation APIs
+
+### ✅ Testing
+- Pytest Unit Tests
+- API Testing
+- Data Validation
+- Integration Testing
 
 ---
 
-# 🛠️ Technology Stack
+# 🛠 Technology Stack
 
 - Python
 - Pandas
@@ -35,8 +71,11 @@ The platform provides interactive dashboards, financial analytics, valuation ana
 - SQL
 - Plotly
 - Streamlit
-- OpenPyXL
+- FastAPI
+- Pydantic
 - Matplotlib
+- OpenPyXL
+- Pytest
 
 ---
 
@@ -45,24 +84,33 @@ The platform provides interactive dashboards, financial analytics, valuation ana
 ```text
 Nifty100-Financial-Intelligence-Platform
 │
+├── assets/
+│
 ├── data/
+│
 ├── db/
+│
 ├── output/
+│
+├── reports/
+│
 ├── src/
 │   ├── analytics/
+│   ├── api/
 │   ├── dashboard/
 │   ├── etl/
 │   └── utils/
 │
 ├── tests/
-├── assets/
+│
 ├── README.md
-└── requirements.txt
+├── requirements.txt
+└── Makefile
 ```
 
 ---
 
-# ▶️ Running the Dashboard
+# ▶️ Installation
 
 ## Clone Repository
 
@@ -70,93 +118,156 @@ Nifty100-Financial-Intelligence-Platform
 git clone https://github.com/anilpachar-tech/nifty100-financial-intelligence-platform.git
 ```
 
-## Install Dependencies
+Move into project directory
+
+```bash
+cd nifty100-financial-intelligence-platform
+```
+
+Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Run Streamlit Dashboard
+---
+
+# ▶️ Run Streamlit Dashboard
 
 ```bash
 streamlit run src/dashboard/app.py
 ```
 
+Dashboard opens at
+
+```
+http://localhost:8501
+```
+
 ---
 
-# 📈 Dashboard Screens
+# 🌐 Run REST API
 
-## 1. Home
+```bash
+uvicorn src.api.main:app --reload
+```
 
-Provides an overview of the Financial Intelligence Platform including key statistics, navigation, and project summary.
+API available at
+
+```
+http://127.0.0.1:8000
+```
+
+Swagger Documentation
+
+```
+http://127.0.0.1:8000/docs
+```
+
+ReDoc Documentation
+
+```
+http://127.0.0.1:8000/redoc
+```
+
+---
+
+# 📡 REST API Endpoints
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| GET | / | Home |
+| GET | /health | Health Check |
+| GET | /companies | List Companies |
+| GET | /companies/{company_id} | Company Details |
+| GET | /financials/{company_id} | Latest Financial Ratios |
+| GET | /clusters | Company Clusters |
+| GET | /clusters/summary | Cluster Summary |
+| GET | /clusters/sectors | Cluster Sector Distribution |
+| GET | /clusters/top-companies | Top Companies |
+| GET | /validate | Validate Project Resources |
+| GET | /info | Project Information |
+
+---
+
+# 📈 Dashboard Modules
+
+## 🏠 Home
+
+Project overview with summary statistics.
 
 ![Home](assets/home.png)
 
 ---
 
-## 2. Company Profile
+## 🏢 Company Profile
 
-Displays company financial information including Revenue, Profit, CAGR, financial ratios, and Pros & Cons.
+Displays revenue, profit, CAGR, ratios, valuation metrics, and company fundamentals.
 
 ![Company Profile](assets/company_profile.png)
 
 ---
 
-## 3. Stock Screener
+## 📈 Stock Screener
 
-Allows filtering companies using valuation, profitability, leverage, and growth metrics with CSV export functionality.
+Filter companies using valuation, profitability, leverage, and growth metrics.
 
 ![Stock Screener](assets/stock_screener.png)
 
 ---
 
-## 4. Peer Comparison
+## ⚖ Peer Comparison
 
-Compares selected companies using important financial metrics and interactive charts.
+Compare multiple companies using interactive charts.
 
 ![Peer Comparison](assets/peer_comparison.png)
 
 ---
 
-## 5. Trend Analysis
+## 📉 Trend Analysis
 
-Visualizes Revenue, Profit, EPS, Margins, and historical financial trends.
+Historical Revenue, Profit, EPS, Margins, and Growth visualization.
 
 ![Trend Analysis](assets/trend_analysis.png)
 
 ---
 
-## 6. Sector Analysis
+## 🏭 Sector Analysis
 
-Provides sector-wise comparison, market capitalization insights, and financial statistics.
+Sector-wise comparison and financial insights.
 
 ![Sector Analysis](assets/sector_analysis.png)
 
 ---
 
-## 7. Capital Allocation
+## 💰 Capital Allocation
 
-Analyzes ROE, ROCE, Debt, Cash Flow, and capital allocation efficiency.
+ROE, ROCE, Debt, Cash Flow, and Capital Efficiency.
 
 ![Capital Allocation](assets/capital_allocation.png)
 
 ---
 
-## 8. Annual Reports
+## 📄 Annual Reports
 
-Browse and download company annual reports directly from the dashboard.
+Browse and download company annual reports.
 
 ![Annual Reports](assets/annual_reports.png)
 
 ---
 
-# 📦 Output Files
+# 📦 Generated Outputs
 
 | File | Description |
 |------|-------------|
-| valuation_summary.xlsx | Valuation analysis for all companies |
-| valuation_flags.csv | Discount and Caution flagged companies |
+| valuation_summary.xlsx | Company valuation summary |
+| valuation_flags.csv | Discount and caution flags |
 | load_audit.csv | ETL loading audit |
+| cluster_labels.csv | Company cluster labels |
+| cluster_summary.csv | Cluster statistics |
+| cluster_sector_distribution.csv | Sector distribution |
+| cluster_top_companies.csv | Top companies by cluster |
+| portfolio_summary.pdf | Portfolio summary report |
 | nifty100.db | SQLite database |
 
 ---
@@ -165,106 +276,127 @@ Browse and download company annual reports directly from the dashboard.
 
 ## ✅ Sprint 1 — ETL Foundation
 
-Completed:
+Completed
 
-- Project setup
-- Folder structure
-- SQLite database creation
-- ETL pipeline
-- Data loading
-- Data validation
-- Foreign key validation
-- Duplicate detection
-- Data Quality checks
-- Load audit generation
-- Unit testing
+- Project Setup
+- Folder Structure
+- SQLite Database
+- ETL Pipeline
+- Data Loading
+- Data Validation
+- Duplicate Detection
+- Foreign Key Validation
+- Load Audit
+- Unit Testing
 
 ---
 
 ## ✅ Sprint 2 — Financial Analytics
 
-Completed:
+Completed
 
-- Financial ratios
-- CAGR calculations
-- Growth analytics
-- Profitability analysis
-- Company-wise financial metrics
-- Historical trend processing
-- Analytics module development
+- Financial Ratios
+- CAGR Analysis
+- Growth Analytics
+- Profitability Analysis
+- Historical Financial Processing
+- Analytics Modules
 
 ---
 
 ## ✅ Sprint 3 — Dashboard Development
 
-Completed:
+Completed
 
-- Streamlit multi-page dashboard
-- Home page
+- Streamlit Multi-page Dashboard
 - Company Profile
 - Stock Screener
 - Peer Comparison
 - Trend Analysis
 - Sector Analysis
-- Capital Allocation dashboard
-- Interactive Plotly visualizations
-- Cached database loader
+- Capital Allocation Dashboard
+- Interactive Plotly Charts
+- Cached Database Loader
 
 ---
 
-## ✅ Sprint 4 — Dashboard Enhancement & QA
+## ✅ Sprint 4 — Dashboard Enhancement
 
-Completed:
+Completed
 
-- Annual Reports dashboard
-- Valuation analytics module
-- FCF Yield calculation
-- Median PE analysis
-- Valuation flags
-- Dashboard integration
-- Performance optimization
-- Integration testing
-- Partial-data company testing
-- CSV export validation
-- Dashboard QA
+- Annual Reports Browser
+- Valuation Analytics
+- FCF Yield
+- Median PE Analysis
+- Dashboard Optimization
+- Integration Testing
+- CSV Export
 - Documentation
 
 ---
 
-# 📊 Sprint 4 Retrospective
+## ✅ Sprint 5 — Advanced Analytics
 
-## UX Decisions
+Completed
 
-- Implemented a clean multi-page Streamlit dashboard.
-- Used cached database loading to improve responsiveness.
-- Added interactive charts and filters.
-- Maintained consistent UI across all pages.
+- Company PDF Tearsheets
+- Batch Report Generator
+- Sector Reports
+- Portfolio Summary
+- K-Means Clustering
+- Cluster Profiling
 
-### Data Edge Cases
+---
 
-- Tested companies with limited historical data.
-- Verified dashboard stability with missing values.
-- Validated extreme filter combinations.
-- Confirmed valuation calculations for all companies.
+## ✅ Sprint 6 — API Development
 
-### Performance Findings
+Completed
 
-- Company Profile loads within approximately 1–2 seconds.
-- Dashboard remains responsive across all screens.
-- CSV downloads generate valid output files.
-- Valuation analytics successfully processed all 92 companies.
+- FastAPI REST API
+- Swagger Documentation
+- ReDoc Documentation
+- Company Endpoints
+- Financial Endpoints
+- Cluster Endpoints
+- Validation Endpoints
+- Response Models
+- Logging
+- API Testing
+
+---
+
+# 📊 Project Statistics
+
+- Companies Covered: **92**
+- Financial Records: **5,000+**
+- SQLite Database
+- Interactive Dashboard
+- REST API
+- Automated Reports
+- Machine Learning Analytics
+- 37 Automated API Tests Passing
 
 ---
 
 # 📌 Current Status
 
-✅ Sprint 1 Completed
+- ✅ Sprint 1 Completed
+- ✅ Sprint 2 Completed
+- ✅ Sprint 3 Completed
+- ✅ Sprint 4 Completed
+- ✅ Sprint 5 Completed
+- ✅ Sprint 6 Completed
 
-✅ Sprint 2 Completed
+---
 
-✅ Sprint 3 Completed
+# 🚀 Future Enhancements
 
-✅ Sprint 4 Completed
+- Docker Deployment
+- Authentication & Authorization
+- Portfolio Tracking
+- Live NSE/BSE Data Integration
+- AI-based Stock Recommendation
+- Cloud Deployment
 
 ---
 
@@ -274,5 +406,10 @@ Completed:
 
 B.Tech Electrical Engineering
 
-Financial Data Analytics Project
+Financial Intelligence Platform Project
 
+---
+
+# 📄 License
+
+This project is developed for educational and internship purposes.
