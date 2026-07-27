@@ -48,6 +48,16 @@ app = FastAPI(
     title=API_TITLE,
     version=API_VERSION,
     description=API_DESCRIPTION,
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json",
+    contact={
+        "name": "Anil Pachar",
+        "email": "anilpachar956@gmail.com",
+    },
+    license_info={
+        "name": "MIT License",
+    },
 )
 
 logger.info("========================================")
@@ -73,7 +83,13 @@ def get_connection():
 # Health Check
 # ==========================================================
 
-@app.get("/health", tags=["System"])
+@app.get(
+    "/health",
+    tags=["System"],
+    summary="Health Check",
+    description="Checks whether the API service is running successfully.",
+    response_description="API health status"
+)
 def health():
 
     try:
@@ -104,7 +120,13 @@ def health():
 # Root Endpoint
 # ==========================================================
 
-@app.get("/")
+@app.get(
+    "/",
+    tags=["System"],
+    summary="Home",
+    description="Returns API information and available endpoints.",
+    response_description="API welcome message"
+)
 def home():
 
     return {
@@ -121,6 +143,8 @@ def home():
     "/companies",
     tags=["Companies"],
     summary="Get all companies",
+    description="Returns the complete list of companies available in the Nifty100 Financial Intelligence Platform.",
+    response_description="List of companies",
     response_model=List[Company]
 )
 def get_companies():
@@ -151,6 +175,8 @@ def get_companies():
     "/companies/{company_id}",
     tags=["Companies"],
     summary="Get company details",
+    description="Returns company profile, sector information and latest financial metrics for the selected company.",
+    response_description="Company details",
     response_model=CompanyDetails
 )
 def get_company(company_id: str):
@@ -237,7 +263,14 @@ def get_company(company_id: str):
 # Cluster Endpoint
 # ==========================================================
 
-@app.get("/clusters")
+@app.get(
+    "/clusters",
+    tags=["Analytics"],
+    summary="Get cluster labels",
+    description="Returns clustering results for all companies.",
+    response_description="Cluster labels"
+)
+
 def get_clusters():
 
     cluster_file = PROJECT_ROOT / "output" / "cluster_labels.csv"
@@ -262,7 +295,9 @@ def get_clusters():
 @app.get(
     "/financials/{company_id}",
     tags=["Financials"],
-    summary="Get latest financial ratios",
+    summary="Get financial history",
+    description="Returns yearly financial ratios and performance metrics for the selected company.",
+    response_description="Financial history",
     response_model=Financials
 )
 def get_financials(company_id: str):
@@ -326,7 +361,9 @@ def get_financials(company_id: str):
 @app.get(
     "/clusters/summary",
     tags=["Analytics"],
-    summary="Get cluster summary statistics",
+    summary="Cluster summary",
+    description="Returns summary statistics for each generated cluster.",
+    response_description="Cluster summary",
     response_model=List[ClusterSummary]
 )
 def get_cluster_summary():
@@ -354,7 +391,9 @@ def get_cluster_summary():
 @app.get(
     "/clusters/sectors",
     tags=["Analytics"],
-    summary="Get sector distribution by cluster"
+    summary="Cluster sector distribution",
+    description="Returns sector-wise distribution across all clusters.",
+    response_description="Sector distribution"
 )
 def get_cluster_sectors():
 
@@ -381,7 +420,9 @@ def get_cluster_sectors():
 @app.get(
     "/clusters/top-companies",
     tags=["Analytics"],
-    summary="Get top companies from each cluster"
+    summary="Top companies by cluster",
+    description="Returns the highest ranked companies from every generated cluster.",
+    response_description="Top companies"
 )
 def get_top_companies():
 
@@ -413,7 +454,9 @@ def get_top_companies():
 @app.get(
     "/info",
     tags=["System"],
-    summary="API information"
+    summary="Project information",
+    description="Returns project metadata, API version and configuration details.",
+    response_description="Project information"
 )
 def api_info():
 
@@ -444,7 +487,9 @@ def api_info():
 @app.get(
     "/validate",
     tags=["System"],
-    summary="Validate API resources"
+    summary="Validate API resources",
+    description="Checks database connection and required output files.",
+    response_description="Validation status"
 )
 def validate_api():
 
