@@ -89,7 +89,11 @@ Nifty100-Financial-Intelligence-Platform
 ├── data/
 │
 ├── db/
-│
+|
+├── docs/
+|
+├── notebooks/
+|
 ├── output/
 │
 ├── reports/
