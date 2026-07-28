@@ -10,11 +10,7 @@ validation_errors = []
 def log_error(file_name, rule_id, message):
 
     validation_errors.append(
-        {
-            "file_name": file_name,
-            "rule_id": rule_id,
-            "message": message
-        }
+        {"file_name": file_name, "rule_id": rule_id, "message": message}
     )
 
 
@@ -53,7 +49,7 @@ def validate_profitandloss():
         log_error(
             "profitandloss.xlsx",
             "DQ-05",
-            f"{invalid_sales} rows have non-positive sales"
+            f"{invalid_sales} rows have non-positive sales",
         )
     print("DQ-05 Checked")
 
@@ -63,7 +59,7 @@ def validate_profitandloss():
         log_error(
             "profitandloss.xlsx",
             "DQ-06",
-            f"{null_opm} rows have missing OPM percentage"
+            f"{null_opm} rows have missing OPM percentage",
         )
     print("DQ-06 Checked")
 
@@ -80,7 +76,7 @@ def validate_balancesheet():
         log_error(
             "balancesheet.xlsx",
             "DQ-07",
-            f"{invalid_assets} rows have non-positive total assets"
+            f"{invalid_assets} rows have non-positive total assets",
         )
     print("DQ-07 Checked")
 
@@ -90,7 +86,7 @@ def validate_balancesheet():
         log_error(
             "balancesheet.xlsx",
             "DQ-08",
-            f"{invalid_liabilities} rows have non-positive total liabilities"
+            f"{invalid_liabilities} rows have non-positive total liabilities",
         )
     print("DQ-08 Checked")
 
@@ -105,9 +101,7 @@ def validate_cashflow():
 
     if null_cashflow > 0:
         log_error(
-            "cashflow.xlsx",
-            "DQ-09",
-            f"{null_cashflow} rows have missing net cash flow"
+            "cashflow.xlsx", "DQ-09", f"{null_cashflow} rows have missing net cash flow"
         )
     print("DQ-09 Checked")
 
@@ -115,9 +109,7 @@ def validate_cashflow():
 
     if null_company_id > 0:
         log_error(
-            "cashflow.xlsx",
-            "DQ-10",
-            f"{null_company_id} rows have missing company id"
+            "cashflow.xlsx", "DQ-10", f"{null_company_id} rows have missing company id"
         )
     print("DQ-10 Checked")
 
@@ -129,19 +121,11 @@ def validate_analysis():
     print(f"Analysis Records : {len(df)}")
 
     if df["roe"].isnull().sum() > 0:
-        log_error(
-            "analysis.xlsx",
-            "DQ-11",
-            "Missing ROE values found"
-        )
+        log_error("analysis.xlsx", "DQ-11", "Missing ROE values found")
     print("DQ-11 Checked")
 
     if df["stock_price_cagr"].isnull().sum() > 0:
-        log_error(
-            "analysis.xlsx",
-            "DQ-12",
-            "Missing Stock Price CAGR values found"
-        )
+        log_error("analysis.xlsx", "DQ-12", "Missing Stock Price CAGR values found")
     print("DQ-12 Checked")
 
 
@@ -152,19 +136,11 @@ def validate_documents():
     print(f"Documents Records : {len(df)}")
 
     if df["Annual_Report"].isnull().sum() > 0:
-        log_error(
-            "documents.xlsx",
-            "DQ-13",
-            "Missing Annual Report values found"
-        )
+        log_error("documents.xlsx", "DQ-13", "Missing Annual Report values found")
     print("DQ-13 Checked")
 
     if df["company_id"].isnull().sum() > 0:
-        log_error(
-            "documents.xlsx",
-            "DQ-14",
-            "Missing company id values found"
-        )
+        log_error("documents.xlsx", "DQ-14", "Missing company id values found")
     print("DQ-14 Checked")
 
 
@@ -175,28 +151,18 @@ def validate_prosandcons():
     print(f"Pros & Cons Records : {len(df)}")
 
     if df["pros"].isnull().sum() > 0:
-        log_error(
-            "prosandcons.xlsx",
-            "DQ-15",
-            "Missing pros values found"
-        )
+        log_error("prosandcons.xlsx", "DQ-15", "Missing pros values found")
     print("DQ-15 Checked")
 
 
 def validate_sectors():
 
-    df = pd.read_excel(
-        RAW_PATH / "supporting datasets" / "sectors.xlsx"
-    )
+    df = pd.read_excel(RAW_PATH / "supporting datasets" / "sectors.xlsx")
 
     print(f"Sectors Records : {len(df)}")
 
     if df["broad_sector"].isnull().sum() > 0:
-        log_error(
-            "sectors.xlsx",
-            "DQ-16",
-            "Missing broad sector values found"
-        )
+        log_error("sectors.xlsx", "DQ-16", "Missing broad sector values found")
     print("DQ-16 Checked")
 
 
@@ -206,10 +172,7 @@ def generate_report():
 
     report = pd.DataFrame(validation_errors)
 
-    report.to_csv(
-        OUTPUT_PATH / "validation_failures.csv",
-        index=False
-    )
+    report.to_csv(OUTPUT_PATH / "validation_failures.csv", index=False)
 
     print("\nValidation Report Generated")
 

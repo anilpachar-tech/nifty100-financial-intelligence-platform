@@ -5,10 +5,7 @@ import pandas as pd
 
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
-from reportlab.lib.styles import (
-    getSampleStyleSheet,
-    ParagraphStyle
-)
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import (
     SimpleDocTemplate,
@@ -16,11 +13,10 @@ from reportlab.platypus import (
     Spacer,
     Table,
     TableStyle,
-    PageBreak
+    PageBreak,
 )
 
 from tearsheet import connect_database
-
 
 # ==========================================================
 # Paths
@@ -30,30 +26,21 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 REPORT_DIR = PROJECT_ROOT / "reports" / "portfolio"
 
-REPORT_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
+REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
 styles = getSampleStyleSheet()
 
 heading_style = ParagraphStyle(
-    "Heading",
-    parent=styles["Heading1"],
-    alignment=TA_CENTER,
-    spaceAfter=18
+    "Heading", parent=styles["Heading1"], alignment=TA_CENTER, spaceAfter=18
 )
 
-sub_heading = ParagraphStyle(
-    "SubHeading",
-    parent=styles["Heading2"],
-    spaceAfter=10
-)
+sub_heading = ParagraphStyle("SubHeading", parent=styles["Heading2"], spaceAfter=10)
 
 
 # ==========================================================
 # Company Loader
 # ==========================================================
+
 
 def load_companies(conn):
 
@@ -80,6 +67,7 @@ def load_companies(conn):
 # Financial Ratios Loader
 # ==========================================================
 
+
 def load_financial_ratios(conn):
 
     query = """
@@ -90,23 +78,9 @@ def load_financial_ratios(conn):
 
     df = pd.read_sql(query, conn)
 
-    df["year"] = (
+    df["year"] = df["year"].astype(str).str.extract(r"(\d+)").astype(float)
 
-        df["year"]
-
-        .astype(str)
-
-        .str.extract(r"(\d+)")
-
-        .astype(float)
-
-    )
-
-    df = df.sort_values(
-
-        ["company_id", "year"]
-
-    )
+    df = df.sort_values(["company_id", "year"])
 
     return df
 
@@ -114,6 +88,7 @@ def load_financial_ratios(conn):
 # ==========================================================
 # Trend Arrow
 # ==========================================================
+
 
 def trend_arrow(previous, latest):
 
@@ -138,13 +113,10 @@ def trend_arrow(previous, latest):
 # Latest + Previous Record
 # ==========================================================
 
+
 def latest_previous(df, company):
 
-    company_df = df[
-
-        df["company_id"] == company
-
-    ]
+    company_df = df[df["company_id"] == company]
 
     if len(company_df) == 0:
 
@@ -162,122 +134,69 @@ def latest_previous(df, company):
 
     return latest, previous
 
+
 # ==========================================================
 # Build Company Page
 # ==========================================================
 
+
 def build_company_page(elements, company, ratios):
 
-    latest, previous = latest_previous(
-        ratios,
-        company["id"]
-    )
+    latest, previous = latest_previous(ratios, company["id"])
+
+    elements.append(Paragraph(company["company_name"], heading_style))
+
+    elements.append(Paragraph(f"<b>Ticker :</b> {company['id']}", styles["Normal"]))
 
     elements.append(
-        Paragraph(
-            company["company_name"],
-            heading_style
-        )
+        Paragraph(f"<b>Sector :</b> {company['broad_sector']}", styles["Normal"])
     )
 
-    elements.append(
-        Paragraph(
-            f"<b>Ticker :</b> {company['id']}",
-            styles["Normal"]
-        )
-    )
-
-    elements.append(
-        Paragraph(
-            f"<b>Sector :</b> {company['broad_sector']}",
-            styles["Normal"]
-        )
-    )
-
-    elements.append(
-        Spacer(1, 0.25 * inch)
-    )
+    elements.append(Spacer(1, 0.25 * inch))
 
     if latest is None:
 
-        elements.append(
-            Paragraph(
-                "No Financial Data Available",
-                styles["Normal"]
-            )
-        )
+        elements.append(Paragraph("No Financial Data Available", styles["Normal"]))
 
         elements.append(PageBreak())
 
         return
 
     metrics = [
-
         (
             "ROE",
             latest["return_on_equity_pct"],
             trend_arrow(
-                previous["return_on_equity_pct"],
-                latest["return_on_equity_pct"]
-            )
+                previous["return_on_equity_pct"], latest["return_on_equity_pct"]
+            ),
         ),
-
         (
             "ROCE",
             latest["return_on_capital_employed_pct"],
             trend_arrow(
                 previous["return_on_capital_employed_pct"],
-                latest["return_on_capital_employed_pct"]
-            )
+                latest["return_on_capital_employed_pct"],
+            ),
         ),
-
-        (
-            "PE",
-            latest["pe"],
-            trend_arrow(
-                previous["pe"],
-                latest["pe"]
-            )
-        ),
-
+        ("PE", latest["pe"], trend_arrow(previous["pe"], latest["pe"])),
         (
             "Debt / Equity",
             latest["debt_to_equity"],
-            trend_arrow(
-                previous["debt_to_equity"],
-                latest["debt_to_equity"]
-            )
+            trend_arrow(previous["debt_to_equity"], latest["debt_to_equity"]),
         ),
-
         (
             "EPS",
             latest["earnings_per_share"],
-            trend_arrow(
-                previous["earnings_per_share"],
-                latest["earnings_per_share"]
-            )
+            trend_arrow(previous["earnings_per_share"], latest["earnings_per_share"]),
         ),
-
         (
             "Dividend Yield",
             latest["dividend_yield"],
-            trend_arrow(
-                previous["dividend_yield"],
-                latest["dividend_yield"]
-            )
-        )
-
+            trend_arrow(previous["dividend_yield"], latest["dividend_yield"]),
+        ),
     ]
 
-    table_data = [
-
-        [
-            "Metric",
-            "Latest",
-            "Trend"
-        ]
-
-    ]
+    table_data = [["Metric", "Latest", "Trend"]]
 
     for metric, value, arrow in metrics:
 
@@ -289,70 +208,41 @@ def build_company_page(elements, company, ratios):
 
             value = round(value, 2)
 
-        table_data.append(
+        table_data.append([metric, value, arrow])
 
-            [
-                metric,
-                value,
-                arrow
-            ]
-
-        )
-
-    table = Table(
-
-        table_data,
-
-        colWidths=[3.0 * inch, 1.3 * inch, 1.0 * inch]
-
-    )
+    table = Table(table_data, colWidths=[3.0 * inch, 1.3 * inch, 1.0 * inch])
 
     table.setStyle(
-
-        TableStyle([
-
-            ("GRID",(0,0),(-1,-1),0.5,colors.black),
-
-            ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#D9EAD3")),
-
-            ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
-
-            ("ALIGN",(0,0),(-1,-1),"CENTER"),
-
-            ("BOTTOMPADDING",(0,0),(-1,0),8),
-
-            ("FONTSIZE",(0,0),(-1,-1),10)
-
-        ])
-
+        TableStyle(
+            [
+                ("GRID", (0, 0), (-1, -1), 0.5, colors.black),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#D9EAD3")),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+                ("FONTSIZE", (0, 0), (-1, -1), 10),
+            ]
+        )
     )
 
     elements.append(table)
 
-    elements.append(
-        Spacer(1, 0.40 * inch)
-    )
+    elements.append(Spacer(1, 0.40 * inch))
 
     elements.append(
-
         Paragraph(
-
-            "<b>Generated by</b><br/>"
-            "Nifty100 Financial Intelligence Platform",
-
-            styles["Normal"]
-
+            "<b>Generated by</b><br/>" "Nifty100 Financial Intelligence Platform",
+            styles["Normal"],
         )
-
     )
 
-    elements.append(
-        PageBreak()
-    )
+    elements.append(PageBreak())
+
 
 # ==========================================================
 # Build Portfolio PDF
 # ==========================================================
+
 
 def build_portfolio_pdf():
 
@@ -365,11 +255,7 @@ def build_portfolio_pdf():
     pdf_path = REPORT_DIR / "portfolio_summary.pdf"
 
     doc = SimpleDocTemplate(
-        str(pdf_path),
-        rightMargin=30,
-        leftMargin=30,
-        topMargin=30,
-        bottomMargin=30
+        str(pdf_path), rightMargin=30, leftMargin=30, topMargin=30, bottomMargin=30
     )
 
     elements = []
@@ -385,11 +271,7 @@ def build_portfolio_pdf():
 
         print(f"[{index}/{total}] {company['id']}")
 
-        build_company_page(
-            elements,
-            company,
-            ratios
-        )
+        build_company_page(elements, company, ratios)
 
     doc.build(elements)
 
@@ -402,6 +284,7 @@ def build_portfolio_pdf():
 # Validation
 # ==========================================================
 
+
 def validate_portfolio(pdf_path):
 
     print()
@@ -411,10 +294,7 @@ def validate_portfolio(pdf_path):
 
     if pdf_path.exists():
 
-        size = round(
-            pdf_path.stat().st_size / 1024,
-            2
-        )
+        size = round(pdf_path.stat().st_size / 1024, 2)
 
         print(f"File : {pdf_path.name}")
         print(f"Size : {size} KB")
@@ -435,6 +315,7 @@ def validate_portfolio(pdf_path):
 # ==========================================================
 # Main
 # ==========================================================
+
 
 def main():
 

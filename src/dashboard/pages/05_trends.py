@@ -16,51 +16,31 @@ data = get_trend_data()
 # Company Search
 # -----------------------------
 
-companies = sorted(
-    data["company_name"].unique()
-)
+companies = sorted(data["company_name"].unique())
 
-selected_company = st.selectbox(
-    "Select Company",
-    companies
-)
+selected_company = st.selectbox("Select Company", companies)
 
-company_df = data[
-    data["company_name"] == selected_company
-].copy()
+company_df = data[data["company_name"] == selected_company].copy()
 
 # -----------------------------
 # Metric Selector
 # -----------------------------
 
 metric_map = {
-
     "Revenue": "sales",
-
     "Net Profit": "net_profit",
-
     "ROE": "return_on_equity_pct",
-
     "ROCE": "return_on_capital_employed_pct",
-
     "Net Profit Margin": "net_profit_margin_pct",
-
     "Debt / Equity": "debt_to_equity",
-
-    "Free Cash Flow": "free_cash_flow_cr"
-
+    "Free Cash Flow": "free_cash_flow_cr",
 }
 
 selected_metrics = st.multiselect(
-
     "Select up to 3 Metrics",
-
     options=list(metric_map.keys()),
-
     default=["Revenue"],
-
-    max_selections=3
-
+    max_selections=3,
 )
 
 st.markdown("---")
@@ -71,17 +51,8 @@ st.markdown("---")
 
 fig = go.Figure()
 
-left_metrics = [
-    "Revenue",
-    "Net Profit",
-    "Free Cash Flow"
-]
-right_metrics = [
-    "ROE",
-    "ROCE",
-    "Net Profit Margin",
-    "Debt / Equity"
-]
+left_metrics = ["Revenue", "Net Profit", "Free Cash Flow"]
+right_metrics = ["ROE", "ROCE", "Net Profit Margin", "Debt / Equity"]
 
 for metric_name in selected_metrics:
 
@@ -103,43 +74,20 @@ for metric_name in selected_metrics:
             marker=dict(size=8),
             line=dict(width=3),
             name=metric_name,
-            text=[
-                "" if pd.isna(x) else f"{x:.1f}%"
-                for x in plot_df["yoy"]
-            ],
+            text=["" if pd.isna(x) else f"{x:.1f}%" for x in plot_df["yoy"]],
             textposition="top center",
-            yaxis="y2" if metric_name in right_metrics else "y"
+            yaxis="y2" if metric_name in right_metrics else "y",
         )
     )
 
 fig.update_layout(
-
     title=f"{selected_company} - Financial Trends",
-
-    xaxis=dict(
-        title="Year"
-    ),
-
-    yaxis=dict(
-        title="Revenue / Net Profit"
-    ),
-
-    yaxis2=dict(
-        title="Financial Ratios (%)",
-        overlaying="y",
-        side="right"
-    ),
-
+    xaxis=dict(title="Year"),
+    yaxis=dict(title="Revenue / Net Profit"),
+    yaxis2=dict(title="Financial Ratios (%)", overlaying="y", side="right"),
     hovermode="x unified",
-
-    legend=dict(
-        orientation="h",
-        y=1.12,
-        x=0.5,
-        xanchor="center"
-    ),
-
-    height=650
+    legend=dict(orientation="h", y=1.12, x=0.5, xanchor="center"),
+    height=650,
 )
 
 st.plotly_chart(fig, use_container_width=True)

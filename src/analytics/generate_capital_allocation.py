@@ -7,9 +7,7 @@ Generate Capital Allocation Report
 import sqlite3
 import pandas as pd
 
-from src.analytics.cashflow_kpis import (
-    capital_allocation_pattern
-)
+from src.analytics.cashflow_kpis import capital_allocation_pattern
 
 DB_PATH = "db/nifty100.db"
 OUTPUT_FILE = "output/capital_allocation.csv"
@@ -48,21 +46,13 @@ def main():
                 "cfo_sign": "+" if cfo >= 0 else "-",
                 "cfi_sign": "+" if cfi >= 0 else "-",
                 "cff_sign": "+" if cff >= 0 else "-",
-                "pattern_label":
-                    capital_allocation_pattern(
-                        cfo,
-                        cfi,
-                        cff
-                    )
+                "pattern_label": capital_allocation_pattern(cfo, cfi, cff),
             }
         )
 
     result = pd.DataFrame(output)
 
-    result.to_csv(
-        OUTPUT_FILE,
-        index=False
-    )
+    result.to_csv(OUTPUT_FILE, index=False)
 
     print("=" * 50)
     print("Capital Allocation Report Generated")

@@ -2,13 +2,7 @@ import sqlite3
 
 conn = sqlite3.connect("db/nifty100.db")
 
-tables = [
-    "profitandloss",
-    "balancesheet",
-    "cashflow",
-    "financial_ratios",
-    "market_cap"
-]
+tables = ["profitandloss", "balancesheet", "cashflow", "financial_ratios", "market_cap"]
 
 print("\n===== DQ-02 COMPANY_ID + YEAR UNIQUENESS =====\n")
 

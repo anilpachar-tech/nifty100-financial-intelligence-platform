@@ -2,13 +2,13 @@ from fastapi.testclient import TestClient
 
 from src.api.main import app
 
-
 client = TestClient(app)
 
 
 # ==========================================================
 # Health API
 # ==========================================================
+
 
 def test_health():
 
@@ -25,6 +25,7 @@ def test_health():
 # Home API
 # ==========================================================
 
+
 def test_home():
 
     response = client.get("/")
@@ -40,6 +41,7 @@ def test_home():
 # Companies API
 # ==========================================================
 
+
 def test_companies():
 
     response = client.get("/companies")
@@ -52,9 +54,11 @@ def test_companies():
 
     assert len(companies) > 0
 
+
 # ==========================================================
 # Company Details API
 # ==========================================================
+
 
 def test_company_details():
 
@@ -75,6 +79,7 @@ def test_company_details():
 # Financials API
 # ==========================================================
 
+
 def test_financials():
 
     response = client.get("/financials/TCS")
@@ -94,6 +99,7 @@ def test_financials():
 # Cluster Summary API
 # ==========================================================
 
+
 def test_cluster_summary():
 
     response = client.get("/clusters/summary")
@@ -111,6 +117,7 @@ def test_cluster_summary():
 # Cluster List API
 # ==========================================================
 
+
 def test_cluster_labels():
 
     response = client.get("/clusters")
@@ -123,9 +130,11 @@ def test_cluster_labels():
 
     assert len(clusters) == 92
 
+
 # ==========================================================
 # Invalid Company API
 # ==========================================================
+
 
 def test_invalid_company():
 
@@ -138,6 +147,7 @@ def test_invalid_company():
 # Invalid Financial API
 # ==========================================================
 
+
 def test_invalid_financials():
 
     response = client.get("/financials/INVALID_COMPANY")
@@ -148,6 +158,7 @@ def test_invalid_financials():
 # ==========================================================
 # API Validation Endpoint
 # ==========================================================
+
 
 def test_validate():
 
@@ -165,6 +176,7 @@ def test_validate():
 # ==========================================================
 # API Information Endpoint
 # ==========================================================
+
 
 def test_info():
 

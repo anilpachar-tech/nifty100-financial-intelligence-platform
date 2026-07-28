@@ -14,42 +14,31 @@ def load_data():
 
     conn = sqlite3.connect(DB_PATH)
 
-    ratios = pd.read_sql(
-        "SELECT * FROM financial_ratios",
-        conn
-    )
+    ratios = pd.read_sql("SELECT * FROM financial_ratios", conn)
 
-    peers = pd.read_sql(
-        "SELECT * FROM peer_groups",
-        conn
-    )
+    peers = pd.read_sql("SELECT * FROM peer_groups", conn)
 
     conn.close()
 
     return ratios, peers
+
 
 def prepare_master():
 
     ratios, peers = load_data()
 
     master = ratios.merge(
-        peers[
-            [
-                "company_id",
-                "peer_group_name"
-            ]
-        ],
-        on="company_id",
-        how="left"
+        peers[["company_id", "peer_group_name"]], on="company_id", how="left"
     )
 
     missing = master["peer_group_name"].isna().sum()
-    
+
     if missing > 0:
         print()
         print(f"No peer group assigned : {missing} records")
 
     return master
+
 
 def calculate_percentile(master):
 
@@ -63,7 +52,7 @@ def calculate_percentile(master):
         "revenue_cagr_5yr",
         "eps_cagr_5yr",
         "interest_coverage",
-        "asset_turnover"
+        "asset_turnover",
     ]
 
     results = []
@@ -81,31 +70,27 @@ def calculate_percentile(master):
 
             if metric == "debt_to_equity":
 
-                temp["percentile_rank"] = (
-                    1 - temp[metric].rank(pct=True)
-                ) * 100
+                temp["percentile_rank"] = (1 - temp[metric].rank(pct=True)) * 100
 
             else:
 
-                temp["percentile_rank"] = (
-                    temp[metric].rank(pct=True)
-                ) * 100
+                temp["percentile_rank"] = (temp[metric].rank(pct=True)) * 100
 
             for _, row in temp.iterrows():
 
-                results.append({
-                    "company_id": row["company_id"],
-                    "peer_group_name": group_name,
-                    "metric": metric,
-                    "value": row[metric],
-                    "percentile_rank": round(
-                        row["percentile_rank"],
-                        2
-                    ),
-                    "year": row["year"]
-                })
+                results.append(
+                    {
+                        "company_id": row["company_id"],
+                        "peer_group_name": group_name,
+                        "metric": metric,
+                        "value": row[metric],
+                        "percentile_rank": round(row["percentile_rank"], 2),
+                        "year": row["year"],
+                    }
+                )
 
     return pd.DataFrame(results)
+
 
 if __name__ == "__main__":
 
@@ -142,19 +127,14 @@ conn = sqlite3.connect(DB_PATH)
 # Purana data remove
 conn.execute("DELETE FROM peer_percentiles")
 
-peer_percentiles.to_sql(
-    "peer_percentiles",
-    conn,
-    if_exists="append",
-    index=False
-)
+peer_percentiles.to_sql("peer_percentiles", conn, if_exists="append", index=False)
 
 count = pd.read_sql(
     """
     SELECT COUNT(*) AS total_rows
     FROM peer_percentiles
     """,
-    conn
+    conn,
 )
 
 print(count)

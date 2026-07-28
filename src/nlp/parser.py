@@ -32,7 +32,7 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 logging.basicConfig(
     filename=OUTPUT_DIR / "parser.log",
     level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s"
+    format="%(asctime)s | %(levelname)s | %(message)s",
 )
 
 logger = logging.getLogger(__name__)
@@ -56,12 +56,13 @@ REQUIRED_COLUMNS = [
 
 PATTERN = re.compile(
     r"(TTM|Last\s*Year|\d+\s*Years?|\d+\s*Year)\s*:?\s*(-?\d+(?:\.\d+)?)%",
-    re.IGNORECASE
+    re.IGNORECASE,
 )
 
 # ==========================================================
 # Load Dataset
 # ==========================================================
+
 
 def load_analysis_data() -> pd.DataFrame:
     """
@@ -75,54 +76,38 @@ def load_analysis_data() -> pd.DataFrame:
     logger.info("Loading analysis.xlsx")
 
     if not ANALYSIS_FILE.exists():
-        raise FileNotFoundError(
-            f"Analysis file not found:\n{ANALYSIS_FILE}"
-        )
+        raise FileNotFoundError(f"Analysis file not found:\n{ANALYSIS_FILE}")
 
-    df = pd.read_excel(
-        ANALYSIS_FILE,
-        header=1
-    )
+    df = pd.read_excel(ANALYSIS_FILE, header=1)
 
-    df.columns = (
-        df.columns
-        .astype(str)
-        .str.strip()
-    )
+    df.columns = df.columns.astype(str).str.strip()
 
-    logger.info(
-        "Loaded %d rows and %d columns",
-        len(df),
-        len(df.columns)
-    )
+    logger.info("Loaded %d rows and %d columns", len(df), len(df.columns))
 
     return df
+
 
 # ==========================================================
 # Validate Columns
 # ==========================================================
 
+
 def validate_columns(df: pd.DataFrame):
 
-    missing = [
-        col
-        for col in REQUIRED_COLUMNS
-        if col not in df.columns
-    ]
+    missing = [col for col in REQUIRED_COLUMNS if col not in df.columns]
 
     if missing:
-        raise ValueError(
-            f"Missing columns: {missing}"
-        )
+        raise ValueError(f"Missing columns: {missing}")
 
     logger.info("Column validation successful.")
+
 
 # ==========================================================
 # Parse Single Text Cell
 # ==========================================================
 
-def parse_text(text):
 
+def parse_text(text):
     """
     Example
 
@@ -153,11 +138,7 @@ def parse_text(text):
     for label, value in matches:
 
         label = (
-            label
-            .replace("Year", "Years")
-            .replace("Yearss", "Years")
-            .strip()
-            .title()
+            label.replace("Year", "Years").replace("Yearss", "Years").strip().title()
         )
 
         try:
@@ -167,9 +148,11 @@ def parse_text(text):
 
     return parsed
 
+
 # ==========================================================
 # Parse Complete DataFrame
 # ==========================================================
+
 
 def parse_dataframe(df):
 
@@ -177,7 +160,7 @@ def parse_dataframe(df):
         "compounded_sales_growth",
         "compounded_profit_growth",
         "stock_price_cagr",
-        "roe"
+        "roe",
     ]
 
     company_data = {}
@@ -191,9 +174,7 @@ def parse_dataframe(df):
         company_id = row["company_id"]
 
         if company_id not in company_data:
-            company_data[company_id] = {
-                "company_id": company_id
-            }
+            company_data[company_id] = {"company_id": company_id}
 
         success = False
 
@@ -206,43 +187,26 @@ def parse_dataframe(df):
 
             for key, value in parsed.items():
 
-                clean_key = (
-                    key.lower()
-                    .replace(" ", "_")
-                )
+                clean_key = key.lower().replace(" ", "_")
 
-                company_data[company_id][
-                    f"{column}_{clean_key}"
-                ] = value
+                company_data[company_id][f"{column}_{clean_key}"] = value
 
         if not success:
-            failed_rows.append({
-                "id": row["id"],
-                "company_id": company_id
-            })
+            failed_rows.append({"id": row["id"], "company_id": company_id})
 
-    parsed_df = pd.DataFrame(
-        company_data.values()
-    )
+    parsed_df = pd.DataFrame(company_data.values())
 
-    logger.info(
-        "Companies Parsed : %d",
-        len(parsed_df)
-    )
+    logger.info("Companies Parsed : %d", len(parsed_df))
 
-    logger.info(
-        "Failed Records : %d",
-        len(failed_rows)
-    )
+    logger.info("Failed Records : %d", len(failed_rows))
 
-    return (
-        parsed_df,
-        pd.DataFrame(failed_rows)
-    )
+    return (parsed_df, pd.DataFrame(failed_rows))
+
 
 # ==========================================================
 # Save Output Files
 # ==========================================================
+
 
 def save_outputs(parsed_df, failed_df):
     """
@@ -266,6 +230,7 @@ def save_outputs(parsed_df, failed_df):
 # Print Summary
 # ==========================================================
 
+
 def print_summary(df, parsed_df, failed_df):
 
     print("\n" + "=" * 60)
@@ -279,10 +244,7 @@ def print_summary(df, parsed_df, failed_df):
 
     failed = len(failed_df)
 
-    success_rate = (
-        ((len(df) - failed) / len(df)) * 100
-        if len(df) > 0 else 0
-    )
+    success_rate = ((len(df) - failed) / len(df)) * 100 if len(df) > 0 else 0
 
     print(f"Success Rate       : {success_rate:.2f}%")
 
@@ -298,6 +260,7 @@ def print_summary(df, parsed_df, failed_df):
 # ==========================================================
 # Main Function
 # ==========================================================
+
 
 def main():
 
@@ -317,17 +280,10 @@ def main():
         parsed_df, failed_df = parse_dataframe(df)
 
         # Save Outputs
-        save_outputs(
-            parsed_df,
-            failed_df
-        )
+        save_outputs(parsed_df, failed_df)
 
         # Print Summary
-        print_summary(
-            df,
-            parsed_df,
-            failed_df
-        )
+        print_summary(df, parsed_df, failed_df)
 
         logger.info("Parser completed successfully.")
 

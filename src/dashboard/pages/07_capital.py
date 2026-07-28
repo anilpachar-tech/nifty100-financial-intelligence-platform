@@ -25,6 +25,7 @@ st.divider()
 # CLASSIFICATION
 # =====================================================
 
+
 def classify_pattern(row):
 
     roe = float(row["roe"])
@@ -76,11 +77,7 @@ df["Size"] = df["roe"].clip(lower=1)
 
 st.subheader("📊 Capital Allocation Summary")
 
-pattern_counts = (
-    df["Pattern"]
-    .value_counts()
-    .sort_values(ascending=False)
-)
+pattern_counts = df["Pattern"].value_counts().sort_values(ascending=False)
 
 cols = st.columns(4)
 
@@ -150,9 +147,7 @@ selected_pattern = st.selectbox(
 )
 
 filtered_df = (
-    df[df["Pattern"] == selected_pattern]
-    .copy()
-    .sort_values("roe", ascending=False)
+    df[df["Pattern"] == selected_pattern].copy().sort_values("roe", ascending=False)
 )
 
 display_df = filtered_df[
@@ -195,20 +190,11 @@ avg_roe = filtered_df["roe"].mean()
 
 c1, c2, c3 = st.columns(3)
 
-c1.metric(
-    "📈 Avg Sales Growth",
-    f"{avg_sales:.2f}%"
-)
+c1.metric("📈 Avg Sales Growth", f"{avg_sales:.2f}%")
 
-c2.metric(
-    "💰 Avg Profit Growth",
-    f"{avg_profit:.2f}%"
-)
+c2.metric("💰 Avg Profit Growth", f"{avg_profit:.2f}%")
 
-c3.metric(
-    "🏦 Avg ROE",
-    f"{avg_roe:.2f}%"
-)
+c3.metric("🏦 Avg ROE", f"{avg_roe:.2f}%")
 
 st.divider()
 
@@ -228,47 +214,39 @@ left, right = st.columns(2)
 
 with left:
 
-    st.success(
-        f"""
+    st.success(f"""
 ### 🏆 Most Common Pattern
 
 **{most_common}**
 
 Companies : **{pattern_counts.max()}**
-"""
-    )
+""")
 
-    st.info(
-        f"""
+    st.info(f"""
 ### 🚀 Highest Sales Growth
 
 **{highest_sales['company_name']}**
 
 Growth : **{highest_sales['sales_growth']:.2f}%**
-"""
-    )
+""")
 
 with right:
 
-    st.warning(
-        f"""
+    st.warning(f"""
 ### ⭐ Highest ROE Company
 
 **{highest_roe['company_name']}**
 
 ROE : **{highest_roe['roe']:.2f}%**
-"""
-    )
+""")
 
-    st.error(
-        f"""
+    st.error(f"""
 ### 📉 Least Common Pattern
 
 **{least_common}**
 
 Companies : **{pattern_counts.min()}**
-"""
-    )
+""")
 
 st.divider()
 
@@ -290,15 +268,9 @@ s2.metric(
     int(df["Pattern"].nunique()),
 )
 
-s3.metric(
-    "Average ROE",
-    f"{df['roe'].mean():.2f}%"
-)
+s3.metric("Average ROE", f"{df['roe'].mean():.2f}%")
 
-s4.metric(
-    "Average Sales Growth",
-    f"{df['sales_growth'].mean():.2f}%"
-)
+s4.metric("Average Sales Growth", f"{df['sales_growth'].mean():.2f}%")
 
 st.divider()
 

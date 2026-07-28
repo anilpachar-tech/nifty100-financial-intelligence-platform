@@ -2,12 +2,14 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-
 # ==========================================================
 # Company Model
 # ==========================================================
 
+
 class Company(BaseModel):
+    """Represents a company record."""
+
     id: str
     company_name: str
 
@@ -16,7 +18,10 @@ class Company(BaseModel):
 # Company Details Model
 # ==========================================================
 
+
 class CompanyDetails(BaseModel):
+    """Represents detailed company information."""
+
     company_id: str
     company_name: str
 
@@ -36,7 +41,10 @@ class CompanyDetails(BaseModel):
 # Financial Model
 # ==========================================================
 
+
 class Financials(BaseModel):
+    """Represents company financial metrics."""
+
     company_id: str
     year: str
 
@@ -61,7 +69,10 @@ class Financials(BaseModel):
 # Cluster Summary Model
 # ==========================================================
 
+
 class ClusterSummary(BaseModel):
+    """Represents summary statistics for a cluster."""
+
     cluster_id: int
     cluster_name: str
 

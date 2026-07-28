@@ -17,7 +17,6 @@ from reportlab.graphics.charts.linecharts import HorizontalLineChart
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 
-
 # =====================================================
 # Paths
 # =====================================================
@@ -32,10 +31,7 @@ REPORT_DIR = OUTPUT_DIR / "tearsheets"
 
 LOG_FILE = OUTPUT_DIR / "tearsheet.log"
 
-REPORT_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
+REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # =====================================================
@@ -43,13 +39,9 @@ REPORT_DIR.mkdir(
 # =====================================================
 
 logging.basicConfig(
-
     filename=LOG_FILE,
-
     level=logging.INFO,
-
-    format="%(asctime)s | %(levelname)s | %(message)s"
-
+    format="%(asctime)s | %(levelname)s | %(message)s",
 )
 
 logger = logging.getLogger(__name__)
@@ -59,11 +51,10 @@ logger = logging.getLogger(__name__)
 # Database
 # =====================================================
 
+
 def connect_database():
 
-    logger.info(
-        "Connecting database..."
-    )
+    logger.info("Connecting database...")
 
     return sqlite3.connect(DB_FILE)
 
@@ -111,94 +102,47 @@ WHITE = colors.white
 styles = getSampleStyleSheet()
 
 TITLE_STYLE = ParagraphStyle(
-
     "Title",
-
     parent=styles["Heading1"],
-
     alignment=TA_CENTER,
-
     fontSize=20,
-
     textColor=WHITE,
-
-    spaceAfter=6
-
+    spaceAfter=6,
 )
 
 HEADING_STYLE = ParagraphStyle(
-
-    "Heading",
-
-    parent=styles["Heading2"],
-
-    fontSize=13,
-
-    textColor=NAVY,
-
-    spaceAfter=6
-
+    "Heading", parent=styles["Heading2"], fontSize=13, textColor=NAVY, spaceAfter=6
 )
 
 NORMAL_STYLE = ParagraphStyle(
-
-    "Normal",
-
-    parent=styles["BodyText"],
-
-    fontSize=9,
-
-    leading=12
-
+    "Normal", parent=styles["BodyText"], fontSize=9, leading=12
 )
 
-SMALL_STYLE = ParagraphStyle(
-
-    "Small",
-
-    parent=styles["BodyText"],
-
-    fontSize=8,
-
-    leading=10
-
-)
+SMALL_STYLE = ParagraphStyle("Small", parent=styles["BodyText"], fontSize=8, leading=10)
 
 
 # =====================================================
 # PDF Canvas
 # =====================================================
 
+
 def create_canvas(company_id):
 
     output_file = REPORT_DIR / f"{company_id}_tearsheet.pdf"
 
-    pdf = canvas.Canvas(
+    pdf = canvas.Canvas(str(output_file), pagesize=(PAGE_WIDTH, PAGE_HEIGHT))
 
-        str(output_file),
-
-        pagesize=(PAGE_WIDTH, PAGE_HEIGHT)
-
-    )
-
-    logger.info(
-
-        "Creating PDF : %s",
-
-        company_id
-
-    )
+    logger.info("Creating PDF : %s", company_id)
 
     return pdf, output_file
+
 
 # =====================================================
 # Company Details
 # =====================================================
 
-def load_company(
-    conn,
-    company_id
-):
+
+def load_company(conn, company_id):
 
     query = """
     SELECT *
@@ -206,11 +150,7 @@ def load_company(
     WHERE UPPER(id)=?
     """
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=[company_id.upper()]
-    )
+    df = pd.read_sql(query, conn, params=[company_id.upper()])
 
     if df.empty:
         return None
@@ -222,10 +162,8 @@ def load_company(
 # Profit & Loss
 # =====================================================
 
-def load_profit_loss(
-    conn,
-    company_id
-):
+
+def load_profit_loss(conn, company_id):
 
     query = """
     SELECT *
@@ -233,11 +171,7 @@ def load_profit_loss(
     WHERE company_id=?
     """
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=[company_id]
-    )
+    df = pd.read_sql(query, conn, params=[company_id])
 
     return df
 
@@ -246,10 +180,8 @@ def load_profit_loss(
 # Balance Sheet
 # =====================================================
 
-def load_balance_sheet(
-    conn,
-    company_id
-):
+
+def load_balance_sheet(conn, company_id):
 
     query = """
     SELECT *
@@ -257,11 +189,7 @@ def load_balance_sheet(
     WHERE company_id=?
     """
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=[company_id]
-    )
+    df = pd.read_sql(query, conn, params=[company_id])
 
     return df
 
@@ -270,10 +198,8 @@ def load_balance_sheet(
 # Cash Flow
 # =====================================================
 
-def load_cashflow(
-    conn,
-    company_id
-):
+
+def load_cashflow(conn, company_id):
 
     query = """
     SELECT *
@@ -281,11 +207,7 @@ def load_cashflow(
     WHERE company_id=?
     """
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=[company_id]
-    )
+    df = pd.read_sql(query, conn, params=[company_id])
 
     return df
 
@@ -294,10 +216,8 @@ def load_cashflow(
 # Financial Ratios
 # =====================================================
 
-def load_financial_ratios(
-    conn,
-    company_id
-):
+
+def load_financial_ratios(conn, company_id):
 
     query = """
     SELECT *
@@ -305,11 +225,7 @@ def load_financial_ratios(
     WHERE company_id=?
     """
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=[company_id]
-    )
+    df = pd.read_sql(query, conn, params=[company_id])
 
     return df
 
@@ -318,10 +234,8 @@ def load_financial_ratios(
 # Pros & Cons
 # =====================================================
 
-def load_pros_cons(
-    conn,
-    company_id
-):
+
+def load_pros_cons(conn, company_id):
 
     query = """
     SELECT *
@@ -329,11 +243,7 @@ def load_pros_cons(
     WHERE company_id=?
     """
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=[company_id]
-    )
+    df = pd.read_sql(query, conn, params=[company_id])
 
     return df
 
@@ -342,32 +252,16 @@ def load_pros_cons(
 # Capital Allocation
 # =====================================================
 
-def load_capital_allocation(
-    company_id
-):
+
+def load_capital_allocation(company_id):
 
     file_path = OUTPUT_DIR / "capital_allocation.csv"
 
-    df = pd.read_csv(
-        file_path
-    )
+    df = pd.read_csv(file_path)
 
-    df["company_id"] = (
+    df["company_id"] = df["company_id"].astype(str).str.upper().str.strip()
 
-        df["company_id"]
-
-        .astype(str)
-
-        .str.upper()
-
-        .str.strip()
-
-    )
-
-    company_df = df[
-        df["company_id"] ==
-        company_id.upper()
-    ].copy()
+    company_df = df[df["company_id"] == company_id.upper()].copy()
 
     return company_df
 
@@ -376,32 +270,16 @@ def load_capital_allocation(
 # Cashflow Intelligence
 # =====================================================
 
-def load_cashflow_intelligence(
-    company_id
-):
+
+def load_cashflow_intelligence(company_id):
 
     file_path = OUTPUT_DIR / "cashflow_intelligence.xlsx"
 
-    df = pd.read_excel(
-        file_path
-    )
+    df = pd.read_excel(file_path)
 
-    df["company_id"] = (
+    df["company_id"] = df["company_id"].astype(str).str.upper().str.strip()
 
-        df["company_id"]
-
-        .astype(str)
-
-        .str.upper()
-
-        .str.strip()
-
-    )
-
-    company_df = df[
-        df["company_id"] ==
-        company_id.upper()
-    ].copy()
+    company_df = df[df["company_id"] == company_id.upper()].copy()
 
     return company_df
 
@@ -410,6 +288,7 @@ def load_cashflow_intelligence(
 # Latest Record
 # =====================================================
 
+
 def latest_record(df):
 
     if df.empty:
@@ -417,43 +296,21 @@ def latest_record(df):
 
     df = df.copy()
 
-    df = df.dropna(
-        subset=["year"]
-    )
+    df = df.dropna(subset=["year"])
 
     if df.empty:
         return pd.Series(dtype="object")
 
-    df["year_num"] = (
+    df["year_num"] = df["year"].astype(str).str.extract(r"(\d+)$")[0]
 
-        df["year"]
-
-        .astype(str)
-
-        .str.extract(r"(\d+)$")[0]
-
-    )
-
-    df = df.dropna(
-        subset=["year_num"]
-    )
+    df = df.dropna(subset=["year_num"])
 
     if df.empty:
         return pd.Series(dtype="object")
 
-    df["year_num"] = (
+    df["year_num"] = df["year_num"].astype(float).astype(int)
 
-        df["year_num"]
-
-        .astype(float)
-
-        .astype(int)
-
-    )
-
-    df = df.sort_values(
-        "year_num"
-    )
+    df = df.sort_values("year_num")
 
     return df.iloc[-1]
 
@@ -462,6 +319,7 @@ def latest_record(df):
 # Last 10 Years
 # =====================================================
 
+
 def last_10_years(df):
 
     if df.empty:
@@ -469,296 +327,97 @@ def last_10_years(df):
 
     df = df.copy()
 
-    df = df.dropna(
-        subset=["year"]
-    )
+    df = df.dropna(subset=["year"])
 
     if df.empty:
         return df
 
-    df["year_num"] = (
+    df["year_num"] = df["year"].astype(str).str.extract(r"(\d+)$")[0]
 
-        df["year"]
-
-        .astype(str)
-
-        .str.extract(r"(\d+)$")[0]
-
-    )
-
-    df = df.dropna(
-        subset=["year_num"]
-    )
+    df = df.dropna(subset=["year_num"])
 
     if df.empty:
         return df
 
-    df["year_num"] = (
+    df["year_num"] = df["year_num"].astype(float).astype(int)
 
-        df["year_num"]
-
-        .astype(float)
-
-        .astype(int)
-
-    )
-
-    df = df.sort_values(
-        "year_num"
-    )
+    df = df.sort_values("year_num")
 
     return df.tail(10)
+
 
 # =====================================================
 # Header
 # =====================================================
 
-def draw_header(
 
-    pdf,
-
-    company
-
-):
+def draw_header(pdf, company):
 
     pdf.setFillColor(NAVY)
 
-    pdf.rect(
+    pdf.rect(0, PAGE_HEIGHT - 0.80 * inch, PAGE_WIDTH, 0.80 * inch, fill=1, stroke=0)
 
-        0,
+    company_name = str(company["company_name"])
 
-        PAGE_HEIGHT - 0.80 * inch,
-
-        PAGE_WIDTH,
-
-        0.80 * inch,
-
-        fill=1,
-
-        stroke=0
-
-    )
-
-    company_name = str(
-
-        company["company_name"]
-
-    )
-
-    ticker = str(
-
-        company["company_id"]
-
-        if "company_id" in company
-
-        else company["id"]
-
-    )
+    ticker = str(company["company_id"] if "company_id" in company else company["id"])
 
     pdf.setFillColor(WHITE)
 
-    pdf.setFont(
+    pdf.setFont("Helvetica-Bold", 22)
 
-        "Helvetica-Bold",
+    pdf.drawString(LEFT_MARGIN, PAGE_HEIGHT - 0.45 * inch, company_name)
 
-        22
+    pdf.setFont("Helvetica", 11)
 
-    )
-
-    pdf.drawString(
-
-        LEFT_MARGIN,
-
-        PAGE_HEIGHT - 0.45 * inch,
-
-        company_name
-
-    )
-
-    pdf.setFont(
-
-        "Helvetica",
-
-        11
-
-    )
-
-    pdf.drawRightString(
-
-        PAGE_WIDTH - RIGHT_MARGIN,
-
-        PAGE_HEIGHT - 0.45 * inch,
-
-        ticker
-
-    )
+    pdf.drawRightString(PAGE_WIDTH - RIGHT_MARGIN, PAGE_HEIGHT - 0.45 * inch, ticker)
 
 
 # =====================================================
 # KPI Tile
 # =====================================================
 
-def draw_kpi_tile(
 
-    pdf,
+def draw_kpi_tile(pdf, x, y, width, height, title, value):
 
-    x,
+    pdf.setFillColor(LIGHT_GRAY)
 
-    y,
+    pdf.roundRect(x, y, width, height, 6, fill=1, stroke=0)
 
-    width,
+    pdf.setFillColor(NAVY)
 
-    height,
+    pdf.setFont("Helvetica-Bold", 10)
 
-    title,
+    pdf.drawString(x + 8, y + height - 18, title)
 
-    value
+    pdf.setFillColor(colors.black)
 
-):
+    pdf.setFont("Helvetica-Bold", 16)
 
-    pdf.setFillColor(
-
-        LIGHT_GRAY
-
-    )
-
-    pdf.roundRect(
-
-        x,
-
-        y,
-
-        width,
-
-        height,
-
-        6,
-
-        fill=1,
-
-        stroke=0
-
-    )
-
-    pdf.setFillColor(
-
-        NAVY
-
-    )
-
-    pdf.setFont(
-
-        "Helvetica-Bold",
-
-        10
-
-    )
-
-    pdf.drawString(
-
-        x + 8,
-
-        y + height - 18,
-
-        title
-
-    )
-
-    pdf.setFillColor(
-
-        colors.black
-
-    )
-
-    pdf.setFont(
-
-        "Helvetica-Bold",
-
-        16
-
-    )
-
-    pdf.drawCentredString(
-
-        x + width / 2,
-
-        y + 18,
-
-        str(value)
-
-    )
+    pdf.drawCentredString(x + width / 2, y + 18, str(value))
 
 
 # =====================================================
 # KPI Section
 # =====================================================
 
-def draw_kpi_section(
 
-    pdf,
+def draw_kpi_section(pdf, company, ratios, cashflow):
 
-    company,
+    latest_ratio = latest_record(ratios)
 
-    ratios,
-
-    cashflow
-
-):
-
-    latest_ratio = latest_record(
-
-        ratios
-
-    )
-
-    latest_cash = latest_record(
-
-        cashflow
-
-    )
+    latest_cash = latest_record(cashflow)
 
     market_cap = "-"
 
+    roe = latest_ratio.get("return_on_equity_pct", "-")
 
-    roe = latest_ratio.get(
+    roce = latest_ratio.get("return_on_capital_employed_pct", "-")
 
-        "return_on_equity_pct",
+    pe = latest_ratio.get("pe", "-")
 
-        "-"
+    debt = latest_ratio.get("debt_to_equity", "-")
 
-    )
-
-    roce = latest_ratio.get(
-
-        "return_on_capital_employed_pct",
-
-        "-"
-
-    )
-
-    pe = latest_ratio.get(
-
-        "pe",
-
-        "-"
-
-    )
-
-    debt = latest_ratio.get(
-
-        "debt_to_equity",
-
-        "-"
-
-    )
-
-    cfo = latest_cash.get(
-
-        "operating_activity",
-
-        "-"
-
-    )
+    cfo = latest_cash.get("operating_activity", "-")
 
     start_x = LEFT_MARGIN
 
@@ -773,19 +432,12 @@ def draw_kpi_section(
     tile_h = 0.70 * inch
 
     tiles = [
-
         ("Market Cap", market_cap),
-
         ("ROE", roe),
-
         ("ROCE", roce),
-
         ("P/E", pe),
-
         ("Debt/Equity", debt),
-
-        ("Operating CFO", cfo)
-
+        ("Operating CFO", cfo),
     ]
 
     index = 0
@@ -794,77 +446,38 @@ def draw_kpi_section(
 
         for col in range(3):
 
-            x = start_x + col * (
+            x = start_x + col * (tile_w + gap_x)
 
-                tile_w + gap_x
-
-            )
-
-            y = start_y - row * (
-
-                tile_h + gap_y
-
-            )
+            y = start_y - row * (tile_h + gap_y)
 
             title, value = tiles[index]
 
-            draw_kpi_tile(
-
-                pdf,
-
-                x,
-
-                y,
-
-                tile_w,
-
-                tile_h,
-
-                title,
-
-                value
-
-            )
+            draw_kpi_tile(pdf, x, y, tile_w, tile_h, title, value)
 
             index += 1
+
 
 # =====================================================
 # Revenue & Net Profit Charts
 # =====================================================
 
-def draw_financial_charts(
 
-    pdf,
+def draw_financial_charts(pdf, profit_loss_df):
 
-    profit_loss_df
-
-):
-
-    df = last_10_years(
-        profit_loss_df
-    )
+    df = last_10_years(profit_loss_df)
 
     if df.empty:
         return
 
-    revenue = tuple(
-        df["sales"].fillna(0)
-    )
+    revenue = tuple(df["sales"].fillna(0))
 
-    profit = tuple(
-        df["net_profit"].fillna(0)
-    )
+    profit = tuple(df["net_profit"].fillna(0))
 
-    years = list(
-        df["year"]
-    )
+    years = list(df["year"])
 
     # ---------------- Revenue ----------------
 
-    drawing = Drawing(
-        250,
-        180
-    )
+    drawing = Drawing(250, 180)
 
     chart = VerticalBarChart()
 
@@ -882,33 +495,17 @@ def draw_financial_charts(
 
     drawing.add(chart)
 
-    drawing.drawOn(
-        pdf,
-        LEFT_MARGIN,
-        PAGE_HEIGHT - 6.30 * inch
-    )
+    drawing.drawOn(pdf, LEFT_MARGIN, PAGE_HEIGHT - 6.30 * inch)
 
-    pdf.setFont(
-        "Helvetica-Bold",
-        10
-    )
+    pdf.setFont("Helvetica-Bold", 10)
 
     pdf.drawCentredString(
-
-        LEFT_MARGIN + 110,
-
-        PAGE_HEIGHT - 6.45 * inch,
-
-        "10-Year Revenue"
-
+        LEFT_MARGIN + 110, PAGE_HEIGHT - 6.45 * inch, "10-Year Revenue"
     )
 
     # ---------------- Net Profit ----------------
 
-    drawing = Drawing(
-        250,
-        180
-    )
+    drawing = Drawing(250, 180)
 
     chart = VerticalBarChart()
 
@@ -926,35 +523,19 @@ def draw_financial_charts(
 
     drawing.add(chart)
 
-    drawing.drawOn(
+    drawing.drawOn(pdf, LEFT_MARGIN + 3.8 * inch, PAGE_HEIGHT - 6.30 * inch)
 
-        pdf,
-
-        LEFT_MARGIN + 3.8 * inch,
-
-        PAGE_HEIGHT - 6.30 * inch
-
-    )
-
-    pdf.setFont(
-        "Helvetica-Bold",
-        10
-    )
+    pdf.setFont("Helvetica-Bold", 10)
 
     pdf.drawCentredString(
-
-        LEFT_MARGIN + 3.8 * inch + 110,
-
-        PAGE_HEIGHT - 6.45 * inch,
-
-        "10-Year Net Profit"
-
+        LEFT_MARGIN + 3.8 * inch + 110, PAGE_HEIGHT - 6.45 * inch, "10-Year Net Profit"
     )
 
 
 # =====================================================
 # ROE & ROCE Chart
 # =====================================================
+
 
 def draw_ratio_chart(pdf, ratios_df):
 
@@ -965,18 +546,10 @@ def draw_ratio_chart(pdf, ratios_df):
 
     years = list(df["year"].astype(str))
 
-    roe = tuple(
-        pd.to_numeric(
-            df["return_on_equity_pct"],
-            errors="coerce"
-        ).fillna(0)
-    )
+    roe = tuple(pd.to_numeric(df["return_on_equity_pct"], errors="coerce").fillna(0))
 
     roce = tuple(
-        pd.to_numeric(
-            df["return_on_capital_employed_pct"],
-            errors="coerce"
-        ).fillna(0)
+        pd.to_numeric(df["return_on_capital_employed_pct"], errors="coerce").fillna(0)
     )
 
     drawing = Drawing(520, 180)
@@ -989,10 +562,7 @@ def draw_ratio_chart(pdf, ratios_df):
     chart.width = 420
     chart.height = 110
 
-    chart.data = [
-        roe,
-        roce
-    ]
+    chart.data = [roe, roce]
 
     chart.categoryAxis.categoryNames = years
 
@@ -1003,65 +573,36 @@ def draw_ratio_chart(pdf, ratios_df):
 
     drawing.add(chart)
 
-    drawing.drawOn(
-        pdf,
-        LEFT_MARGIN,
-        PAGE_HEIGHT - 9.0 * inch
-    )
+    drawing.drawOn(pdf, LEFT_MARGIN, PAGE_HEIGHT - 9.0 * inch)
 
-    pdf.setFont(
-        "Helvetica-Bold",
-        10
-    )
+    pdf.setFont("Helvetica-Bold", 10)
 
     pdf.drawCentredString(
-        PAGE_WIDTH / 2,
-        PAGE_HEIGHT - 9.15 * inch,
-        "ROE vs ROCE (10 Years)"
+        PAGE_WIDTH / 2, PAGE_HEIGHT - 9.15 * inch, "ROE vs ROCE (10 Years)"
     )
+
 
 # =====================================================
 # Balance Sheet Composition
 # =====================================================
 
-def draw_balance_sheet_chart(
 
-    pdf,
+def draw_balance_sheet_chart(pdf, balance_df):
 
-    balance_df
-
-):
-
-    df = last_10_years(
-        balance_df
-    )
+    df = last_10_years(balance_df)
 
     if df.empty:
         return
 
-    years = list(
-        df["year"]
-    )
+    years = list(df["year"])
 
-    equity = tuple(
-        (
-            df["equity_capital"] +
-            df["reserves"]
-        ).fillna(0)
-    )
+    equity = tuple((df["equity_capital"] + df["reserves"]).fillna(0))
 
-    borrowings = tuple(
-        df["borrowings"].fillna(0)
-    )
+    borrowings = tuple(df["borrowings"].fillna(0))
 
-    liabilities = tuple(
-        df["other_liabilities"].fillna(0)
-    )
+    liabilities = tuple(df["other_liabilities"].fillna(0))
 
-    drawing = Drawing(
-        520,
-        220
-    )
+    drawing = Drawing(520, 220)
 
     chart = VerticalBarChart()
 
@@ -1071,15 +612,7 @@ def draw_balance_sheet_chart(
     chart.width = 380
     chart.height = 130
 
-    chart.data = [
-
-        equity,
-
-        borrowings,
-
-        liabilities
-
-    ]
+    chart.data = [equity, borrowings, liabilities]
 
     chart.categoryAxis.categoryNames = years
 
@@ -1091,36 +624,14 @@ def draw_balance_sheet_chart(
 
     chart.bars[2].fillColor = colors.orange
 
-    drawing.add(
-        chart
-    )
+    drawing.add(chart)
 
-    drawing.drawOn(
+    drawing.drawOn(pdf, LEFT_MARGIN, PAGE_HEIGHT - 3.80 * inch)
 
-        pdf,
-
-        LEFT_MARGIN,
-
-        PAGE_HEIGHT - 3.80 * inch
-
-    )
-
-    pdf.setFont(
-
-        "Helvetica-Bold",
-
-        10
-
-    )
+    pdf.setFont("Helvetica-Bold", 10)
 
     pdf.drawCentredString(
-
-        PAGE_WIDTH / 2,
-
-        PAGE_HEIGHT - 4.00 * inch,
-
-        "Balance Sheet Composition"
-
+        PAGE_WIDTH / 2, PAGE_HEIGHT - 4.00 * inch, "Balance Sheet Composition"
     )
 
 
@@ -1128,52 +639,24 @@ def draw_balance_sheet_chart(
 # Cash Flow Waterfall
 # =====================================================
 
-def draw_cashflow_chart(
 
-    pdf,
+def draw_cashflow_chart(pdf, cashflow_df):
 
-    cashflow_df
-
-):
-
-    latest = latest_record(
-        cashflow_df
-    )
+    latest = latest_record(cashflow_df)
 
     if latest.empty:
         return
 
     values = [
-
         latest["operating_activity"],
-
         latest["investing_activity"],
-
         latest["financing_activity"],
-
-        latest["net_cash_flow"]
-
+        latest["net_cash_flow"],
     ]
 
-    labels = [
+    labels = ["CFO", "CFI", "CFF", "Net"]
 
-        "CFO",
-
-        "CFI",
-
-        "CFF",
-
-        "Net"
-
-    ]
-
-    drawing = Drawing(
-
-        320,
-
-        210
-
-    )
+    drawing = Drawing(320, 210)
 
     chart = VerticalBarChart()
 
@@ -1183,91 +666,33 @@ def draw_cashflow_chart(
     chart.width = 220
     chart.height = 120
 
-    chart.data = [
-
-        tuple(values)
-
-    ]
+    chart.data = [tuple(values)]
 
     chart.categoryAxis.categoryNames = labels
 
-    drawing.add(
-        chart
-    )
+    drawing.add(chart)
 
-    drawing.drawOn(
+    drawing.drawOn(pdf, PAGE_WIDTH - 4.0 * inch, PAGE_HEIGHT - 7.10 * inch)
 
-        pdf,
-
-        PAGE_WIDTH - 4.0 * inch,
-
-        PAGE_HEIGHT - 7.10 * inch
-
-    )
-
-    pdf.setFont(
-
-        "Helvetica-Bold",
-
-        10
-
-    )
+    pdf.setFont("Helvetica-Bold", 10)
 
     pdf.drawCentredString(
-
-        PAGE_WIDTH - 2.0 * inch,
-
-        PAGE_HEIGHT - 7.25 * inch,
-
-        "Cash Flow Summary"
-
+        PAGE_WIDTH - 2.0 * inch, PAGE_HEIGHT - 7.25 * inch, "Cash Flow Summary"
     )
+
 
 # =====================================================
 # Word Wrap Paragraph
 # =====================================================
 
-def draw_wrapped_text(
 
-    pdf,
+def draw_wrapped_text(pdf, text, x, y, width, style):
 
-    text,
+    paragraph = Paragraph(text, style)
 
-    x,
+    w, h = paragraph.wrap(width, 500)
 
-    y,
-
-    width,
-
-    style
-
-):
-
-    paragraph = Paragraph(
-
-        text,
-
-        style
-
-    )
-
-    w, h = paragraph.wrap(
-
-        width,
-
-        500
-
-    )
-
-    paragraph.drawOn(
-
-        pdf,
-
-        x,
-
-        y - h
-
-    )
+    paragraph.drawOn(pdf, x, y - h)
 
     return h
 
@@ -1276,78 +701,28 @@ def draw_wrapped_text(
 # Pros Section
 # =====================================================
 
-def draw_pros_section(
 
-    pdf,
+def draw_pros_section(pdf, pros_cons_df):
 
-    pros_cons_df
+    pdf.setFont("Helvetica-Bold", 12)
 
-):
+    pdf.setFillColor(GREEN)
 
-    pdf.setFont(
-
-        "Helvetica-Bold",
-
-        12
-
-    )
-
-    pdf.setFillColor(
-
-        GREEN
-
-    )
-
-    pdf.drawString(
-
-        LEFT_MARGIN,
-
-        3.10 * inch,
-
-        "Pros"
-
-    )
+    pdf.drawString(LEFT_MARGIN, 3.10 * inch, "Pros")
 
     y = 2.90 * inch
 
-    pros = (
-
-        pros_cons_df["pros"]
-
-        .dropna()
-
-        .tolist()
-
-    )
+    pros = pros_cons_df["pros"].dropna().tolist()
 
     for text in pros:
 
         pdf.setFillColor(GREEN)
 
-        pdf.circle(
-            LEFT_MARGIN + 3,
-            y + 4,
-            2,
-            fill=1
-        )
+        pdf.circle(LEFT_MARGIN + 3, y + 4, 2, fill=1)
 
         pdf.setFillColor(colors.black)
 
-        used = draw_wrapped_text(
-
-            pdf,
-
-            str(text),
-
-            LEFT_MARGIN + 10,
-
-            y,
-
-            250,
-
-            SMALL_STYLE
-
-        )
+        used = draw_wrapped_text(pdf, str(text), LEFT_MARGIN + 10, y, 250, SMALL_STYLE)
 
         y -= used + 6
 
@@ -1360,93 +735,30 @@ def draw_pros_section(
 # Cons Section
 # =====================================================
 
-def draw_cons_section(
 
-    pdf,
-
-    pros_cons_df
-
-):
+def draw_cons_section(pdf, pros_cons_df):
 
     start_x = PAGE_WIDTH / 2 + 20
 
-    pdf.setFont(
+    pdf.setFont("Helvetica-Bold", 12)
 
-        "Helvetica-Bold",
+    pdf.setFillColor(RED)
 
-        12
-
-    )
-
-    pdf.setFillColor(
-
-        RED
-
-    )
-
-    pdf.drawString(
-
-        start_x,
-
-        3.10 * inch,
-
-        "Cons"
-
-    )
+    pdf.drawString(start_x, 3.10 * inch, "Cons")
 
     y = 2.90 * inch
 
-    cons = (
-
-        pros_cons_df["cons"]
-
-        .dropna()
-
-        .tolist()
-
-    )
+    cons = pros_cons_df["cons"].dropna().tolist()
 
     for text in cons:
 
-        pdf.setFillColor(
+        pdf.setFillColor(RED)
 
-            RED
+        pdf.circle(start_x + 3, y + 4, 2, fill=1)
 
-        )
+        pdf.setFillColor(colors.black)
 
-        pdf.circle(
-
-            start_x + 3,
-
-            y + 4,
-
-            2,
-
-            fill=1
-
-        )
-
-        pdf.setFillColor(
-
-            colors.black
-
-        )
-
-        used = draw_wrapped_text(
-
-            pdf,
-
-            str(text),
-
-            start_x + 10,
-
-            y,
-
-            230,
-
-            SMALL_STYLE
-
-        )
+        used = draw_wrapped_text(pdf, str(text), start_x + 10, y, 230, SMALL_STYLE)
 
         y -= used + 6
 
@@ -1459,19 +771,10 @@ def draw_cons_section(
 # Capital Allocation Badge
 # =====================================================
 
-def draw_capital_badge(
 
-    pdf,
+def draw_capital_badge(pdf, capital_df):
 
-    capital_df
-
-):
-
-    latest = latest_record(
-
-        capital_df
-
-    )
+    latest = latest_record(capital_df)
 
     if latest.empty:
 
@@ -1479,18 +782,7 @@ def draw_capital_badge(
 
     else:
 
-        label = str(
-
-            latest.get(
-
-                "pattern_label",
-
-                "Not Available"
-
-            )
-
-        )[:25]
-
+        label = str(latest.get("pattern_label", "Not Available"))[:25]
 
     x = PAGE_WIDTH - 2.60 * inch
 
@@ -1500,203 +792,63 @@ def draw_capital_badge(
 
     height = 0.45 * inch
 
-    pdf.setFillColor(
+    pdf.setFillColor(NAVY)
 
-        NAVY
+    pdf.roundRect(x, y, width, height, 8, fill=1, stroke=0)
 
-    )
+    pdf.setFillColor(WHITE)
 
-    pdf.roundRect(
+    pdf.setFont("Helvetica-Bold", 10)
 
-        x,
+    pdf.drawCentredString(x + width / 2, y + 15, label)
 
-        y,
+    pdf.setFont("Helvetica", 7)
 
-        width,
+    pdf.drawCentredString(x + width / 2, y + 4, "Capital Allocation")
 
-        height,
-
-        8,
-
-        fill=1,
-
-        stroke=0
-
-    )
-
-    pdf.setFillColor(
-
-        WHITE
-
-    )
-
-    pdf.setFont(
-
-        "Helvetica-Bold",
-
-        10
-
-    )
-
-    pdf.drawCentredString(
-
-        x + width / 2,
-
-        y + 15,
-
-        label
-
-    )
-
-    pdf.setFont(
-
-        "Helvetica",
-
-        7
-
-    )
-
-    pdf.drawCentredString(
-
-        x + width / 2,
-
-        y + 4,
-
-        "Capital Allocation"
-
-    )
 
 # =====================================================
 # Build Tearsheet
 # =====================================================
 
-def build_tearsheet(
 
-    conn,
+def build_tearsheet(conn, company_id):
 
-    company_id
+    logger.info("Generating Tearsheet : %s", company_id)
 
-):
-
-    logger.info(
-
-        "Generating Tearsheet : %s",
-
-        company_id
-
-    )
-
-    company = load_company(
-
-        conn,
-
-        company_id
-
-    )
+    company = load_company(conn, company_id)
 
     if company is None:
 
-        logger.warning(
-
-            "%s not found.",
-
-            company_id
-
-        )
+        logger.warning("%s not found.", company_id)
 
         return
 
-    profit_loss = load_profit_loss(
+    profit_loss = load_profit_loss(conn, company_id)
 
-        conn,
+    balance_sheet = load_balance_sheet(conn, company_id)
 
-        company_id
+    cashflow = load_cashflow(conn, company_id)
 
-    )
+    ratios = load_financial_ratios(conn, company_id)
 
-    balance_sheet = load_balance_sheet(
+    pros_cons = load_pros_cons(conn, company_id)
 
-        conn,
+    capital = load_capital_allocation(company_id)
 
-        company_id
-
-    )
-
-    cashflow = load_cashflow(
-
-        conn,
-
-        company_id
-
-    )
-
-    ratios = load_financial_ratios(
-
-        conn,
-
-        company_id
-
-    )
-
-    pros_cons = load_pros_cons(
-
-        conn,
-
-        company_id
-
-    )
-
-    capital = load_capital_allocation(
-
-        company_id
-
-    )
-
-    pdf, output_file = create_canvas(
-
-        company_id
-
-    )
+    pdf, output_file = create_canvas(company_id)
 
     # =====================================================
     # PAGE 1
     # =====================================================
 
-    draw_header(
+    draw_header(pdf, company)
 
-        pdf,
+    draw_kpi_section(pdf, company, ratios, cashflow)
 
-        company
+    draw_financial_charts(pdf, profit_loss)
 
-    )
-
-    draw_kpi_section(
-
-        pdf,
-
-        company,
-
-        ratios,
-
-        cashflow
-
-    )
-
-    draw_financial_charts(
-
-        pdf,
-
-        profit_loss
-
-    )
-
-    draw_ratio_chart(
-
-        pdf,
-
-        ratios
-
-    )
+    draw_ratio_chart(pdf, ratios)
 
     pdf.showPage()
 
@@ -1704,99 +856,43 @@ def build_tearsheet(
     # PAGE 2
     # =====================================================
 
-    draw_header(
+    draw_header(pdf, company)
 
-        pdf,
+    draw_capital_badge(pdf, capital)
 
-        company
+    draw_balance_sheet_chart(pdf, balance_sheet)
 
-    )
+    draw_cashflow_chart(pdf, cashflow)
 
-    draw_capital_badge(
+    draw_pros_section(pdf, pros_cons)
 
-        pdf,
-
-        capital
-
-    )
-
-    draw_balance_sheet_chart(
-
-        pdf,
-
-        balance_sheet
-
-    )
-
-    draw_cashflow_chart(
-
-        pdf,
-
-        cashflow
-
-    )
-
-    draw_pros_section(
-
-        pdf,
-
-        pros_cons
-
-    )
-
-    draw_cons_section(
-
-        pdf,
-
-        pros_cons
-
-    )
+    draw_cons_section(pdf, pros_cons)
 
     pdf.save()
 
-    logger.info(
-
-        "Saved : %s",
-
-        output_file
-
-    )
+    logger.info("Saved : %s", output_file)
 
 
 # =====================================================
 # Test Companies
 # =====================================================
 
+
 def get_test_companies():
 
-    return [
-
-        "TCS",
-
-        "HDFCBANK",
-
-        "RELIANCE",
-
-        "SUNPHARMA",
-
-        "TATASTEEL"
-
-    ]
+    return ["TCS", "HDFCBANK", "RELIANCE", "SUNPHARMA", "TATASTEEL"]
 
 
 # =====================================================
 # Main
 # =====================================================
 
+
 def main():
 
     logger.info("=" * 60)
 
-    logger.info(
-
-        "Sprint 5 Day 33 Started"
-
-    )
+    logger.info("Sprint 5 Day 33 Started")
 
     conn = None
 
@@ -1816,19 +912,9 @@ def main():
 
         for company in companies:
 
-            print(
+            print(f"Generating {company}...")
 
-                f"Generating {company}..."
-
-            )
-
-            build_tearsheet(
-
-                conn,
-
-                company
-
-            )
+            build_tearsheet(conn, company)
 
         print("\n")
 
@@ -1838,26 +924,15 @@ def main():
 
         print("=" * 60)
 
-        print(
+        print(f"Tearsheets Generated : {len(companies)}")
 
-            f"Tearsheets Generated : {len(companies)}"
+        print(f"Output Folder : {REPORT_DIR}")
 
-        )
-
-        print(
-
-            f"Output Folder : {REPORT_DIR}"
-
-        )
-
-        logger.info(
-
-            "Sprint 5 Day 33 Completed Successfully."
-
-        )
+        logger.info("Sprint 5 Day 33 Completed Successfully.")
 
     except Exception as e:
         import traceback
+
         print("\nERROR")
         print("-" * 60)
         traceback.print_exc()

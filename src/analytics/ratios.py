@@ -21,10 +21,7 @@ Implements:
 from typing import Optional
 
 
-def net_profit_margin(
-    net_profit: float,
-    sales: float
-) -> Optional[float]:
+def net_profit_margin(net_profit: float, sales: float) -> Optional[float]:
     """
     Net Profit Margin (%)
 
@@ -37,16 +34,10 @@ def net_profit_margin(
     if sales == 0:
         return None
 
-    return round(
-        (net_profit / sales) * 100,
-        2
-    )
+    return round((net_profit / sales) * 100, 2)
 
 
-def operating_profit_margin(
-    operating_profit: float,
-    sales: float
-) -> Optional[float]:
+def operating_profit_margin(operating_profit: float, sales: float) -> Optional[float]:
     """
     Operating Profit Margin (%)
 
@@ -59,16 +50,10 @@ def operating_profit_margin(
     if sales == 0:
         return None
 
-    return round(
-        (operating_profit / sales) * 100,
-        2
-    )
+    return round((operating_profit / sales) * 100, 2)
 
 
-def opm_cross_check(
-    calculated_opm: float,
-    source_opm: float
-) -> bool:
+def opm_cross_check(calculated_opm: float, source_opm: float) -> bool:
     """
     Returns True when
     difference <= 1%
@@ -80,64 +65,40 @@ def opm_cross_check(
     if source_opm is None:
         return False
 
-    return abs(
-        calculated_opm -
-        source_opm
-    ) <= 1
+    return abs(calculated_opm - source_opm) <= 1
 
 
 def return_on_equity(
-    net_profit: float,
-    equity_capital: float,
-    reserves: float
+    net_profit: float, equity_capital: float, reserves: float
 ) -> Optional[float]:
     """
     Return on Equity (ROE)
     """
 
-    equity = (
-        equity_capital +
-        reserves
-    )
+    equity = equity_capital + reserves
 
     if equity <= 0:
         return None
 
-    return round(
-        (net_profit / equity) * 100,
-        2
-    )
+    return round((net_profit / equity) * 100, 2)
 
 
 def return_on_capital_employed(
-    ebit: float,
-    equity_capital: float,
-    reserves: float,
-    borrowings: float
+    ebit: float, equity_capital: float, reserves: float, borrowings: float
 ) -> Optional[float]:
     """
     Return on Capital Employed (ROCE)
     """
 
-    capital = (
-        equity_capital +
-        reserves +
-        borrowings
-    )
+    capital = equity_capital + reserves + borrowings
 
     if capital <= 0:
         return None
 
-    return round(
-        (ebit / capital) * 100,
-        2
-    )
+    return round((ebit / capital) * 100, 2)
 
 
-def return_on_assets(
-    net_profit: float,
-    total_assets: float
-) -> Optional[float]:
+def return_on_assets(net_profit: float, total_assets: float) -> Optional[float]:
     """
     Return on Assets
     """
@@ -145,15 +106,10 @@ def return_on_assets(
     if total_assets == 0:
         return None
 
-    return round(
-        (net_profit / total_assets) * 100,
-        2
-    )
+    return round((net_profit / total_assets) * 100, 2)
 
 
-def is_financial_company(
-    broad_sector: str
-) -> bool:
+def is_financial_company(broad_sector: str) -> bool:
     """
     Returns True
     for Financial companies.
@@ -162,33 +118,22 @@ def is_financial_company(
     if broad_sector is None:
         return False
 
-    return (
-        broad_sector
-        .strip()
-        .lower()
-        == "financials"
-    )
+    return broad_sector.strip().lower() == "financials"
 
 
-def roce_benchmark(
-    broad_sector: str
-) -> float:
+def roce_benchmark(broad_sector: str) -> float:
     """
     ROCE benchmark.
     """
 
-    if is_financial_company(
-        broad_sector
-    ):
+    if is_financial_company(broad_sector):
         return 8.0
 
     return 15.0
 
 
 def debt_to_equity(
-    borrowings: float,
-    equity_capital: float,
-    reserves: float
+    borrowings: float, equity_capital: float, reserves: float
 ) -> Optional[float]:
     """
     Debt to Equity Ratio
@@ -197,23 +142,15 @@ def debt_to_equity(
     if borrowings == 0:
         return 0.0
 
-    equity = (
-        equity_capital +
-        reserves
-    )
+    equity = equity_capital + reserves
 
     if equity <= 0:
         return None
 
-    return round(
-        borrowings / equity,
-        2
-    )
+    return round(borrowings / equity, 2)
 
-def high_leverage_flag(
-    debt_equity: Optional[float],
-    broad_sector: str
-) -> bool:
+
+def high_leverage_flag(debt_equity: Optional[float], broad_sector: str) -> bool:
     """
     Returns True if Debt-to-Equity
     is greater than 5.
@@ -225,18 +162,14 @@ def high_leverage_flag(
     if debt_equity is None:
         return False
 
-    if is_financial_company(
-        broad_sector
-    ):
+    if is_financial_company(broad_sector):
         return False
 
     return debt_equity > 5
 
 
 def interest_coverage_ratio(
-    operating_profit: float,
-    other_income: float,
-    interest: float
+    operating_profit: float, other_income: float, interest: float
 ) -> Optional[float]:
     """
     Interest Coverage Ratio
@@ -251,18 +184,10 @@ def interest_coverage_ratio(
     if interest == 0:
         return None
 
-    return round(
-        (
-            operating_profit +
-            other_income
-        ) / interest,
-        2
-    )
+    return round((operating_profit + other_income) / interest, 2)
 
 
-def icr_label(
-    interest: float
-) -> str:
+def icr_label(interest: float) -> str:
     """
     Display label for
     debt-free companies.
@@ -274,9 +199,7 @@ def icr_label(
     return ""
 
 
-def icr_warning_flag(
-    icr: Optional[float]
-) -> bool:
+def icr_warning_flag(icr: Optional[float]) -> bool:
     """
     Returns True if
     Interest Coverage Ratio
@@ -289,27 +212,17 @@ def icr_warning_flag(
     return icr < 1.5
 
 
-def net_debt(
-    borrowings: float,
-    investments: float
-) -> float:
+def net_debt(borrowings: float, investments: float) -> float:
     """
     Net Debt
 
     Borrowings - Investments
     """
 
-    return round(
-        borrowings -
-        investments,
-        2
-    )
+    return round(borrowings - investments, 2)
 
 
-def asset_turnover(
-    sales: float,
-    total_assets: float
-) -> Optional[float]:
+def asset_turnover(sales: float, total_assets: float) -> Optional[float]:
     """
     Asset Turnover
 
@@ -323,8 +236,4 @@ def asset_turnover(
     if total_assets == 0:
         return None
 
-    return round(
-        sales /
-        total_assets,
-        2
-    )
+    return round(sales / total_assets, 2)

@@ -7,7 +7,6 @@ from utils.db import get_screener_data
 # -----------------------------
 
 DEFAULT_FILTERS = {
-
     "roe_min": 15.0,
     "de_max": 2.0,
     "fcf_min": 0.0,
@@ -17,8 +16,7 @@ DEFAULT_FILTERS = {
     "pe_max": 50.0,
     "pb_max": 10.0,
     "dividend_min": 0.0,
-    "icr_min": 1.5
-
+    "icr_min": 1.5,
 }
 
 for key, value in DEFAULT_FILTERS.items():
@@ -26,6 +24,7 @@ for key, value in DEFAULT_FILTERS.items():
     if key not in st.session_state:
 
         st.session_state[key] = value
+
 
 def apply_preset(name):
 
@@ -103,107 +102,55 @@ if st.sidebar.button("🔄 Reset Filters"):
 
     st.rerun()
 
-roe_min = st.sidebar.slider(
-    "ROE Min (%)",
-    0.0,
-    100.0,
-    key="roe_min"
-)
+roe_min = st.sidebar.slider("ROE Min (%)", 0.0, 100.0, key="roe_min")
 
-de_max = st.sidebar.slider(
-    "Debt / Equity Max",
-    0.0,
-    10.0,
-    key="de_max"
-)
+de_max = st.sidebar.slider("Debt / Equity Max", 0.0, 10.0, key="de_max")
 
-fcf_min = st.sidebar.number_input(
-    "FCF Min",
-    key="fcf_min"
-)
+fcf_min = st.sidebar.number_input("FCF Min", key="fcf_min")
 
 revenue_cagr_min = st.sidebar.slider(
-    "Revenue CAGR 5Y Min (%)",
-    -50.0,
-    100.0,
-    key="revenue_cagr_min"
+    "Revenue CAGR 5Y Min (%)", -50.0, 100.0, key="revenue_cagr_min"
 )
 
 pat_cagr_min = st.sidebar.slider(
-    "PAT CAGR 5Y Min (%)",
-    -50.0,
-    100.0,
-    key="pat_cagr_min"
+    "PAT CAGR 5Y Min (%)", -50.0, 100.0, key="pat_cagr_min"
 )
 
 opm_min = st.sidebar.slider(
-    "Operating Profit Margin Min (%)",
-    0.0,
-    100.0,
-    key="opm_min"
+    "Operating Profit Margin Min (%)", 0.0, 100.0, key="opm_min"
 )
 
-pe_max = st.sidebar.slider(
-    "P/E Max",
-    0.0,
-    200.0,
-    key="pe_max"
-)
+pe_max = st.sidebar.slider("P/E Max", 0.0, 200.0, key="pe_max")
 
-pb_max = st.sidebar.slider(
-    "P/B Max",
-    0.0,
-    50.0,
-    key="pb_max"
-)
+pb_max = st.sidebar.slider("P/B Max", 0.0, 50.0, key="pb_max")
 
 dividend_min = st.sidebar.slider(
-    "Dividend Yield Min (%)",
-    0.0,
-    20.0,
-    key="dividend_min"
+    "Dividend Yield Min (%)", 0.0, 20.0, key="dividend_min"
 )
 
-icr_min = st.sidebar.slider(
-    "Interest Coverage Min",
-    0.0,
-    100.0,
-    key="icr_min"
-)
+icr_min = st.sidebar.slider("Interest Coverage Min", 0.0, 100.0, key="icr_min")
 
 filtered = data.copy()
 
 filtered = filtered[
     (filtered["return_on_equity_pct"] >= roe_min)
-    &
-    (filtered["debt_to_equity"] <= de_max)
-    &
-    (filtered["free_cash_flow_cr"] >= fcf_min)
-    &
-    (filtered["revenue_cagr_5yr"] >= revenue_cagr_min)
-    &
-    (filtered["pat_cagr_5yr"] >= pat_cagr_min)
-    &
-    (filtered["operating_profit_margin_pct"] >= opm_min)
-    &
-    (filtered["pe"] <= pe_max)
-    &
-    (filtered["pb"] <= pb_max)
-    &
-    (filtered["dividend_yield"] >= dividend_min)
-    &
-    (
+    & (filtered["debt_to_equity"] <= de_max)
+    & (filtered["free_cash_flow_cr"] >= fcf_min)
+    & (filtered["revenue_cagr_5yr"] >= revenue_cagr_min)
+    & (filtered["pat_cagr_5yr"] >= pat_cagr_min)
+    & (filtered["operating_profit_margin_pct"] >= opm_min)
+    & (filtered["pe"] <= pe_max)
+    & (filtered["pb"] <= pb_max)
+    & (filtered["dividend_yield"] >= dividend_min)
+    & (
         (filtered["interest_coverage"] >= icr_min)
-        |
-        (filtered["interest_coverage"].isna())
+        | (filtered["interest_coverage"].isna())
     )
 ]
 
 st.subheader(f"📊 Results ({len(filtered)} Companies)")
 
-st.caption(
-    f"Showing {len(filtered)} of {len(data)} records"
-)
+st.caption(f"Showing {len(filtered)} of {len(data)} records")
 
 if filtered.empty:
     st.warning(
@@ -225,10 +172,10 @@ else:
                 "operating_profit_margin_pct",
                 "pe",
                 "pb",
-                "dividend_yield"
+                "dividend_yield",
             ]
         ],
-        use_container_width=True
+        use_container_width=True,
     )
 
 csv = filtered[
@@ -244,19 +191,16 @@ csv = filtered[
         "operating_profit_margin_pct",
         "pe",
         "pb",
-        "dividend_yield"
+        "dividend_yield",
     ]
 ].to_csv(index=False)
 
-filtered = filtered.sort_values(
-    by="composite_quality_score",
-    ascending=False
-)
+filtered = filtered.sort_values(by="composite_quality_score", ascending=False)
 
 if not filtered.empty:
     st.download_button(
         label="📥 Download CSV",
         data=csv,
         file_name="screener_results.csv",
-        mime="text/csv"
+        mime="text/csv",
     )

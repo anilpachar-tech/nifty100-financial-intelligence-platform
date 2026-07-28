@@ -21,139 +21,91 @@ def load_data():
 
     conn = sqlite3.connect(DB_PATH)
 
-    companies = pd.read_sql(
-        "SELECT * FROM companies",
-        conn
-    )
+    companies = pd.read_sql("SELECT * FROM companies", conn)
 
-    financial = pd.read_sql(
-        "SELECT * FROM financial_ratios",
-        conn
-    )
+    financial = pd.read_sql("SELECT * FROM financial_ratios", conn)
 
-    peers = pd.read_sql(
-        "SELECT * FROM peer_groups",
-        conn
-    )
+    peers = pd.read_sql("SELECT * FROM peer_groups", conn)
 
-    percentiles = pd.read_sql(
-        "SELECT * FROM peer_percentiles",
-        conn
-    )
+    percentiles = pd.read_sql("SELECT * FROM peer_percentiles", conn)
 
     conn.close()
 
-    return (
-        companies,
-        financial,
-        peers,
-        percentiles
-    )
+    return (companies, financial, peers, percentiles)
+
 
 def prepare_master():
 
     companies, financial, peers, percentiles = load_data()
 
-    master = (
-        financial
-        .merge(
-            companies[
-                [
-                    "id",
-                    "company_name"
-                ]
-            ],
-            left_on="company_id",
-            right_on="id",
-            how="left",
-            suffixes=("", "_company")
-        )
-        .merge(
-            peers[
-                [
-                    "company_id",
-                    "peer_group_name",
-                    "is_benchmark"
-                ]
-            ],
-            on="company_id",
-            how="left"
-        )
+    master = financial.merge(
+        companies[["id", "company_name"]],
+        left_on="company_id",
+        right_on="id",
+        how="left",
+        suffixes=("", "_company"),
+    ).merge(
+        peers[["company_id", "peer_group_name", "is_benchmark"]],
+        on="company_id",
+        how="left",
     )
 
     return master, percentiles
 
+
 def prepare_percentiles(percentiles):
 
-    percentile_wide = (
-        percentiles
-        .pivot_table(
-            index=[
-                "company_id",
-                "year"
-            ],
-            columns="metric",
-            values="percentile_rank",
-            aggfunc="first"
-        )
-        .reset_index()
-    )
+    percentile_wide = percentiles.pivot_table(
+        index=["company_id", "year"],
+        columns="metric",
+        values="percentile_rank",
+        aggfunc="first",
+    ).reset_index()
 
     percentile_wide.columns.name = None
 
     return percentile_wide
 
+
 def prepare_report_data(master, percentile_wide):
 
     report = master.merge(
         percentile_wide,
-        on=[
-            "company_id",
-            "year"
-        ],
+        on=["company_id", "year"],
         how="left",
-        suffixes=("", "_percentile")
+        suffixes=("", "_percentile"),
     )
 
     return report
+
 
 def create_workbook():
 
     wb = Workbook()
 
-    wb.remove(
-        wb.active
-    )
+    wb.remove(wb.active)
 
     return wb
 
 
 def create_peer_sheets(wb, report):
 
-    peer_groups = (
-        report[
-            "peer_group_name"
-        ]
-        .dropna()
-        .unique()
-    )
+    peer_groups = report["peer_group_name"].dropna().unique()
 
     peer_groups = sorted(peer_groups)
 
     for group in peer_groups:
 
-        wb.create_sheet(
-            title=group[:31]
-        )
+        wb.create_sheet(title=group[:31])
 
     return wb
+
 
 # ============================================================
 # Report Configuration
 # ============================================================
 
 METRIC_COLUMNS = [
-
     "return_on_equity_pct",
     "return_on_capital_employed_pct",
     "net_profit_margin_pct",
@@ -173,12 +125,10 @@ METRIC_COLUMNS = [
     "eps_cagr_5yr",
     "revenue_cagr_3yr",
     "composite_quality_score",
-    "dividend_yield"
-
+    "dividend_yield",
 ]
 
 PERCENTILE_COLUMNS = [
-
     "return_on_equity_pct_percentile",
     "return_on_capital_employed_pct_percentile",
     "net_profit_margin_pct_percentile",
@@ -188,33 +138,24 @@ PERCENTILE_COLUMNS = [
     "free_cash_flow_cr_percentile",
     "pat_cagr_5yr_percentile",
     "revenue_cagr_5yr_percentile",
-    "eps_cagr_5yr_percentile"
-
+    "eps_cagr_5yr_percentile",
 ]
 
 
 def latest_company_data(report):
 
-    latest = (
-
-        report
-        .sort_values("year")
-        .groupby("company_id", as_index=False)
-        .tail(1)
-
-    )
+    latest = report.sort_values("year").groupby("company_id", as_index=False).tail(1)
 
     return latest
 
+
 def write_sheet_data(wb, latest):
 
-    headers = [
-
-        "company_id",
-        "company_name",
-        "is_benchmark"
-    ] + METRIC_COLUMNS + PERCENTILE_COLUMNS
-
+    headers = (
+        ["company_id", "company_name", "is_benchmark"]
+        + METRIC_COLUMNS
+        + PERCENTILE_COLUMNS
+    )
 
     for sheet in wb.sheetnames:
 
@@ -222,89 +163,48 @@ def write_sheet_data(wb, latest):
 
         ws.append(headers)
 
-        peer_df = latest[
-            latest["peer_group_name"] == sheet
-        ]
+        peer_df = latest[latest["peer_group_name"] == sheet]
 
         for row in peer_df.itertuples(index=False):
 
-            values = [
-
-                row.company_id,
-                row.company_name,
-                row.is_benchmark
-
-            ]
+            values = [row.company_id, row.company_name, row.is_benchmark]
 
             for col in METRIC_COLUMNS:
 
-                values.append(
-                    getattr(
-                        row,
-                        col,
-                        None
-                    )
-                )
+                values.append(getattr(row, col, None))
 
             for col in PERCENTILE_COLUMNS:
 
-                values.append(
-                    getattr(
-                        row,
-                        col,
-                        None
-                    )
-                )
+                values.append(getattr(row, col, None))
 
             ws.append(values)
 
     return wb
 
+
 def format_workbook(wb):
 
     header_fill = PatternFill(
-        fill_type="solid",
-        start_color="1F4E78",
-        end_color="1F4E78"
+        fill_type="solid", start_color="1F4E78", end_color="1F4E78"
     )
 
-    header_font = Font(
-        bold=True,
-        color="FFFFFF"
-    )
+    header_font = Font(bold=True, color="FFFFFF")
 
-    gold_fill = PatternFill(
-        fill_type="solid",
-        start_color="FFD966",
-        end_color="FFD966"
-    )
+    gold_fill = PatternFill(fill_type="solid", start_color="FFD966", end_color="FFD966")
 
     green_fill = PatternFill(
-        fill_type="solid",
-        start_color="C6EFCE",
-        end_color="C6EFCE"
+        fill_type="solid", start_color="C6EFCE", end_color="C6EFCE"
     )
 
     yellow_fill = PatternFill(
-        fill_type="solid",
-        start_color="FFEB9C",
-        end_color="FFEB9C"
+        fill_type="solid", start_color="FFEB9C", end_color="FFEB9C"
     )
 
-    red_fill = PatternFill(
-        fill_type="solid",
-        start_color="FFC7CE",
-        end_color="FFC7CE"
-    )
+    red_fill = PatternFill(fill_type="solid", start_color="FFC7CE", end_color="FFC7CE")
 
     thin = Side(style="thin")
 
-    border = Border(
-        left=thin,
-        right=thin,
-        top=thin,
-        bottom=thin
-    )
+    border = Border(left=thin, right=thin, top=thin, bottom=thin)
 
     percentile_start = 3 + len(METRIC_COLUMNS) + 1
 
@@ -316,24 +216,16 @@ def format_workbook(wb):
             cell.fill = header_fill
             cell.font = header_font
             cell.border = border
-            cell.alignment = Alignment(
-                horizontal="center"
-            )
+            cell.alignment = Alignment(horizontal="center")
 
         # Benchmark Row
         benchmark_column = None
 
         for row in range(2, ws.max_row + 1):
 
-            company = ws.cell(
-                row=row,
-                column=3
-            ).value
+            company = ws.cell(row=row, column=3).value
 
-            benchmark = ws.cell(
-                row=row,
-                column=4
-            ).value
+            benchmark = ws.cell(row=row, column=4).value
 
             if benchmark == "1":
 
@@ -348,15 +240,9 @@ def format_workbook(wb):
         # Percentile Colors
         for row in range(2, ws.max_row + 1):
 
-            for col in range(
-                percentile_start,
-                ws.max_column + 1
-            ):
+            for col in range(percentile_start, ws.max_column + 1):
 
-                cell = ws.cell(
-                    row=row,
-                    column=col
-                )
+                cell = ws.cell(row=row, column=col)
 
                 if cell.value is None:
                     continue
@@ -387,28 +273,17 @@ def format_workbook(wb):
         for column_cells in ws.columns:
 
             length = max(
-
-                len(str(cell.value))
-                if cell.value is not None
-                else 0
-
+                len(str(cell.value)) if cell.value is not None else 0
                 for cell in column_cells
-
             )
 
-            ws.column_dimensions[
-                column_cells[0].column_letter
-            ].width = min(
-                length + 3,
-                25
+            ws.column_dimensions[column_cells[0].column_letter].width = min(
+                length + 3, 25
             )
 
         median_row = ws.max_row + 1
 
-        ws.cell(
-            row=median_row,
-            column=1
-        ).value = "Median"
+        ws.cell(row=median_row, column=1).value = "Median"
 
         start_metric = 4
 
@@ -420,37 +295,25 @@ def format_workbook(wb):
 
             for r in range(2, ws.max_row + 1):
 
-                value = ws.cell(
-                    row=r,
-                    column=col
-                ).value
+                value = ws.cell(row=r, column=col).value
 
                 if isinstance(value, (int, float)):
 
                     values.append(value)
             if values:
 
-                ws.cell(
-                    row=median_row,
-                    column=col
-                ).value = round(
-                    pd.Series(values).median(),
-                    2
+                ws.cell(row=median_row, column=col).value = round(
+                    pd.Series(values).median(), 2
                 )
         for cell in ws[median_row]:
 
-            cell.font = Font(
-                bold=True
-            )
+            cell.font = Font(bold=True)
 
         # Benchmark Row (Apply Last)
 
         for row in range(2, ws.max_row):
-            
-            benchmark = ws.cell(
-                row=row,
-                column=3
-            ).value
+
+            benchmark = ws.cell(row=row, column=3).value
 
             if benchmark == "1":
 
@@ -461,20 +324,16 @@ def format_workbook(wb):
 
     return wb
 
+
 if __name__ == "__main__":
 
     companies, financial, peers, percentiles = load_data()
 
     master, percentiles = prepare_master()
 
-    percentile_wide = prepare_percentiles(
-        percentiles
-    )
+    percentile_wide = prepare_percentiles(percentiles)
 
-    report = prepare_report_data(
-        master,
-        percentile_wide
-    )
+    report = prepare_report_data(master, percentile_wide)
 
     wb = create_workbook()
 
@@ -505,13 +364,7 @@ if __name__ == "__main__":
 
     print(
         master[
-            [
-                "company_id",
-                "company_name",
-                "year",
-                "peer_group_name",
-                "is_benchmark"
-            ]
+            ["company_id", "company_name", "year", "peer_group_name", "is_benchmark"]
         ].head()
     )
 
@@ -524,9 +377,7 @@ if __name__ == "__main__":
     print("Rows :", len(percentile_wide))
     print()
 
-    print(
-        percentile_wide.head()
-    )
+    print(percentile_wide.head())
 
     print()
 
@@ -546,7 +397,7 @@ if __name__ == "__main__":
                 "return_on_equity_pct",
                 "return_on_equity_pct_percentile",
                 "debt_to_equity",
-                "debt_to_equity_percentile"
+                "debt_to_equity_percentile",
             ]
         ].head()
     )
@@ -587,14 +438,12 @@ if __name__ == "__main__":
 
     print("Column widths adjusted")
 
-    wb.save(
-        OUTPUT_FILE
-    )
+    wb.save(OUTPUT_FILE)
 
     print()
 
     print("=" * 60)
     print("Workbook Saved")
     print("=" * 60)
-    
+
     print(OUTPUT_FILE)

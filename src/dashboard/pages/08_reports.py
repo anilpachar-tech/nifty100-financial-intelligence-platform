@@ -21,22 +21,17 @@ import streamlit as st
 
 DB_PATH = "db/nifty100.db"
 
-st.set_page_config(
-    page_title="Annual Reports",
-    page_icon="📄",
-    layout="wide"
-)
+st.set_page_config(page_title="Annual Reports", page_icon="📄", layout="wide")
 
 st.title("📄 Annual Reports")
-st.caption(
-    "Browse company annual reports directly from BSE."
-)
+st.caption("Browse company annual reports directly from BSE.")
 
 st.divider()
 
 # ---------------------------------------------------
 # Database
 # ---------------------------------------------------
+
 
 @st.cache_data
 def load_companies():
@@ -51,7 +46,7 @@ def load_companies():
         FROM companies
         ORDER BY company_name
         """,
-        conn
+        conn,
     )
 
     conn.close()
@@ -74,7 +69,7 @@ def load_reports(company_id):
         ORDER BY year DESC
         """,
         conn,
-        params=(company_id,)
+        params=(company_id,),
     )
 
     conn.close()
@@ -85,8 +80,6 @@ def load_reports(company_id):
 # ---------------------------------------------------
 # URL Checker
 # ---------------------------------------------------
-
-
 
 
 # ---------------------------------------------------
@@ -109,19 +102,15 @@ with st.sidebar:
 
     st.header("Search Company")
 
-    selected_company = st.selectbox(
-        "Company",
-        companies["company_name"]
-    )
+    selected_company = st.selectbox("Company", companies["company_name"])
 
 # ---------------------------------------------------
 # Selected Company ID
 # ---------------------------------------------------
 
-company_id = companies.loc[
-    companies["company_name"] == selected_company,
-    "id"
-].values[0]
+company_id = companies.loc[companies["company_name"] == selected_company, "id"].values[
+    0
+]
 
 # ---------------------------------------------------
 # Load Reports
@@ -139,40 +128,25 @@ col1, col2, col3, col4 = st.columns(4)
 
 with col1:
 
-    st.metric(
-        "Companies",
-        companies["company_name"].nunique()
-    )
+    st.metric("Companies", companies["company_name"].nunique())
 
 with col2:
 
-    st.metric(
-        "Reports",
-        len(reports)
-    )
+    st.metric("Reports", len(reports))
 
 with col3:
 
     if len(reports):
 
-        st.metric(
-            "Latest",
-            reports["year"].max()
-        )
+        st.metric("Latest", reports["year"].max())
 
     else:
 
-        st.metric(
-            "Latest",
-            "-"
-        )
+        st.metric("Latest", "-")
 
 with col4:
 
-    st.metric(
-        "Selected Company",
-        selected_company
-    )
+    st.metric("Selected Company", selected_company)
 
 st.divider()
 
@@ -180,21 +154,17 @@ st.divider()
 # Company Header
 # ---------------------------------------------------
 
-left, right = st.columns([4,1])
+left, right = st.columns([4, 1])
 
 with left:
 
     st.subheader(f"🏢 {selected_company}")
 
-    st.caption(
-        "Official Annual Reports available through BSE."
-    )
+    st.caption("Official Annual Reports available through BSE.")
 
 with right:
 
-    st.info(
-        f"{len(reports)} Reports"
-    )
+    st.info(f"{len(reports)} Reports")
 
 # ---------------------------------------------------
 # Empty State
@@ -202,9 +172,7 @@ with right:
 
 if reports.empty:
 
-    st.warning(
-        "No Annual Reports Available."
-    )
+    st.warning("No Annual Reports Available.")
 
     st.stop()
 
@@ -215,10 +183,7 @@ if reports.empty:
 reports = reports.reset_index(drop=True)
 
 reports["Status"] = reports["Annual_Report"].apply(
-    lambda x:
-    "Available"
-    if pd.notna(x) and str(x).strip() != ""
-    else "Unavailable"
+    lambda x: "Available" if pd.notna(x) and str(x).strip() != "" else "Unavailable"
 )
 
 # ---------------------------------------------------
@@ -251,11 +216,7 @@ for index, row in reports.iterrows():
 
             if available:
 
-                st.link_button(
-                    "📄 Open Report",
-                    report_url,
-                    use_container_width=True
-                )
+                st.link_button("📄 Open Report", report_url, use_container_width=True)
 
             else:
 
@@ -263,7 +224,7 @@ for index, row in reports.iterrows():
                     "Unavailable",
                     disabled=True,
                     use_container_width=True,
-                    key=f"btn_{index}"
+                    key=f"btn_{index}",
                 )
 
 st.divider()
@@ -282,10 +243,7 @@ timeline["Available"] = timeline["Annual_Report"].apply(
 
 timeline = timeline.sort_values("year")
 
-st.line_chart(
-    timeline.set_index("year")["Available"],
-    use_container_width=True
-)
+st.line_chart(timeline.set_index("year")["Available"], use_container_width=True)
 
 st.divider()
 
@@ -298,17 +256,10 @@ st.subheader("📋 Reports Summary")
 table = reports.copy()
 
 table["Status"] = table["Annual_Report"].apply(
-    lambda x:
-    "Available"
-    if pd.notna(x) and str(x).strip() != ""
-    else "Unavailable"
+    lambda x: "Available" if pd.notna(x) and str(x).strip() != "" else "Unavailable"
 )
 
-st.dataframe(
-    table,
-    use_container_width=True,
-    hide_index=True
-)
+st.dataframe(table, use_container_width=True, hide_index=True)
 
 st.divider()
 
@@ -323,7 +274,7 @@ st.download_button(
     data=csv,
     file_name=f"{company_id}_annual_reports.csv",
     mime="text/csv",
-    use_container_width=True
+    use_container_width=True,
 )
 
 st.divider()
@@ -334,41 +285,25 @@ st.divider()
 
 st.subheader("📊 Statistics")
 
-available_count = (
-    table["Status"] == "Available"
-).sum()
+available_count = (table["Status"] == "Available").sum()
 
-missing_count = (
-    table["Status"] == "Unavailable"
-).sum()
+missing_count = (table["Status"] == "Unavailable").sum()
 
 c1, c2, c3 = st.columns(3)
 
 with c1:
 
-    st.metric(
-        "Available Reports",
-        available_count
-    )
+    st.metric("Available Reports", available_count)
 
 with c2:
 
-    st.metric(
-        "Unavailable",
-        missing_count
-    )
+    st.metric("Unavailable", missing_count)
 
 with c3:
 
-    coverage = (
-        available_count /
-        len(table)
-    ) * 100
+    coverage = (available_count / len(table)) * 100
 
-    st.metric(
-        "Coverage",
-        f"{coverage:.1f}%"
-    )
+    st.metric("Coverage", f"{coverage:.1f}%")
 
 st.divider()
 
@@ -386,17 +321,11 @@ with left:
 
     st.write(f"**Year :** {latest['year']}")
 
-    st.write(
-        "Latest Annual Report available for this company."
-    )
+    st.write("Latest Annual Report available for this company.")
 
 with right:
 
-    st.link_button(
-        "📄 View Latest",
-        latest["Annual_Report"],
-        use_container_width=True
-    )
+    st.link_button("📄 View Latest", latest["Annual_Report"], use_container_width=True)
 
 st.divider()
 
@@ -404,11 +333,9 @@ st.divider()
 # Footer
 # ---------------------------------------------------
 
-st.caption(
-    """
+st.caption("""
     Source: BSE Annual Reports
 
     Dashboard developed for the
     Nifty100 Financial Intelligence Platform.
-    """
-)
+    """)

@@ -45,7 +45,7 @@ LOG_FILE = OUTPUT_DIR / "cagr_validator.log"
 logging.basicConfig(
     filename=LOG_FILE,
     level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s"
+    format="%(asctime)s | %(levelname)s | %(message)s",
 )
 
 logger = logging.getLogger(__name__)
@@ -54,12 +54,11 @@ logger = logging.getLogger(__name__)
 # Database
 # ==========================================================
 
+
 def connect_database():
 
     if not DB_FILE.exists():
-        raise FileNotFoundError(
-            f"Database not found:\n{DB_FILE}"
-        )
+        raise FileNotFoundError(f"Database not found:\n{DB_FILE}")
 
     logger.info("Connected to SQLite database.")
 
@@ -70,19 +69,15 @@ def connect_database():
 # Load Parser Output
 # ==========================================================
 
+
 def load_parser_output():
 
     if not PARSER_OUTPUT.exists():
-        raise FileNotFoundError(
-            f"{PARSER_OUTPUT} not found."
-        )
+        raise FileNotFoundError(f"{PARSER_OUTPUT} not found.")
 
     df = pd.read_csv(PARSER_OUTPUT)
 
-    logger.info(
-        "Loaded parser output (%d companies).",
-        len(df)
-    )
+    logger.info("Loaded parser output (%d companies).", len(df))
 
     return df
 
@@ -90,6 +85,7 @@ def load_parser_output():
 # ==========================================================
 # Load Latest Ratio Engine Data
 # ==========================================================
+
 
 def load_ratio_engine(conn):
 
@@ -112,10 +108,7 @@ def load_ratio_engine(conn):
 
     df = pd.read_sql(query, conn)
 
-    logger.info(
-        "Loaded latest ratio records (%d companies).",
-        len(df)
-    )
+    logger.info("Loaded latest ratio records (%d companies).", len(df))
 
     return df
 
@@ -124,23 +117,17 @@ def load_ratio_engine(conn):
 # Prepare Validation Dataset
 # ==========================================================
 
-def prepare_validation_dataframe(
-    parser_df,
-    ratio_df
-):
+
+def prepare_validation_dataframe(parser_df, ratio_df):
 
     columns = [
-
         "company_id",
-
         "compounded_sales_growth_5_years",
         "compounded_profit_growth_5_years",
         "roe_5_years",
-
         "revenue_cagr_5yr",
         "pat_cagr_5yr",
-        "return_on_equity_pct"
-
+        "return_on_equity_pct",
     ]
 
     parser_df = parser_df[
@@ -148,89 +135,52 @@ def prepare_validation_dataframe(
             "company_id",
             "compounded_sales_growth_5_years",
             "compounded_profit_growth_5_years",
-            "roe_5_years"
+            "roe_5_years",
         ]
     ]
 
     ratio_df = ratio_df[
-        [
-            "company_id",
-            "revenue_cagr_5yr",
-            "pat_cagr_5yr",
-            "return_on_equity_pct"
-        ]
+        ["company_id", "revenue_cagr_5yr", "pat_cagr_5yr", "return_on_equity_pct"]
     ]
 
-    merged = parser_df.merge(
-        ratio_df,
-        how="left",
-        on="company_id"
-    )
+    merged = parser_df.merge(ratio_df, how="left", on="company_id")
 
-    logger.info(
-        "Merged companies : %d",
-        len(merged)
-    )
+    logger.info("Merged companies : %d", len(merged))
 
-    missing = merged[
-    merged["revenue_cagr_5yr"].isna()
-    ]
-     
+    missing = merged[merged["revenue_cagr_5yr"].isna()]
+
     if not missing.empty:
 
         logger.warning(
             "Ratio data missing for companies: %s",
-            ", ".join(missing["company_id"].astype(str))
-        ) 
-    
+            ", ".join(missing["company_id"].astype(str)),
+        )
+
     return merged
+
 
 # ==========================================================
 # Difference Calculation
 # ==========================================================
+
 
 def calculate_difference(df):
 
     df = df.copy()
 
     mappings = [
-
-        (
-            "compounded_sales_growth_5_years",
-            "revenue_cagr_5yr",
-            "sales_difference"
-        ),
-
-        (
-            "compounded_profit_growth_5_years",
-            "pat_cagr_5yr",
-            "profit_difference"
-        ),
-
-        (
-            "roe_5_years",
-            "return_on_equity_pct",
-            "roe_difference"
-        )
-
+        ("compounded_sales_growth_5_years", "revenue_cagr_5yr", "sales_difference"),
+        ("compounded_profit_growth_5_years", "pat_cagr_5yr", "profit_difference"),
+        ("roe_5_years", "return_on_equity_pct", "roe_difference"),
     ]
 
     for parser_col, ratio_col, diff_col in mappings:
 
-        df[parser_col] = pd.to_numeric(
-            df[parser_col],
-            errors="coerce"
-        )
+        df[parser_col] = pd.to_numeric(df[parser_col], errors="coerce")
 
-        df[ratio_col] = pd.to_numeric(
-            df[ratio_col],
-            errors="coerce"
-        )
+        df[ratio_col] = pd.to_numeric(df[ratio_col], errors="coerce")
 
-        df[diff_col] = (
-            df[parser_col] -
-            df[ratio_col]
-        ).abs().round(2)    
+        df[diff_col] = (df[parser_col] - df[ratio_col]).abs().round(2)
 
     return df
 
@@ -239,20 +189,13 @@ def calculate_difference(df):
 # Divergence Detection
 # ==========================================================
 
+
 def detect_divergence(df):
 
     divergence = df[
-        (
-            df["sales_difference"] > 5
-        )
-        |
-        (
-            df["profit_difference"] > 5
-        )
-        |
-        (
-            df["roe_difference"] > 5
-        )
+        (df["sales_difference"] > 5)
+        | (df["profit_difference"] > 5)
+        | (df["roe_difference"] > 5)
     ].copy()
 
     return divergence
@@ -262,46 +205,28 @@ def detect_divergence(df):
 # Save Outputs
 # ==========================================================
 
-def save_outputs(
-    validation_df,
-    divergence_df
-):
 
-    validation_df = validation_df.sort_values(
-        "company_id"
-    ).reset_index(drop=True)
+def save_outputs(validation_df, divergence_df):
 
-    divergence_df = divergence_df.sort_values(
-        "company_id"
-    ).reset_index(drop=True)
+    validation_df = validation_df.sort_values("company_id").reset_index(drop=True)
 
-    validation_df.to_csv(
-        VALIDATION_OUTPUT,
-        index=False
-    )
+    divergence_df = divergence_df.sort_values("company_id").reset_index(drop=True)
 
-    divergence_df.to_csv(
-        DIVERGENCE_OUTPUT,
-        index=False
-    )
+    validation_df.to_csv(VALIDATION_OUTPUT, index=False)
 
-    logger.info(
-        "Validation CSV saved."
-    )
+    divergence_df.to_csv(DIVERGENCE_OUTPUT, index=False)
 
-    logger.info(
-        "Divergence CSV saved."
-    )
+    logger.info("Validation CSV saved.")
+
+    logger.info("Divergence CSV saved.")
 
 
 # ==========================================================
 # Summary
 # ==========================================================
 
-def print_summary(
-    validation_df,
-    divergence_df
-):
+
+def print_summary(validation_df, divergence_df):
 
     print("\n" + "=" * 60)
 
@@ -311,13 +236,9 @@ def print_summary(
 
     print("=" * 60)
 
-    print(
-        f"Companies Compared : {len(validation_df)}"
-    )
+    print(f"Companies Compared : {len(validation_df)}")
 
-    print(
-        f"Divergence Found   : {len(divergence_df)}"
-    )
+    print(f"Divergence Found   : {len(divergence_df)}")
 
     print("\nGenerated Files")
 
@@ -336,13 +257,12 @@ def print_summary(
 # Main
 # ==========================================================
 
+
 def main():
 
     logger.info("=" * 60)
 
-    logger.info(
-        "CAGR Validation Started"
-    )
+    logger.info("CAGR Validation Started")
 
     conn = None
 
@@ -352,36 +272,19 @@ def main():
 
         parser_df = load_parser_output()
 
-        ratio_df = load_ratio_engine(
-            conn
-        )
+        ratio_df = load_ratio_engine(conn)
 
-        validation_df = prepare_validation_dataframe(
-            parser_df,
-            ratio_df
-        )
+        validation_df = prepare_validation_dataframe(parser_df, ratio_df)
 
-        validation_df = calculate_difference(
-            validation_df
-        )
+        validation_df = calculate_difference(validation_df)
 
-        divergence_df = detect_divergence(
-            validation_df
-        )
+        divergence_df = detect_divergence(validation_df)
 
-        save_outputs(
-            validation_df,
-            divergence_df
-        )
+        save_outputs(validation_df, divergence_df)
 
-        print_summary(
-            validation_df,
-            divergence_df
-        )
+        print_summary(validation_df, divergence_df)
 
-        logger.info(
-            "Validation Completed Successfully."
-        )
+        logger.info("Validation Completed Successfully.")
 
     except Exception as e:
 

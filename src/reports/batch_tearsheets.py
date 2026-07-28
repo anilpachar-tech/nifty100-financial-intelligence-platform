@@ -3,10 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from tearsheet import (
-    connect_database,
-    build_tearsheet
-)
+from tearsheet import connect_database, build_tearsheet
 
 # =====================================================
 # Paths
@@ -18,14 +15,12 @@ OUTPUT_DIR = PROJECT_ROOT / "output"
 
 REPORT_DIR = OUTPUT_DIR / "tearsheets"
 
-REPORT_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
+REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
 # =====================================================
 # Load Companies
 # =====================================================
+
 
 def get_all_companies(conn):
 
@@ -44,10 +39,8 @@ def get_all_companies(conn):
 # Minimum Data Check
 # =====================================================
 
-def has_minimum_data(
-    conn,
-    company_id
-):
+
+def has_minimum_data(conn, company_id):
 
     query = """
     SELECT COUNT(DISTINCT year) AS years
@@ -55,11 +48,7 @@ def has_minimum_data(
     WHERE company_id=?
     """
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=[company_id]
-    )
+    df = pd.read_sql(query, conn, params=[company_id])
 
     if df.empty:
 
@@ -73,6 +62,7 @@ def has_minimum_data(
 # =====================================================
 # Batch Generation
 # =====================================================
+
 
 def generate_batch():
 
@@ -90,49 +80,19 @@ def generate_batch():
 
     for company in companies:
 
-        ok, years = has_minimum_data(
-
-            conn,
-
-            company
-
-        )
+        ok, years = has_minimum_data(conn, company)
 
         if not ok:
 
-            print(
+            print(f"Skipping {company} ({years} years)")
 
-                f"Skipping {company} ({years} years)"
-
-            )
-
-            skipped.append(
-
-                {
-
-                    "company_id": company,
-
-                    "years_available": years
-
-                }
-
-            )
+            skipped.append({"company_id": company, "years_available": years})
 
             continue
 
-        print(
+        print(f"Generating {company}")
 
-            f"Generating {company}"
-
-        )
-
-        build_tearsheet(
-
-            conn,
-
-            company
-
-        )
+        build_tearsheet(conn, company)
 
         generated += 1
 
@@ -144,6 +104,7 @@ def generate_batch():
 # =====================================================
 # Save Skipped
 # =====================================================
+
 
 def save_skipped(skipped):
 
@@ -159,27 +120,14 @@ def save_skipped(skipped):
 
     output_file = OUTPUT_DIR / "skipped_tearsheets.csv"
 
-    skipped_df.to_csv(
-
-        output_file,
-
-        index=False
-
-    )
+    skipped_df.to_csv(output_file, index=False)
 
     print()
 
-    print(
+    print(f"Skipped : {len(skipped)}")
 
-        f"Skipped : {len(skipped)}"
+    print(f"Saved : {output_file}")
 
-    )
-
-    print(
-
-        f"Saved : {output_file}"
-
-    )
 
 def validate_tearsheets(expected_count):
 
@@ -235,15 +183,14 @@ def validate_tearsheets(expected_count):
 # Main
 # =====================================================
 
+
 def main():
 
     generated, skipped = generate_batch()
 
     save_skipped(skipped)
 
-    validate_tearsheets(
-        generated
-    )
+    validate_tearsheets(generated)
 
     print()
 
@@ -253,11 +200,7 @@ def main():
 
     print("=" * 60)
 
-    print(
-
-        f"Generated : {generated}"
-
-    )
+    print(f"Generated : {generated}")
 
 
 if __name__ == "__main__":

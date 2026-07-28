@@ -10,7 +10,7 @@ tables = [
     "analysis",
     "documents",
     "prosandcons",
-    "financial_ratios"
+    "financial_ratios",
 ]
 
 for table in tables:

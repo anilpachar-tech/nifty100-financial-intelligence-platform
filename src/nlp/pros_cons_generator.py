@@ -17,7 +17,6 @@ import sqlite3
 
 import pandas as pd
 
-
 # ==========================================================
 # Project Paths
 # ==========================================================
@@ -42,7 +41,7 @@ LOG_FILE = OUTPUT_DIR / "pros_cons_generator.log"
 logging.basicConfig(
     filename=LOG_FILE,
     level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s"
+    format="%(asctime)s | %(levelname)s | %(message)s",
 )
 
 logger = logging.getLogger(__name__)
@@ -52,12 +51,11 @@ logger = logging.getLogger(__name__)
 # Database
 # ==========================================================
 
+
 def connect_database():
 
     if not DB_FILE.exists():
-        raise FileNotFoundError(
-            f"Database not found:\n{DB_FILE}"
-        )
+        raise FileNotFoundError(f"Database not found:\n{DB_FILE}")
 
     logger.info("Connected to SQLite database.")
 
@@ -67,6 +65,7 @@ def connect_database():
 # ==========================================================
 # Load Companies
 # ==========================================================
+
 
 def load_companies(conn):
 
@@ -80,10 +79,7 @@ def load_companies(conn):
 
     companies = pd.read_sql(query, conn)
 
-    logger.info(
-        "Loaded %d companies.",
-        len(companies)
-    )
+    logger.info("Loaded %d companies.", len(companies))
 
     return companies
 
@@ -91,6 +87,7 @@ def load_companies(conn):
 # ==========================================================
 # Load Financial Ratios
 # ==========================================================
+
 
 def load_financial_ratios(conn):
 
@@ -102,10 +99,7 @@ def load_financial_ratios(conn):
 
     df = pd.read_sql(query, conn)
 
-    logger.info(
-        "Financial Ratios : %d rows",
-        len(df)
-    )
+    logger.info("Financial Ratios : %d rows", len(df))
 
     return df
 
@@ -113,6 +107,7 @@ def load_financial_ratios(conn):
 # ==========================================================
 # Load Profit & Loss
 # ==========================================================
+
 
 def load_profit_loss(conn):
 
@@ -124,10 +119,7 @@ def load_profit_loss(conn):
 
     df = pd.read_sql(query, conn)
 
-    logger.info(
-        "Profit & Loss : %d rows",
-        len(df)
-    )
+    logger.info("Profit & Loss : %d rows", len(df))
 
     return df
 
@@ -135,6 +127,7 @@ def load_profit_loss(conn):
 # ==========================================================
 # Load Balance Sheet
 # ==========================================================
+
 
 def load_balance_sheet(conn):
 
@@ -146,10 +139,7 @@ def load_balance_sheet(conn):
 
     df = pd.read_sql(query, conn)
 
-    logger.info(
-        "Balance Sheet : %d rows",
-        len(df)
-    )
+    logger.info("Balance Sheet : %d rows", len(df))
 
     return df
 
@@ -157,6 +147,7 @@ def load_balance_sheet(conn):
 # ==========================================================
 # Load Cash Flow
 # ==========================================================
+
 
 def load_cashflow(conn):
 
@@ -168,23 +159,20 @@ def load_cashflow(conn):
 
     df = pd.read_sql(query, conn)
 
-    logger.info(
-        "Cash Flow : %d rows",
-        len(df)
-    )
+    logger.info("Cash Flow : %d rows", len(df))
 
     return df
+
 
 # ==========================================================
 # Helper Functions
 # ==========================================================
 
+
 def get_company_ratios(ratio_df, company_id):
 
     return (
-        ratio_df[
-            ratio_df["company_id"] == company_id
-        ]
+        ratio_df[ratio_df["company_id"] == company_id]
         .sort_values("year")
         .reset_index(drop=True)
     )
@@ -193,9 +181,7 @@ def get_company_ratios(ratio_df, company_id):
 def get_company_profit_loss(pl_df, company_id):
 
     return (
-        pl_df[
-            pl_df["company_id"] == company_id
-        ]
+        pl_df[pl_df["company_id"] == company_id]
         .sort_values("year")
         .reset_index(drop=True)
     )
@@ -204,9 +190,7 @@ def get_company_profit_loss(pl_df, company_id):
 def get_company_balance_sheet(bs_df, company_id):
 
     return (
-        bs_df[
-            bs_df["company_id"] == company_id
-        ]
+        bs_df[bs_df["company_id"] == company_id]
         .sort_values("year")
         .reset_index(drop=True)
     )
@@ -215,9 +199,7 @@ def get_company_balance_sheet(bs_df, company_id):
 def get_company_cashflow(cf_df, company_id):
 
     return (
-        cf_df[
-            cf_df["company_id"] == company_id
-        ]
+        cf_df[cf_df["company_id"] == company_id]
         .sort_values("year")
         .reset_index(drop=True)
     )
@@ -226,6 +208,7 @@ def get_company_cashflow(cf_df, company_id):
 # ==========================================================
 # Latest Record
 # ==========================================================
+
 
 def get_latest(df):
 
@@ -239,74 +222,43 @@ def get_latest(df):
 # Last N Years
 # ==========================================================
 
+
 def get_last_n_years(df, n):
 
     if df.empty:
         return df
 
-    return (
-        df.sort_values("year")
-        .tail(n)
-        .reset_index(drop=True)
-    )
+    return df.sort_values("year").tail(n).reset_index(drop=True)
 
 
 # ==========================================================
 # Trend Check
 # ==========================================================
 
+
 def is_increasing(series):
 
-    values = (
-        pd.to_numeric(
-            series,
-            errors="coerce"
-        )
-        .dropna()
-        .tolist()
-    )
+    values = pd.to_numeric(series, errors="coerce").dropna().tolist()
 
     if len(values) < 2:
         return False
 
-    return all(
-        x < y
-        for x, y in zip(
-            values,
-            values[1:]
-        )
-    )
+    return all(x < y for x, y in zip(values, values[1:]))
 
 
 def is_decreasing(series):
 
-    values = (
-        pd.to_numeric(
-            series,
-            errors="coerce"
-        )
-        .dropna()
-        .tolist()
-    )
+    values = pd.to_numeric(series, errors="coerce").dropna().tolist()
 
     if len(values) < 2:
         return False
 
-    return all(
-        x > y
-        for x, y in zip(
-            values,
-            values[1:]
-        )
-    )
+    return all(x > y for x, y in zip(values, values[1:]))
 
 
 def all_positive(series):
 
-    values = pd.to_numeric(
-        series,
-        errors="coerce"
-    ).dropna()
+    values = pd.to_numeric(series, errors="coerce").dropna()
 
     if values.empty:
         return False
@@ -316,10 +268,7 @@ def all_positive(series):
 
 def all_negative(series):
 
-    values = pd.to_numeric(
-        series,
-        errors="coerce"
-    ).dropna()
+    values = pd.to_numeric(series, errors="coerce").dropna()
 
     if values.empty:
         return False
@@ -331,14 +280,8 @@ def all_negative(series):
 # Result Collector
 # ==========================================================
 
-def add_result(
-    results,
-    company_id,
-    result_type,
-    rule_id,
-    text,
-    confidence
-):
+
+def add_result(results, company_id, result_type, rule_id, text, confidence):
 
     confidence = round(float(confidence), 2)
 
@@ -351,22 +294,17 @@ def add_result(
             "type": result_type,
             "rule_id": rule_id,
             "text": text,
-            "confidence_pct": confidence
+            "confidence_pct": confidence,
         }
     )
+
 
 # ==========================================================
 # Generate Pros
 # ==========================================================
 
-def generate_pros(
-    companies_df,
-    ratio_df,
-    pl_df,
-    bs_df,
-    cf_df,
-    results
-):
+
+def generate_pros(companies_df, ratio_df, pl_df, bs_df, cf_df, results):
 
     logger.info("Generating Pro Rules...")
 
@@ -374,25 +312,13 @@ def generate_pros(
 
         company_id = company["company_id"]
 
-        ratios = get_company_ratios(
-            ratio_df,
-            company_id
-        )
+        ratios = get_company_ratios(ratio_df, company_id)
 
-        pnl = get_company_profit_loss(
-            pl_df,
-            company_id
-        )
+        pnl = get_company_profit_loss(pl_df, company_id)
 
-        balance = get_company_balance_sheet(
-            bs_df,
-            company_id
-        )
+        balance = get_company_balance_sheet(bs_df, company_id)
 
-        cashflow = get_company_cashflow(
-            cf_df,
-            company_id
-        )
+        cashflow = get_company_cashflow(cf_df, company_id)
 
         latest_ratio = get_latest(ratios)
 
@@ -410,39 +336,21 @@ def generate_pros(
         # ROE >20% for last 3 years
         # ==================================================
 
-        last3 = get_last_n_years(
-            ratios,
-            3
-        )
+        last3 = get_last_n_years(ratios, 3)
 
-        if (
-            len(last3) == 3
-            and
-            (
-                last3[
-                    "return_on_equity_pct"
-                ] > 20
-            ).all()
-        ):
+        if len(last3) == 3 and (last3["return_on_equity_pct"] > 20).all():
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "pro",
-
                 "PRO_01",
-
                 (
                     "Consistently high return on equity "
                     "above 20% demonstrates exceptional "
                     "capital efficiency."
                 ),
-
-                95
-
+                95,
             )
 
         # ==================================================
@@ -450,39 +358,21 @@ def generate_pros(
         # Positive FCF for 5 years
         # ==================================================
 
-        last5 = get_last_n_years(
-            ratios,
-            5
-        )
+        last5 = get_last_n_years(ratios, 5)
 
-        if (
-            len(last5) == 5
-            and
-            all_positive(
-                last5[
-                    "free_cash_flow_cr"
-                ]
-            )
-        ):
+        if len(last5) == 5 and all_positive(last5["free_cash_flow_cr"]):
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "pro",
-
                 "PRO_02",
-
                 (
                     "Strong free cash flow generation "
                     "over 5 years signals healthy "
                     "business fundamentals."
                 ),
-
-                92
-
+                92,
             )
 
         # ==================================================
@@ -490,32 +380,23 @@ def generate_pros(
         # Debt Free
         # ==================================================
 
-        debt_equity = latest_ratio[
-            "debt_to_equity"
-        ]
+        debt_equity = latest_ratio["debt_to_equity"]
 
         if pd.notna(debt_equity):
 
             if debt_equity == 0:
 
                 add_result(
-
                     results,
-
                     company_id,
-
                     "pro",
-
                     "PRO_03",
-
                     (
                         "Debt-free balance sheet provides "
                         "financial flexibility and "
                         "eliminates interest burden."
                     ),
-
-                    96
-
+                    96,
                 )
 
         # ==================================================
@@ -523,32 +404,23 @@ def generate_pros(
         # Revenue CAGR >15%
         # ==================================================
 
-        revenue_cagr = latest_ratio[
-            "revenue_cagr_5yr"
-        ]
+        revenue_cagr = latest_ratio["revenue_cagr_5yr"]
 
         if pd.notna(revenue_cagr):
 
             if revenue_cagr > 15:
 
                 add_result(
-
                     results,
-
                     company_id,
-
                     "pro",
-
                     "PRO_04",
-
                     (
                         "Revenue growing at above "
                         "15% CAGR over 5 years "
                         "reflects strong business momentum."
                     ),
-
-                    90
-
+                    90,
                 )
 
         # ==================================================
@@ -556,32 +428,23 @@ def generate_pros(
         # OPM >25%
         # ==================================================
 
-        opm = latest_ratio[
-            "operating_profit_margin_pct"
-        ]
+        opm = latest_ratio["operating_profit_margin_pct"]
 
         if pd.notna(opm):
 
             if opm > 25:
 
                 add_result(
-
                     results,
-
                     company_id,
-
                     "pro",
-
                     "PRO_05",
-
                     (
                         "Operating profit margin above "
                         "25% indicates strong pricing "
                         "power and cost discipline."
                     ),
-
-                    90
-
+                    90,
                 )
 
         # ==================================================
@@ -589,36 +452,26 @@ def generate_pros(
         # PAT CAGR >20%
         # ==================================================
 
-        pat_cagr = latest_ratio[
-            "pat_cagr_5yr"
-        ]
+        pat_cagr = latest_ratio["pat_cagr_5yr"]
 
         if pd.notna(pat_cagr):
 
             if pat_cagr > 20:
 
                 add_result(
-
                     results,
-
                     company_id,
-
                     "pro",
-
                     "PRO_06",
-
                     (
                         "Net profit compounding above "
                         "20% over 5 years creates "
                         "significant shareholder value."
                     ),
-
-                    94
-
+                    94,
                 )
 
         logger.info("Pro Rules 1-6 completed.")
-
 
         # ==================================================
         # PRO 7
@@ -628,30 +481,19 @@ def generate_pros(
         icr = latest_ratio["interest_coverage"]
         debt_equity = latest_ratio["debt_to_equity"]
 
-        if (
-            (pd.notna(icr) and icr > 10)
-            or
-            (pd.notna(debt_equity) and debt_equity == 0)
-        ):
+        if (pd.notna(icr) and icr > 10) or (pd.notna(debt_equity) and debt_equity == 0):
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "pro",
-
                 "PRO_07",
-
                 (
                     "Very high interest coverage ratio "
                     "reflects negligible financial stress "
                     "from debt servicing."
                 ),
-
-                90
-
+                90,
             )
 
         # ==================================================
@@ -663,35 +505,20 @@ def generate_pros(
 
         free_cash_flow = latest_ratio["free_cash_flow_cr"]
 
-        if (
-            pd.notna(dividend_yield)
-            and
-            pd.notna(free_cash_flow)
-        ):
+        if pd.notna(dividend_yield) and pd.notna(free_cash_flow):
 
-            if (
-                dividend_yield > 2
-                and
-                free_cash_flow > 0
-            ):
+            if dividend_yield > 2 and free_cash_flow > 0:
 
                 add_result(
-
                     results,
-
                     company_id,
-
                     "pro",
-
                     "PRO_08",
-
                     (
                         "Consistent dividend yield above "
                         "2% backed by positive free cash flow."
                     ),
-
-                    88
-
+                    88,
                 )
 
         # ==================================================
@@ -706,23 +533,16 @@ def generate_pros(
             if eps_cagr > 15:
 
                 add_result(
-
                     results,
-
                     company_id,
-
                     "pro",
-
                     "PRO_09",
-
                     (
                         "Earnings per share growing above "
                         "15% CAGR indicates strong earnings "
                         "quality and compounding."
                     ),
-
-                    91
-
+                    91,
                 )
 
         # ==================================================
@@ -730,32 +550,19 @@ def generate_pros(
         # ROE Improving for 3 Years
         # ==================================================
 
-        if (
-            len(last3) == 3
-            and
-            is_increasing(
-                last3["return_on_equity_pct"]
-            )
-        ):
+        if len(last3) == 3 and is_increasing(last3["return_on_equity_pct"]):
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "pro",
-
                 "PRO_10",
-
                 (
                     "Return on equity improving for "
                     "3 consecutive years shows "
                     "strengthening business quality."
                 ),
-
-                86
-
+                86,
             )
 
         # ==================================================
@@ -768,32 +575,21 @@ def generate_pros(
 
         pat_cagr = latest_ratio["pat_cagr_5yr"]
 
-        if (
-            pd.notna(revenue_cagr)
-            and
-            pd.notna(pat_cagr)
-        ):
+        if pd.notna(revenue_cagr) and pd.notna(pat_cagr):
 
             if pat_cagr > revenue_cagr:
 
                 add_result(
-
                     results,
-
                     company_id,
-
                     "pro",
-
                     "PRO_11",
-
                     (
                         "Revenue growing slower than profits "
                         "shows improving operating leverage "
                         "and scale benefits."
                     ),
-
-                    84
-
+                    84,
                 )
 
         # ==================================================
@@ -801,40 +597,26 @@ def generate_pros(
         # Assets Growing + Debt Declining
         # ==================================================
 
-        last3_balance = get_last_n_years(
-            balance,
-            3
-        )
+        last3_balance = get_last_n_years(balance, 3)
 
         debt_declining = latest_ratio["debt_declining"]
 
         if (
             len(last3_balance) == 3
-            and
-            is_increasing(
-                last3_balance["total_assets"]
-            )
-            and
-            debt_declining == 1
+            and is_increasing(last3_balance["total_assets"])
+            and debt_declining == 1
         ):
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "pro",
-
                 "PRO_12",
-
                 (
                     "Growing asset base funded by internal "
                     "accruals reflects self-sustaining growth."
                 ),
-
-                90
-
+                90,
             )
 
 
@@ -842,14 +624,8 @@ def generate_pros(
 # Generate Cons
 # ==========================================================
 
-def generate_cons(
-    companies_df,
-    ratio_df,
-    pl_df,
-    bs_df,
-    cf_df,
-    results
-):
+
+def generate_cons(companies_df, ratio_df, pl_df, bs_df, cf_df, results):
 
     logger.info("Generating Con Rules...")
 
@@ -857,25 +633,13 @@ def generate_cons(
 
         company_id = company["company_id"]
 
-        ratios = get_company_ratios(
-            ratio_df,
-            company_id
-        )
+        ratios = get_company_ratios(ratio_df, company_id)
 
-        pnl = get_company_profit_loss(
-            pl_df,
-            company_id
-        )
+        pnl = get_company_profit_loss(pl_df, company_id)
 
-        balance = get_company_balance_sheet(
-            bs_df,
-            company_id
-        )
+        balance = get_company_balance_sheet(bs_df, company_id)
 
-        cashflow = get_company_cashflow(
-            cf_df,
-            company_id
-        )
+        cashflow = get_company_cashflow(cf_df, company_id)
 
         latest_ratio = get_latest(ratios)
 
@@ -884,15 +648,9 @@ def generate_cons(
         if latest_ratio is None or latest_pnl is None:
             continue
 
-        last3_ratio = get_last_n_years(
-            ratios,
-            3
-        )
+        last3_ratio = get_last_n_years(ratios, 3)
 
-        last3_pnl = get_last_n_years(
-            pnl,
-            3
-        )
+        last3_pnl = get_last_n_years(pnl, 3)
 
         # ==================================================
         # CON 1
@@ -901,30 +659,20 @@ def generate_cons(
 
         debt_equity = latest_ratio["debt_to_equity"]
 
-        if (
-            pd.notna(debt_equity)
-            and debt_equity > 2
-        ):
+        if pd.notna(debt_equity) and debt_equity > 2:
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "con",
-
                 "CON_01",
-
                 (
                     f"Debt-to-equity ratio of "
                     f"{debt_equity:.2f} is elevated "
                     "for a non-financial company "
                     "and warrants monitoring."
                 ),
-
-                92
-
+                92,
             )
 
         # ==================================================
@@ -932,34 +680,19 @@ def generate_cons(
         # Negative FCF for 3 Years
         # ==================================================
 
-        if (
-            len(last3_ratio) == 3
-            and
-            all_negative(
-                last3_ratio[
-                    "free_cash_flow_cr"
-                ]
-            )
-        ):
+        if len(last3_ratio) == 3 and all_negative(last3_ratio["free_cash_flow_cr"]):
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "con",
-
                 "CON_02",
-
                 (
                     "Free cash flow negative for "
                     "3 consecutive years raises "
                     "concern about cash generation quality."
                 ),
-
-                90
-
+                90,
             )
 
         # ==================================================
@@ -967,34 +700,21 @@ def generate_cons(
         # OPM Declining
         # ==================================================
 
-        if (
-            len(last3_ratio) == 3
-            and
-            is_decreasing(
-                last3_ratio[
-                    "operating_profit_margin_pct"
-                ]
-            )
+        if len(last3_ratio) == 3 and is_decreasing(
+            last3_ratio["operating_profit_margin_pct"]
         ):
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "con",
-
                 "CON_03",
-
                 (
                     "Operating margins declining "
                     "for 3 consecutive years "
                     "suggest pricing or cost pressure."
                 ),
-
-                86
-
+                86,
             )
 
         # ==================================================
@@ -1004,28 +724,15 @@ def generate_cons(
 
         net_profit = latest_pnl["net_profit"]
 
-        if (
-            pd.notna(net_profit)
-            and net_profit < 0
-        ):
+        if pd.notna(net_profit) and net_profit < 0:
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "con",
-
                 "CON_04",
-
-                (
-                    "Company reported a net loss "
-                    "in the most recent financial year."
-                ),
-
-                95
-
+                ("Company reported a net loss " "in the most recent financial year."),
+                95,
             )
 
         # ==================================================
@@ -1033,34 +740,19 @@ def generate_cons(
         # Revenue Declining
         # ==================================================
 
-        if (
-            len(last3_pnl) == 3
-            and
-            is_decreasing(
-                last3_pnl[
-                    "sales"
-                ]
-            )
-        ):
+        if len(last3_pnl) == 3 and is_decreasing(last3_pnl["sales"]):
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "con",
-
                 "CON_05",
-
                 (
                     "Revenue contraction over "
                     "2 consecutive years indicates "
                     "demand weakness or market share loss."
                 ),
-
-                88
-
+                88,
             )
 
         # ==================================================
@@ -1070,68 +762,45 @@ def generate_cons(
 
         icr = latest_ratio["interest_coverage"]
 
-        if (
-            pd.notna(icr)
-            and icr < 1.5
-        ):
+        if pd.notna(icr) and icr < 1.5:
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "con",
-
                 "CON_06",
-
                 (
                     "Interest coverage ratio below "
                     "1.5x indicates the company "
                     "is at risk of not meeting "
                     "its debt obligations."
                 ),
-
-                94
-
+                94,
             )
 
         logger.info("Con Rules 1-6 completed.")
-
 
         # ==================================================
         # CON 7
         # Dividend Payout >100%
         # ==================================================
 
-        payout = latest_ratio[
-            "dividend_payout_ratio_pct"
-        ]
+        payout = latest_ratio["dividend_payout_ratio_pct"]
 
-        if (
-            pd.notna(payout)
-            and payout > 100
-        ):
+        if pd.notna(payout) and payout > 100:
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "con",
-
                 "CON_07",
-
                 (
                     "Dividend payout ratio above "
                     "100% means the company is "
                     "paying dividends from reserves, "
                     "which is unsustainable."
                 ),
-
-                90
-
+                90,
             )
 
         # ==================================================
@@ -1139,34 +808,19 @@ def generate_cons(
         # Debt Equity Rising
         # ==================================================
 
-        if (
-            len(last3_ratio) == 3
-            and
-            is_increasing(
-                last3_ratio[
-                    "debt_to_equity"
-                ]
-            )
-        ):
+        if len(last3_ratio) == 3 and is_increasing(last3_ratio["debt_to_equity"]):
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "con",
-
                 "CON_08",
-
                 (
                     "Rising debt-to-equity ratio "
                     "over 3 years suggests increasing "
                     "financial leverage risk."
                 ),
-
-                88
-
+                88,
             )
 
         # ==================================================
@@ -1174,34 +828,19 @@ def generate_cons(
         # EPS Declining
         # ==================================================
 
-        if (
-            len(last3_pnl) == 3
-            and
-            is_decreasing(
-                last3_pnl[
-                    "eps"
-                ]
-            )
-        ):
+        if len(last3_pnl) == 3 and is_decreasing(last3_pnl["eps"]):
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "con",
-
                 "CON_09",
-
                 (
                     "Earnings per share declining "
                     "for 3 consecutive years reflects "
                     "deteriorating profitability."
                 ),
-
-                90
-
+                90,
             )
 
         # ==================================================
@@ -1209,34 +848,22 @@ def generate_cons(
         # ROCE <10%
         # ==================================================
 
-        roce = latest_ratio[
-            "return_on_capital_employed_pct"
-        ]
+        roce = latest_ratio["return_on_capital_employed_pct"]
 
-        if (
-            pd.notna(roce)
-            and roce < 10
-        ):
+        if pd.notna(roce) and roce < 10:
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "con",
-
                 "CON_10",
-
                 (
                     "Return on capital employed below "
                     "10% suggests the business is not "
                     "generating sufficient returns on "
                     "invested capital."
                 ),
-
-                92
-
+                92,
             )
 
         # ==================================================
@@ -1245,44 +872,28 @@ def generate_cons(
         # Skipped (EBITDA unavailable)
         # ==================================================
 
-        logger.debug(
-            "CON_11 skipped for %s "
-            "(EBITDA not available).",
-            company_id
-        )
+        logger.debug("CON_11 skipped for %s " "(EBITDA not available).", company_id)
 
         # ==================================================
         # CON 12
         # Revenue CAGR <5%
         # ==================================================
 
-        revenue_cagr = latest_ratio[
-            "revenue_cagr_5yr"
-        ]
+        revenue_cagr = latest_ratio["revenue_cagr_5yr"]
 
-        if (
-            pd.notna(revenue_cagr)
-            and revenue_cagr < 5
-        ):
+        if pd.notna(revenue_cagr) and revenue_cagr < 5:
 
             add_result(
-
                 results,
-
                 company_id,
-
                 "con",
-
                 "CON_12",
-
                 (
                     "Revenue growing below 5% over "
                     "5 years lags inflation and "
                     "suggests limited business momentum."
                 ),
-
-                86
-
+                86,
             )
 
 
@@ -1290,23 +901,16 @@ def generate_cons(
 # Save Output
 # ==========================================================
 
+
 def save_output(results):
 
     df = pd.DataFrame(results)
 
-    df = df.sort_values(
-        ["company_id", "type", "rule_id"]
-    ).reset_index(drop=True)
+    df = df.sort_values(["company_id", "type", "rule_id"]).reset_index(drop=True)
 
-    df.to_csv(
-        OUTPUT_FILE,
-        index=False
-    )
+    df.to_csv(OUTPUT_FILE, index=False)
 
-    logger.info(
-        "Generated %d records.",
-        len(df)
-    )
+    logger.info("Generated %d records.", len(df))
 
     return df
 
@@ -1315,27 +919,20 @@ def save_output(results):
 # Verification
 # ==========================================================
 
+
 def verify_output(companies_df, output_df):
 
-    logger.info(
-        "Verifying generated output..."
-    )
+    logger.info("Verifying generated output...")
 
     failed = []
 
     for company_id in companies_df["company_id"]:
 
-        company_rows = output_df[
-            output_df["company_id"] == company_id
-        ]
+        company_rows = output_df[output_df["company_id"] == company_id]
 
-        pros = (
-            company_rows["type"] == "pro"
-        ).sum()
+        pros = (company_rows["type"] == "pro").sum()
 
-        cons = (
-            company_rows["type"] == "con"
-        ).sum()
+        cons = (company_rows["type"] == "con").sum()
 
         if pros == 0 or cons == 0:
 
@@ -1343,18 +940,14 @@ def verify_output(companies_df, output_df):
 
     if failed:
 
-        logger.warning(
-            "Companies failing verification: %s",
-            ", ".join(failed)
-        )
+        logger.warning("Companies failing verification: %s", ", ".join(failed))
 
     else:
 
-        logger.info(
-            "Verification Passed."
-        )
+        logger.info("Verification Passed.")
 
     return failed
+
 
 def apply_fallback_rules(companies_df, results):
 
@@ -1364,15 +957,9 @@ def apply_fallback_rules(companies_df, results):
 
         company_rows = df[df["company_id"] == company_id]
 
-        has_pro = (
-            not company_rows.empty
-            and (company_rows["type"] == "pro").any()
-        )
+        has_pro = not company_rows.empty and (company_rows["type"] == "pro").any()
 
-        has_con = (
-            not company_rows.empty
-            and (company_rows["type"] == "con").any()
-        )
+        has_con = not company_rows.empty and (company_rows["type"] == "con").any()
 
         if not has_pro:
 
@@ -1382,7 +969,7 @@ def apply_fallback_rules(companies_df, results):
                 "pro",
                 "PRO_99",
                 "Company has an established market presence and long-term business potential.",
-                65
+                65,
             )
 
         if not has_con:
@@ -1393,7 +980,7 @@ def apply_fallback_rules(companies_df, results):
                 "con",
                 "CON_99",
                 "Business performance may face future market and industry risks.",
-                65
+                65,
             )
 
         df = pd.DataFrame(results)
@@ -1402,6 +989,7 @@ def apply_fallback_rules(companies_df, results):
 # ==========================================================
 # Summary
 # ==========================================================
+
 
 def print_summary(df, failed):
 
@@ -1413,25 +1001,15 @@ def print_summary(df, failed):
 
     print("=" * 60)
 
-    print(
-        f"Generated Records : {len(df)}"
-    )
+    print(f"Generated Records : {len(df)}")
 
-    print(
-        f"Companies Covered : {df['company_id'].nunique()}"
-    )
+    print(f"Companies Covered : {df['company_id'].nunique()}")
 
-    print(
-        f"Pros : {(df['type']=='pro').sum()}"
-    )
+    print(f"Pros : {(df['type']=='pro').sum()}")
 
-    print(
-        f"Cons : {(df['type']=='con').sum()}"
-    )
+    print(f"Cons : {(df['type']=='con').sum()}")
 
-    print(
-        f"Verification Failed : {len(failed)}"
-    )
+    print(f"Verification Failed : {len(failed)}")
 
     print("\nGenerated Files")
 
@@ -1448,13 +1026,12 @@ def print_summary(df, failed):
 # Main
 # ==========================================================
 
+
 def main():
 
     logger.info("=" * 60)
 
-    logger.info(
-        "Pros & Cons Generator Started"
-    )
+    logger.info("Pros & Cons Generator Started")
 
     conn = None
 
@@ -1474,46 +1051,19 @@ def main():
 
         results = []
 
-        generate_pros(
-            companies_df,
-            ratio_df,
-            pl_df,
-            bs_df,
-            cf_df,
-            results
-        )
+        generate_pros(companies_df, ratio_df, pl_df, bs_df, cf_df, results)
 
-        generate_cons(
-            companies_df,
-            ratio_df,
-            pl_df,
-            bs_df,
-            cf_df,
-            results
-        )
+        generate_cons(companies_df, ratio_df, pl_df, bs_df, cf_df, results)
 
-        apply_fallback_rules(
-            companies_df,
-            results
-        )
+        apply_fallback_rules(companies_df, results)
 
-        output_df = save_output(
-            results
-        )
+        output_df = save_output(results)
 
-        failed = verify_output(
-            companies_df,
-            output_df
-        )
+        failed = verify_output(companies_df, output_df)
 
-        print_summary(
-            output_df,
-            failed
-        )
+        print_summary(output_df, failed)
 
-        logger.info(
-            "Day 30 Completed Successfully."
-        )
+        logger.info("Day 30 Completed Successfully.")
 
     except Exception as e:
 

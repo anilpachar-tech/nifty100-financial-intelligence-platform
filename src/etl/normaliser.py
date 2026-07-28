@@ -28,7 +28,7 @@ def normalize_year(year):
         "Sep": "09",
         "Oct": "10",
         "Nov": "11",
-        "Dec": "12"
+        "Dec": "12",
     }
 
     parts = year.replace("-", " ").split()

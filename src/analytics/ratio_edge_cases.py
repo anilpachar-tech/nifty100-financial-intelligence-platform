@@ -17,14 +17,10 @@ print("Reading Tables")
 print("=" * 60)
 
 companies = pd.read_sql(
-    "SELECT company_name, roce_percentage, roe_percentage FROM companies",
-    conn
+    "SELECT company_name, roce_percentage, roe_percentage FROM companies", conn
 )
 
-sectors = pd.read_sql(
-    "SELECT company_id, broad_sector FROM sectors",
-    conn
-)
+sectors = pd.read_sql("SELECT company_id, broad_sector FROM sectors", conn)
 
 ratios = pd.read_sql(
     """
@@ -35,7 +31,7 @@ ratios = pd.read_sql(
         debt_to_equity
     FROM financial_ratios
     """,
-    conn
+    conn,
 )
 
 print("Companies :", len(companies))
@@ -54,9 +50,7 @@ financial_companies = sectors[
 print("Financial Companies :", len(financial_companies))
 print()
 
-print(financial_companies[
-    ["company_id", "broad_sector"]
-])
+print(financial_companies[["company_id", "broad_sector"]])
 
 print()
 print("=" * 60)
@@ -65,27 +59,17 @@ print("=" * 60)
 
 financial_ids = set(financial_companies["company_id"])
 
-ratios["high_leverage_warning"] = (
-    (ratios["debt_to_equity"] > 5) &
-    (~ratios["company_id"].isin(financial_ids))
+ratios["high_leverage_warning"] = (ratios["debt_to_equity"] > 5) & (
+    ~ratios["company_id"].isin(financial_ids)
 )
 
-print(
-    "High Leverage Warnings :",
-    ratios["high_leverage_warning"].sum()
-)
+print("High Leverage Warnings :", ratios["high_leverage_warning"].sum())
 
 print()
 
 print(
-    ratios[
-        ratios["high_leverage_warning"]
-    ][
-        [
-            "company_id",
-            "year",
-            "debt_to_equity"
-        ]
+    ratios[ratios["high_leverage_warning"]][
+        ["company_id", "year", "debt_to_equity"]
     ].head(10)
 )
 
@@ -107,28 +91,26 @@ comparison = pd.read_sql(
     JOIN companies c
         ON fr.company_id = c.id
     """,
-    conn
+    conn,
 )
 
 comparison["roe_difference"] = (
-    comparison["return_on_equity_pct"] -
-    comparison["roe_percentage"]
+    comparison["return_on_equity_pct"] - comparison["roe_percentage"]
 ).abs()
 
 comparison["roce_difference"] = (
-    comparison["return_on_capital_employed_pct"] -
-    comparison["roce_percentage"]
+    comparison["return_on_capital_employed_pct"] - comparison["roce_percentage"]
 ).abs()
 
 edge_cases = comparison[
-    (comparison["roe_difference"] > 5) |
-    (comparison["roce_difference"] > 5)
+    (comparison["roe_difference"] > 5) | (comparison["roce_difference"] > 5)
 ].copy()
 
 print("Edge Cases :", len(edge_cases))
 print()
 
 print(edge_cases.head(10))
+
 
 def classify(row):
 
@@ -138,39 +120,26 @@ def classify(row):
     if row["roce_difference"] > 20:
         return "Data Source Issue"
 
-    if (
-        row["roe_difference"] > 5 and
-        row["roce_difference"] > 5
-    ):
+    if row["roe_difference"] > 5 and row["roce_difference"] > 5:
         return "Formula Discrepancy"
 
     return "Version Difference"
 
 
-edge_cases["category"] = edge_cases.apply(
-    classify,
-    axis=1
-)
+edge_cases["category"] = edge_cases.apply(classify, axis=1)
 
 print()
-print(edge_cases[
-    [
-        "company_id",
-        "year",
-        "roe_difference",
-        "roce_difference",
-        "category"
-    ]
-].head(10))
+print(
+    edge_cases[
+        ["company_id", "year", "roe_difference", "roce_difference", "category"]
+    ].head(10)
+)
 
 import os
 
 os.makedirs("output", exist_ok=True)
 
-edge_cases.to_csv(
-    "output/ratio_edge_cases.log",
-    index=False
-)
+edge_cases.to_csv("output/ratio_edge_cases.log", index=False)
 
 print()
 print("=" * 60)
@@ -196,7 +165,7 @@ screener = pd.read_sql(
         AND MIN(debt_to_equity) < 1
     ORDER BY roe DESC
     """,
-    conn
+    conn,
 )
 print("Companies Found :", len(screener))
 print()

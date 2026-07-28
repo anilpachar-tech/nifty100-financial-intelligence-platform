@@ -16,16 +16,14 @@ tables = [
     "stock_prices",
     "market_cap",
     "financial_ratios",
-    "peer_groups"
+    "peer_groups",
 ]
 
 print("\n===== ROW COUNT VERIFICATION =====\n")
 
 for table in tables:
 
-    cur.execute(
-        f"SELECT COUNT(*) FROM {table}"
-    )
+    cur.execute(f"SELECT COUNT(*) FROM {table}")
 
     count = cur.fetchone()[0]
 

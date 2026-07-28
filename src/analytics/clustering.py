@@ -8,7 +8,6 @@ from sklearn.cluster import KMeans
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
 
-
 # ==========================================================
 # Project Paths
 # ==========================================================
@@ -30,6 +29,7 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 # Database Connection
 # ==========================================================
 
+
 def connect_database():
     """Return SQLite database connection."""
 
@@ -39,6 +39,7 @@ def connect_database():
 # ==========================================================
 # Load Latest Financial Dataset
 # ==========================================================
+
 
 def load_dataset():
 
@@ -102,45 +103,34 @@ def load_dataset():
 # Sector Median Imputation
 # ==========================================================
 
+
 def sector_imputation(df):
 
     feature_columns = [
-
         "return_on_equity_pct",
         "debt_to_equity",
         "revenue_cagr_5yr",
         "free_cash_flow_cr",
-        "operating_profit_margin_pct"
-
+        "operating_profit_margin_pct",
     ]
 
     for column in feature_columns:
 
-        df[column] = (
-
-            df.groupby("broad_sector")[column]
-
-            .transform(
-
-                lambda x: x.fillna(x.median())
-
-            )
-
+        df[column] = df.groupby("broad_sector")[column].transform(
+            lambda x: x.fillna(x.median())
         )
 
     imputer = SimpleImputer(strategy="median")
 
-    df[feature_columns] = imputer.fit_transform(
-
-        df[feature_columns]
-
-    )
+    df[feature_columns] = imputer.fit_transform(df[feature_columns])
 
     return df
+
 
 # ==========================================================
 # Feature Scaling
 # ==========================================================
+
 
 def prepare_features(df):
     """
@@ -152,7 +142,7 @@ def prepare_features(df):
         "debt_to_equity",
         "revenue_cagr_5yr",
         "free_cash_flow_cr",
-        "operating_profit_margin_pct"
+        "operating_profit_margin_pct",
     ]
 
     scaler = StandardScaler()
@@ -166,6 +156,7 @@ def prepare_features(df):
 # Elbow Plot
 # ==========================================================
 
+
 def generate_elbow_plot(features):
     """
     Generate inertia plot for K = 2 to 10.
@@ -177,11 +168,7 @@ def generate_elbow_plot(features):
 
     for k in k_values:
 
-        model = KMeans(
-            n_clusters=k,
-            random_state=42,
-            n_init=10
-        )
+        model = KMeans(n_clusters=k, random_state=42, n_init=10)
 
         model.fit(features)
 
@@ -189,12 +176,7 @@ def generate_elbow_plot(features):
 
     plt.figure(figsize=(8, 5))
 
-    plt.plot(
-        k_values,
-        inertia,
-        marker="o",
-        linewidth=2
-    )
+    plt.plot(k_values, inertia, marker="o", linewidth=2)
 
     plt.title("KMeans Elbow Curve")
 
@@ -215,16 +197,13 @@ def generate_elbow_plot(features):
 # Run KMeans
 # ==========================================================
 
+
 def perform_clustering(features):
     """
     Perform KMeans clustering.
     """
 
-    model = KMeans(
-        n_clusters=5,
-        random_state=42,
-        n_init=10
-    )
+    model = KMeans(n_clusters=5, random_state=42, n_init=10)
 
     cluster_ids = model.fit_predict(features)
 
@@ -234,6 +213,7 @@ def perform_clustering(features):
 # ==========================================================
 # Distance from Cluster Center
 # ==========================================================
+
 
 def calculate_distance(model, features):
     """
@@ -246,9 +226,11 @@ def calculate_distance(model, features):
 
     return nearest
 
+
 # ==========================================================
 # Cluster Names
 # ==========================================================
+
 
 def assign_cluster_names(cluster_summary):
     """
@@ -256,8 +238,7 @@ def assign_cluster_names(cluster_summary):
     """
 
     ordered = cluster_summary.sort_values(
-        "return_on_equity_pct",
-        ascending=False
+        "return_on_equity_pct", ascending=False
     ).index.tolist()
 
     names = {
@@ -265,7 +246,7 @@ def assign_cluster_names(cluster_summary):
         ordered[1]: "Emerging Growth",
         ordered[2]: "Defensive Dividend Payers",
         ordered[3]: "Value Cyclicals",
-        ordered[4]: "Distressed / Turnaround"
+        ordered[4]: "Distressed / Turnaround",
     }
 
     return names
@@ -275,17 +256,12 @@ def assign_cluster_names(cluster_summary):
 # Save Cluster Labels
 # ==========================================================
 
+
 def save_cluster_labels(df, cluster_ids, distances):
 
     df["cluster_id"] = cluster_ids
 
-    summary = (
-        df.groupby("cluster_id")[
-            "return_on_equity_pct"
-        ]
-        .mean()
-        .to_frame()
-    )
+    summary = df.groupby("cluster_id")["return_on_equity_pct"].mean().to_frame()
 
     cluster_names = assign_cluster_names(summary)
 
@@ -293,19 +269,9 @@ def save_cluster_labels(df, cluster_ids, distances):
 
     df["distance_from_centroid"] = distances.round(4)
 
-    output = df[
-        [
-            "company_id",
-            "cluster_id",
-            "cluster_name",
-            "distance_from_centroid"
-        ]
-    ]
+    output = df[["company_id", "cluster_id", "cluster_name", "distance_from_centroid"]]
 
-    output.to_csv(
-        OUTPUT_DIR / "cluster_labels.csv",
-        index=False
-    )
+    output.to_csv(OUTPUT_DIR / "cluster_labels.csv", index=False)
 
     return output
 
@@ -313,6 +279,7 @@ def save_cluster_labels(df, cluster_ids, distances):
 # ==========================================================
 # Validation
 # ==========================================================
+
 
 def validate_output(output_df):
 
@@ -322,17 +289,11 @@ def validate_output(output_df):
 
     print(f"Companies Clustered : {len(output_df)}")
 
-    print(
-        f"Unique Clusters     : {output_df['cluster_id'].nunique()}"
-    )
+    print(f"Unique Clusters     : {output_df['cluster_id'].nunique()}")
 
     print("\nCluster Distribution\n")
 
-    print(
-        output_df["cluster_name"]
-        .value_counts()
-        .sort_index()
-    )
+    print(output_df["cluster_name"].value_counts().sort_index())
 
     if len(output_df) == 92:
         print("\nPASS : All 92 companies clustered.")
@@ -344,6 +305,7 @@ def validate_output(output_df):
 # ==========================================================
 # Main
 # ==========================================================
+
 
 def main():
 
@@ -369,16 +331,9 @@ def main():
 
     model, cluster_ids = perform_clustering(features)
 
-    distances = calculate_distance(
-        model,
-        features
-    )
+    distances = calculate_distance(model, features)
 
-    output = save_cluster_labels(
-        df,
-        cluster_ids,
-        distances
-    )
+    output = save_cluster_labels(df, cluster_ids, distances)
 
     validate_output(output)
 

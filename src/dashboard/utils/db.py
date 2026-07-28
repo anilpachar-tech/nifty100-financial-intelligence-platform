@@ -22,7 +22,7 @@ def get_companies():
         FROM companies
         ORDER BY company_name
         """,
-        conn
+        conn,
     )
 
     conn.close()
@@ -31,10 +31,7 @@ def get_companies():
 
 
 @st.cache_data(ttl=600)
-def get_ratios(
-    ticker,
-    year=None
-):
+def get_ratios(ticker, year=None):
 
     conn = sqlite3.connect(DB_PATH)
 
@@ -54,11 +51,7 @@ def get_ratios(
 
         params.append(year)
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=params
-    )
+    df = pd.read_sql(query, conn, params=params)
 
     conn.close()
 
@@ -78,7 +71,7 @@ def get_pl(ticker):
         ORDER BY year
         """,
         conn,
-        params=[ticker]
+        params=[ticker],
     )
 
     conn.close()
@@ -99,7 +92,7 @@ def get_bs(ticker):
         ORDER BY year
         """,
         conn,
-        params=[ticker]
+        params=[ticker],
     )
 
     conn.close()
@@ -120,7 +113,7 @@ def get_cf(ticker):
         ORDER BY year
         """,
         conn,
-        params=[ticker]
+        params=[ticker],
     )
 
     conn.close()
@@ -139,7 +132,7 @@ def get_sectors():
         FROM sectors
         ORDER BY sector_name
         """,
-        conn
+        conn,
     )
 
     conn.close()
@@ -159,7 +152,7 @@ def get_peers(group_name):
         WHERE peer_group_name = ?
         """,
         conn,
-        params=[group_name]
+        params=[group_name],
     )
 
     conn.close()
@@ -181,7 +174,7 @@ def get_valuation(ticker):
             WHERE company_id = ?
             """,
             conn,
-            params=[ticker]
+            params=[ticker],
         )
 
     except Exception:
@@ -191,6 +184,7 @@ def get_valuation(ticker):
     conn.close()
 
     return df
+
 
 @st.cache_data(ttl=600)
 def get_home_data():
@@ -220,14 +214,12 @@ def get_home_data():
     LEFT JOIN sectors s
     ON c.id = s.company_id
     """
-    df = pd.read_sql(
-        query,
-        conn
-    )
+    df = pd.read_sql(query, conn)
 
     conn.close()
 
     return df
+
 
 @st.cache_data(ttl=600)
 def get_available_years():
@@ -239,27 +231,20 @@ def get_available_years():
         SELECT DISTINCT year
         FROM financial_ratios
         """,
-        conn
+        conn,
     )
 
     conn.close()
 
-    month_order = {
-        "Mar": 3,
-        "Jun": 6,
-        "Sep": 9,
-        "Dec": 12
-    }
+    month_order = {"Mar": 3, "Jun": 6, "Sep": 9, "Dec": 12}
 
     years = sorted(
         df["year"].tolist(),
-        key=lambda x: (
-            int(x.split()[1]),
-            month_order.get(x.split()[0], 0)
-        )
+        key=lambda x: (int(x.split()[1]), month_order.get(x.split()[0], 0)),
     )
 
     return years
+
 
 @st.cache_data(ttl=600)
 def get_profile_data():
@@ -294,14 +279,12 @@ def get_profile_data():
         ON c.id = s.company_id
     """
 
-    df = pd.read_sql(
-        query,
-        conn
-    )
+    df = pd.read_sql(query, conn)
 
     conn.close()
 
     return df
+
 
 @st.cache_data(ttl=600)
 def get_company_trend(company_id):
@@ -319,15 +302,12 @@ def get_company_trend(company_id):
     ORDER BY year
     """
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=(company_id,)
-    )
+    df = pd.read_sql(query, conn, params=(company_id,))
 
     conn.close()
 
     return df
+
 
 @st.cache_data(ttl=600)
 def get_roe_roce_trend(company_id):
@@ -345,15 +325,12 @@ def get_roe_roce_trend(company_id):
     ORDER BY year
     """
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=(company_id,)
-    )
+    df = pd.read_sql(query, conn, params=(company_id,))
 
     conn.close()
 
     return df
+
 
 @st.cache_data(ttl=600)
 def get_pros_cons(company_id):
@@ -368,15 +345,12 @@ def get_pros_cons(company_id):
     WHERE company_id = ?
     """
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=(company_id,)
-    )
+    df = pd.read_sql(query, conn, params=(company_id,))
 
     conn.close()
 
     return df
+
 
 @st.cache_data(ttl=600)
 def get_screener_data():
@@ -417,14 +391,12 @@ def get_screener_data():
         ON c.id = s.company_id
     """
 
-    df = pd.read_sql(
-        query,
-        conn
-    )
+    df = pd.read_sql(query, conn)
 
     conn.close()
 
     return df
+
 
 @st.cache_data(ttl=600)
 def get_peer_groups():
@@ -485,11 +457,7 @@ def get_peer_companies(peer_group):
         fr.year
     """
 
-    df = pd.read_sql(
-        query,
-        conn,
-        params=(peer_group,)
-    )
+    df = pd.read_sql(query, conn, params=(peer_group,))
 
     conn.close()
 
@@ -501,15 +469,10 @@ def get_latest_peer_data(peer_group):
 
     df = get_peer_companies(peer_group)
 
-    latest = (
-        df
-        .sort_values("year")
-        .groupby("id")
-        .tail(1)
-        .reset_index(drop=True)
-    )
+    latest = df.sort_values("year").groupby("id").tail(1).reset_index(drop=True)
 
     return latest
+
 
 @st.cache_data(ttl=600)
 def get_peer_average(peer_group):
@@ -524,10 +487,11 @@ def get_peer_average(peer_group):
         "free_cash_flow_cr",
         "revenue_cagr_5yr",
         "pat_cagr_5yr",
-        "composite_quality_score"
+        "composite_quality_score",
     ]
 
     return df[metrics].mean()
+
 
 @st.cache_data(ttl=600)
 def get_trend_data():
@@ -570,6 +534,7 @@ def get_trend_data():
     conn.close()
 
     return df
+
 
 @st.cache_data(ttl=600)
 def get_sector_analysis_data():
@@ -614,6 +579,7 @@ def get_sector_analysis_data():
 
     return df
 
+
 @st.cache_data(ttl=600)
 def get_capital_allocation_data():
     import sqlite3
@@ -655,6 +621,7 @@ def get_capital_allocation_data():
     df["Size"] = df["roe"].clip(lower=1)
 
     return df
+
 
 def get_annual_reports(company_id):
     conn = sqlite3.connect(DB_PATH)

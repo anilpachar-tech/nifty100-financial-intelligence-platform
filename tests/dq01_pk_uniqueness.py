@@ -14,7 +14,7 @@ tables = [
     "stock_prices",
     "market_cap",
     "financial_ratios",
-    "peer_groups"
+    "peer_groups",
 ]
 
 print("\n===== DQ-01 PK UNIQUENESS =====\n")

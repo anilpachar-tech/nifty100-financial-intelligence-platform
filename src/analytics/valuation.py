@@ -3,7 +3,6 @@ import sqlite3
 import pandas as pd
 import numpy as np
 
-
 DB_PATH = "db/nifty100.db"
 OUTPUT_DIR = "output"
 
@@ -105,6 +104,7 @@ def load_market_history():
 
     return history
 
+
 def calculate_fcf_yield(df):
     """
     Calculate Free Cash Flow Yield (%)
@@ -112,10 +112,7 @@ def calculate_fcf_yield(df):
 
     df = df.copy()
 
-    df["FCF_yield_pct"] = (
-        df["free_cash_flow_cr"] /
-        df["market_cap_crore"]
-    ) * 100
+    df["FCF_yield_pct"] = (df["free_cash_flow_cr"] / df["market_cap_crore"]) * 100
 
     df["FCF_yield_pct"] = df["FCF_yield_pct"].round(2)
 
@@ -157,47 +154,27 @@ def apply_valuation_flags(df, median_pe, sector_median):
     Merge calculated metrics and assign valuation flags.
     """
 
-    df = df.merge(
-        median_pe,
-        on="company_id",
-        how="left"
-    )
+    df = df.merge(median_pe, on="company_id", how="left")
 
-    df = df.merge(
-        sector_median,
-        on="broad_sector",
-        how="left"
-    )
+    df = df.merge(sector_median, on="broad_sector", how="left")
 
     df["PE_vs_sector_median_pct"] = (
-        (
-            df["pe"] - df["sector_median_pe"]
-        )
-        / df["sector_median_pe"]
+        (df["pe"] - df["sector_median_pe"]) / df["sector_median_pe"]
     ) * 100
 
-    df["PE_vs_sector_median_pct"] = (
-        df["PE_vs_sector_median_pct"]
-        .round(2)
-    )
+    df["PE_vs_sector_median_pct"] = df["PE_vs_sector_median_pct"].round(2)
 
     conditions = [
         df["pe"] > df["sector_median_pe"] * 1.5,
-        df["pe"] < df["sector_median_pe"] * 0.7
+        df["pe"] < df["sector_median_pe"] * 0.7,
     ]
 
-    choices = [
-        "Caution",
-        "Discount"
-    ]
+    choices = ["Caution", "Discount"]
 
-    df["flag"] = np.select(
-        conditions,
-        choices,
-        default="Fair"
-    )
+    df["flag"] = np.select(conditions, choices, default="Fair")
 
     return df
+
 
 def save_outputs(df):
     """
@@ -217,7 +194,7 @@ def save_outputs(df):
             "FCF_yield_pct",
             "5yr_median_PE",
             "PE_vs_sector_median_pct",
-            "flag"
+            "flag",
         ]
     ].copy()
 
@@ -226,36 +203,22 @@ def save_outputs(df):
             "broad_sector": "sector",
             "pe": "P/E",
             "pb": "P/B",
-            "ev_ebitda": "EV/EBITDA"
+            "ev_ebitda": "EV/EBITDA",
         },
-        inplace=True
+        inplace=True,
     )
 
     valuation_flags = valuation_summary[
-        valuation_summary["flag"].isin(
-            ["Caution", "Discount"]
-        )
+        valuation_summary["flag"].isin(["Caution", "Discount"])
     ].copy()
 
-    summary_path = os.path.join(
-        OUTPUT_DIR,
-        "valuation_summary.xlsx"
-    )
+    summary_path = os.path.join(OUTPUT_DIR, "valuation_summary.xlsx")
 
-    flags_path = os.path.join(
-        OUTPUT_DIR,
-        "valuation_flags.csv"
-    )
+    flags_path = os.path.join(OUTPUT_DIR, "valuation_flags.csv")
 
-    valuation_summary.to_excel(
-        summary_path,
-        index=False
-    )
+    valuation_summary.to_excel(summary_path, index=False)
 
-    valuation_flags.to_csv(
-        flags_path,
-        index=False
-    )
+    valuation_flags.to_csv(flags_path, index=False)
 
     print("\n" + "=" * 60)
     print("VALUATION MODULE COMPLETED")
@@ -291,11 +254,7 @@ def main():
 
     print("Applying valuation flags...")
 
-    df = apply_valuation_flags(
-        df,
-        median_pe,
-        sector_median
-    )
+    df = apply_valuation_flags(df, median_pe, sector_median)
 
     print("Saving output files...")
 

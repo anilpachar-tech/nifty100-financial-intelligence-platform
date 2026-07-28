@@ -1,7 +1,6 @@
 from pathlib import Path
 import os
 
-
 # ==========================================================
 # Project Paths
 # ==========================================================
@@ -23,9 +22,7 @@ API_TITLE = "Nifty100 Financial Intelligence API"
 
 API_VERSION = "1.0.0"
 
-API_DESCRIPTION = (
-    "REST API for company analytics, clustering and financial insights."
-)
+API_DESCRIPTION = "REST API for company analytics, clustering and financial insights."
 
 
 # ==========================================================

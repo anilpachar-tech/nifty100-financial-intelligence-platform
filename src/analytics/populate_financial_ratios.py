@@ -21,30 +21,15 @@ print("=" * 60)
 print("Reading Database Tables")
 print("=" * 60)
 
-companies = pd.read_sql(
-    "SELECT * FROM companies",
-    conn
-)
+companies = pd.read_sql("SELECT * FROM companies", conn)
 
-profit = pd.read_sql(
-    "SELECT * FROM profitandloss",
-    conn
-)
+profit = pd.read_sql("SELECT * FROM profitandloss", conn)
 
-balance = pd.read_sql(
-    "SELECT * FROM balancesheet",
-    conn
-)
+balance = pd.read_sql("SELECT * FROM balancesheet", conn)
 
-cashflow = pd.read_sql(
-    "SELECT * FROM cashflow",
-    conn
-)
+cashflow = pd.read_sql("SELECT * FROM cashflow", conn)
 
-financial = pd.read_sql(
-    "SELECT * FROM financial_ratios",
-    conn
-)
+financial = pd.read_sql("SELECT * FROM financial_ratios", conn)
 
 print()
 
@@ -59,20 +44,9 @@ print("=" * 60)
 print("Preparing Master Dataset")
 print("=" * 60)
 
-master = (
-    profit
-    .merge(
-        balance,
-        on=["company_id", "year"],
-        how="inner",
-        suffixes=("_pl", "_bs")
-    )
-    .merge(
-        cashflow,
-        on=["company_id", "year"],
-        how="inner"
-    )
-)
+master = profit.merge(
+    balance, on=["company_id", "year"], how="inner", suffixes=("_pl", "_bs")
+).merge(cashflow, on=["company_id", "year"], how="inner")
 
 print()
 print("=" * 60)
@@ -95,14 +69,10 @@ latest_price = pd.read_sql(
     ON s.company_id = t.company_id
     AND s.date = t.latest_date
     """,
-    conn
+    conn,
 )
 
-master = master.merge(
-    latest_price,
-    on="company_id",
-    how="left"
-)
+master = master.merge(latest_price, on="company_id", how="left")
 
 print("Price Records :", len(latest_price))
 
@@ -127,55 +97,32 @@ for _, row in master.iterrows():
 
     try:
 
-        npm = net_profit_margin(
-            row["net_profit"],
-            row["sales"]
-        )
+        npm = net_profit_margin(row["net_profit"], row["sales"])
 
-        opm = operating_profit_margin(
-            row["operating_profit"],
-            row["sales"]
-        )
+        opm = operating_profit_margin(row["operating_profit"], row["sales"])
 
         roe = return_on_equity(
-            row["net_profit"],
-            row["equity_capital"],
-            row["reserves"]
+            row["net_profit"], row["equity_capital"], row["reserves"]
         )
 
         roce = return_on_capital_employed(
             row["operating_profit"],
             row["equity_capital"],
             row["reserves"],
-            row["borrowings"]
+            row["borrowings"],
         )
 
-        de = debt_to_equity(
-            row["borrowings"],
-            row["equity_capital"],
-            row["reserves"]
-        )
+        de = debt_to_equity(row["borrowings"], row["equity_capital"], row["reserves"])
 
         icr = interest_coverage_ratio(
-            row["operating_profit"],
-            row["other_income"],
-            row["interest"]
+            row["operating_profit"], row["other_income"], row["interest"]
         )
 
-        turnover = asset_turnover(
-            row["sales"],
-            row["total_assets"]
-        )
+        turnover = asset_turnover(row["sales"], row["total_assets"])
 
-        fcf = free_cash_flow(
-            row["operating_activity"],
-            row["investing_activity"]
-        )
+        fcf = free_cash_flow(row["operating_activity"], row["investing_activity"])
 
-        capex, capex_label = capex_intensity(
-            row["investing_activity"],
-            row["sales"]
-        )
+        capex, capex_label = capex_intensity(row["investing_activity"], row["sales"])
 
         # Earnings Per Share
         eps = row["eps"]
@@ -183,52 +130,32 @@ for _, row in master.iterrows():
         # Book Value Per Share
         if row["equity_capital"] != 0:
             book_value = round(
-                (
-                    row["equity_capital"] +
-                    row["reserves"]
-                ) /
-                row["equity_capital"],
-                2
+                (row["equity_capital"] + row["reserves"]) / row["equity_capital"], 2
             )
         else:
             book_value = None
 
         # Dividend Payout Ratio
         dividend = row["dividend_payout"]
-        
+
         # Dividend Yield
         if (
             row["close_price"] not in [0, None]
             and row["close_price"] == row["close_price"]
         ):
-            dividend_yield = round(
-                (dividend / row["close_price"]) * 100,
-                2
-            )
+            dividend_yield = round((dividend / row["close_price"]) * 100, 2)
         else:
             dividend_yield = None
 
         # Price to Earnings
-        if (
-            eps not in [0, None]
-            and row["close_price"] == row["close_price"]
-        ):
-            pe = round(
-                row["close_price"] / eps,
-                2
-            )
+        if eps not in [0, None] and row["close_price"] == row["close_price"]:
+            pe = round(row["close_price"] / eps, 2)
         else:
             pe = None
 
         # Price to Book
-        if (
-            book_value not in [0, None]
-            and row["close_price"] == row["close_price"]
-        ):
-            pb = round(
-                row["close_price"] / book_value,
-                2
-            )
+        if book_value not in [0, None] and row["close_price"] == row["close_price"]:
+            pb = round(row["close_price"] / book_value, 2)
         else:
             pb = None
 
@@ -258,12 +185,10 @@ for _, row in master.iterrows():
 
         composite_score = score
 
-
         results.append(
             {
                 "company_id": row["company_id"],
                 "year": row["year"],
-
                 "net_profit_margin_pct": npm,
                 "operating_profit_margin_pct": opm,
                 "return_on_equity_pct": roe,
@@ -271,31 +196,23 @@ for _, row in master.iterrows():
                 "debt_to_equity": de,
                 "interest_coverage": icr,
                 "asset_turnover": turnover,
-
                 "free_cash_flow_cr": fcf,
                 "capex_cr": capex,
-
                 "earnings_per_share": eps,
                 "book_value_per_share": book_value,
                 "dividend_payout_ratio_pct": dividend,
-
                 "pe": pe,
                 "pb": pb,
                 "dividend_yield": dividend_yield,
-
                 "total_debt_cr": total_debt,
                 "cash_from_operations_cr": cfo,
-
-                "composite_quality_score": composite_score
+                "composite_quality_score": composite_score,
             }
-        )        
+        )
 
     except Exception as e:
 
-        print(
-            f"Error : {row['company_id']} "
-            f"{row['year']} -> {e}"
-        )
+        print(f"Error : {row['company_id']} " f"{row['year']} -> {e}")
 
 result_df = pd.DataFrame(results)
 
@@ -319,10 +236,7 @@ result_df["debt_declining"] = None
 
 for company in result_df["company_id"].unique():
 
-    company_data = (
-        master[master["company_id"] == company]
-        .copy()
-    )
+    company_data = master[master["company_id"] == company].copy()
 
     company_data = company_data.sort_values("year")
 
@@ -335,16 +249,9 @@ for company in result_df["company_id"].unique():
         start3 = company_data.iloc[-4]
         end3 = company_data.iloc[-1]
 
-        revenue3, _ = revenue_cagr(
-            start3["sales"],
-            end3["sales"],
-            3
-        )
+        revenue3, _ = revenue_cagr(start3["sales"], end3["sales"], 3)
 
-        result_df.loc[
-            result_df["company_id"] == company,
-            "revenue_cagr_3yr"
-        ] = revenue3
+        result_df.loc[result_df["company_id"] == company, "revenue_cagr_3yr"] = revenue3
 
         # ---------- Debt Declining ----------
         if len(company_data) >= 2:
@@ -354,71 +261,38 @@ for company in result_df["company_id"].unique():
 
             debt_declining = int(current_debt < previous_debt)
 
-            result_df.loc[
-                result_df["company_id"] == company,
-                "debt_declining"
-            ] = debt_declining
+            result_df.loc[result_df["company_id"] == company, "debt_declining"] = (
+                debt_declining
+            )
 
     start = company_data.iloc[-6]
     end = company_data.iloc[-1]
 
-    revenue, _ = revenue_cagr(
-        start["sales"],
-        end["sales"],
-        5
-    )
+    revenue, _ = revenue_cagr(start["sales"], end["sales"], 5)
 
-    pat, _ = pat_cagr(
-        start["net_profit"],
-        end["net_profit"],
-        5
-    )
+    pat, _ = pat_cagr(start["net_profit"], end["net_profit"], 5)
 
-    eps, _ = eps_cagr(
-        start["eps"],
-        end["eps"],
-        5
-    )
+    eps, _ = eps_cagr(start["eps"], end["eps"], 5)
 
-    result_df.loc[
-        result_df["company_id"] == company,
-        "revenue_cagr_5yr"
-    ] = revenue
+    result_df.loc[result_df["company_id"] == company, "revenue_cagr_5yr"] = revenue
 
-    result_df.loc[
-        result_df["company_id"] == company,
-        "pat_cagr_5yr"
-    ] = pat
+    result_df.loc[result_df["company_id"] == company, "pat_cagr_5yr"] = pat
 
-    result_df.loc[
-        result_df["company_id"] == company,
-        "eps_cagr_5yr"
-    ] = eps
+    result_df.loc[result_df["company_id"] == company, "eps_cagr_5yr"] = eps
 
     print()
-print(result_df[
-    [
-        "company_id",
-        "revenue_cagr_5yr",
-        "pat_cagr_5yr",
-        "eps_cagr_5yr"
-    ]
-].head())
+print(
+    result_df[["company_id", "revenue_cagr_5yr", "pat_cagr_5yr", "eps_cagr_5yr"]].head()
+)
 
 print()
 print("=" * 60)
 print("Matching financial_ratios IDs")
 print("=" * 60)
 
-financial_keys = financial[
-    ["id", "company_id", "year"]
-]
+financial_keys = financial[["id", "company_id", "year"]]
 
-result_df = result_df.merge(
-    financial_keys,
-    on=["company_id", "year"],
-    how="left"
-)
+result_df = result_df.merge(financial_keys, on=["company_id", "year"], how="left")
 
 print("Matched IDs :", result_df["id"].notna().sum())
 
@@ -475,11 +349,9 @@ for _, row in result_df.iterrows():
             row["earnings_per_share"],
             row["book_value_per_share"],
             row["dividend_payout_ratio_pct"],
-
             row["pe"],
             row["pb"],
             row["dividend_yield"],
-
             row["total_debt_cr"],
             row["cash_from_operations_cr"],
             row["revenue_cagr_5yr"],
@@ -488,8 +360,8 @@ for _, row in result_df.iterrows():
             row["revenue_cagr_3yr"],
             row["debt_declining"],
             row["composite_quality_score"],
-            row["id"]
-        )
+            row["id"],
+        ),
     )
 
 conn.commit()
@@ -506,12 +378,13 @@ count = pd.read_sql(
     SELECT COUNT(*) AS total_rows
     FROM financial_ratios
     """,
-    conn
+    conn,
 )
 
 print(count)
 
-spot = pd.read_sql("""
+spot = pd.read_sql(
+    """
 SELECT
     company_id,
     year,
@@ -521,7 +394,9 @@ FROM financial_ratios
 WHERE company_id IN ('ABB','TCS','INFY')
 ORDER BY company_id, year
 LIMIT 15
-""", conn)
+""",
+    conn,
+)
 
 print()
 print("=" * 60)

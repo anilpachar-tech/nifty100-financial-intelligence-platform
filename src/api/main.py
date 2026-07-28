@@ -21,20 +21,14 @@ from src.api.config import (
 
 from typing import List
 
-from src.api.models import (
-    Company,
-    CompanyDetails,
-    Financials,
-    ClusterSummary
-)
+from src.api.models import Company, CompanyDetails, Financials, ClusterSummary
 
 # ==========================================================
 # Logging
 # ==========================================================
 
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s"
+    level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s"
 )
 
 logger = logging.getLogger(__name__)
@@ -72,7 +66,9 @@ logger.info("========================================")
 # Database Connection
 # ==========================================================
 
+
 def get_connection():
+    """Create and return a SQLite database connection."""
 
     logger.info("Connecting to database: %s", DATABASE_PATH)
 
@@ -83,14 +79,16 @@ def get_connection():
 # Health Check
 # ==========================================================
 
+
 @app.get(
     "/health",
     tags=["System"],
     summary="Health Check",
     description="Checks whether the API service is running successfully.",
-    response_description="API health status"
+    response_description="API health status",
 )
 def health():
+    """Return the health status of the API and database connection."""
 
     try:
 
@@ -100,19 +98,12 @@ def health():
 
         conn.close()
 
-        return {
-            "status": "healthy",
-            "database": "connected"
-        }
+        return {"status": "healthy", "database": "connected"}
 
     except Exception as error:
 
         return JSONResponse(
-            status_code=500,
-            content={
-                "status": "error",
-                "message": str(error)
-            }
+            status_code=500, content={"status": "error", "message": str(error)}
         )
 
 
@@ -120,24 +111,28 @@ def health():
 # Root Endpoint
 # ==========================================================
 
+
 @app.get(
     "/",
     tags=["System"],
     summary="Home",
     description="Returns API information and available endpoints.",
-    response_description="API welcome message"
+    response_description="API welcome message",
 )
 def home():
+    """Return the API welcome message and current status."""
 
     return {
         "project": "Nifty100 Financial Intelligence Platform",
         "version": "1.0.0",
-        "status": "API Running"
+        "status": "API Running",
     }
+
 
 # ==========================================================
 # Companies List Endpoint
 # ==========================================================
+
 
 @app.get(
     "/companies",
@@ -145,9 +140,10 @@ def home():
     summary="Get all companies",
     description="Returns the complete list of companies available in the Nifty100 Financial Intelligence Platform.",
     response_description="List of companies",
-    response_model=List[Company]
+    response_model=List[Company],
 )
 def get_companies():
+    """Return the list of all available companies."""
 
     conn = get_connection()
 
@@ -164,12 +160,11 @@ def get_companies():
     conn.close()
 
     companies["company_name"] = (
-    companies["company_name"]
-    .str.replace("\n", " ", regex=False)
-    .str.strip()
-)
+        companies["company_name"].str.replace("\n", " ", regex=False).str.strip()
+    )
 
     return companies.to_dict(orient="records")
+
 
 @app.get(
     "/companies/{company_id}",
@@ -177,9 +172,10 @@ def get_companies():
     summary="Get company details",
     description="Returns company profile, sector information and latest financial metrics for the selected company.",
     response_description="Company details",
-    response_model=CompanyDetails
+    response_model=CompanyDetails,
 )
 def get_company(company_id: str):
+    """Return detailed information for the specified company."""
 
     conn = get_connection()
 
@@ -228,22 +224,13 @@ def get_company(company_id: str):
     WHERE c.id = ?
     """
 
-    company = pd.read_sql(
-        query,
-        conn,
-        params=(company_id,)
-    )
+    company = pd.read_sql(query, conn, params=(company_id,))
 
     conn.close()
 
     if company.empty:
 
-        return JSONResponse(
-            status_code=404,
-            content={
-                "message": "Company not found."
-            }
-        )
+        return JSONResponse(status_code=404, content={"message": "Company not found."})
 
     cluster_file = PROJECT_ROOT / "output" / "cluster_labels.csv"
 
@@ -252,45 +239,44 @@ def get_company(company_id: str):
         clusters = pd.read_csv(cluster_file)
 
         company = company.merge(
-            clusters[["company_id", "cluster_name"]],
-            on="company_id",
-            how="left"
+            clusters[["company_id", "cluster_name"]], on="company_id", how="left"
         )
 
     return company.iloc[0].to_dict()
 
+
 # ==========================================================
 # Cluster Endpoint
 # ==========================================================
+
 
 @app.get(
     "/clusters",
     tags=["Analytics"],
     summary="Get cluster labels",
     description="Returns clustering results for all companies.",
-    response_description="Cluster labels"
+    response_description="Cluster labels",
 )
-
 def get_clusters():
+    """Return clustering results for all companies."""
 
     cluster_file = PROJECT_ROOT / "output" / "cluster_labels.csv"
 
     if not cluster_file.exists():
 
         return JSONResponse(
-            status_code=404,
-            content={
-                "message": "cluster_labels.csv not found."
-            }
+            status_code=404, content={"message": "cluster_labels.csv not found."}
         )
 
     clusters = pd.read_csv(cluster_file)
 
     return clusters.to_dict(orient="records")
 
+
 # ==========================================================
 # Latest Financial Ratios Endpoint
 # ==========================================================
+
 
 @app.get(
     "/financials/{company_id}",
@@ -298,9 +284,10 @@ def get_clusters():
     summary="Get financial history",
     description="Returns yearly financial ratios and performance metrics for the selected company.",
     response_description="Financial history",
-    response_model=Financials
+    response_model=Financials,
 )
 def get_financials(company_id: str):
+    """Return the latest financial ratios for a company."""
 
     conn = get_connection()
 
@@ -335,28 +322,23 @@ def get_financials(company_id: str):
     LIMIT 1
     """
 
-    financials = pd.read_sql(
-        query,
-        conn,
-        params=(company_id,)
-    )
+    financials = pd.read_sql(query, conn, params=(company_id,))
 
     conn.close()
 
     if financials.empty:
 
         return JSONResponse(
-            status_code=404,
-            content={
-                "message": "Financial data not found."
-            }
+            status_code=404, content={"message": "Financial data not found."}
         )
 
     return financials.iloc[0].to_dict()
 
+
 # ==========================================================
 # Cluster Summary Endpoint
 # ==========================================================
+
 
 @app.get(
     "/clusters/summary",
@@ -364,19 +346,17 @@ def get_financials(company_id: str):
     summary="Cluster summary",
     description="Returns summary statistics for each generated cluster.",
     response_description="Cluster summary",
-    response_model=List[ClusterSummary]
+    response_model=List[ClusterSummary],
 )
 def get_cluster_summary():
+    """Return summary statistics for all generated clusters."""
 
     summary_file = PROJECT_ROOT / "output" / "cluster_summary.csv"
 
     if not summary_file.exists():
 
         return JSONResponse(
-            status_code=404,
-            content={
-                "message": "cluster_summary.csv not found."
-            }
+            status_code=404, content={"message": "cluster_summary.csv not found."}
         )
 
     summary = pd.read_csv(summary_file)
@@ -388,14 +368,16 @@ def get_cluster_summary():
 # Sector Distribution Endpoint
 # ==========================================================
 
+
 @app.get(
     "/clusters/sectors",
     tags=["Analytics"],
     summary="Cluster sector distribution",
     description="Returns sector-wise distribution across all clusters.",
-    response_description="Sector distribution"
+    response_description="Sector distribution",
 )
 def get_cluster_sectors():
+    """Return sector-wise distribution of company clusters."""
 
     sector_file = PROJECT_ROOT / "output" / "cluster_sector_distribution.csv"
 
@@ -403,9 +385,7 @@ def get_cluster_sectors():
 
         return JSONResponse(
             status_code=404,
-            content={
-                "message": "cluster_sector_distribution.csv not found."
-            }
+            content={"message": "cluster_sector_distribution.csv not found."},
         )
 
     sectors = pd.read_csv(sector_file)
@@ -417,48 +397,48 @@ def get_cluster_sectors():
 # Top Companies Endpoint
 # ==========================================================
 
+
 @app.get(
     "/clusters/top-companies",
     tags=["Analytics"],
     summary="Top companies by cluster",
     description="Returns the highest ranked companies from every generated cluster.",
-    response_description="Top companies"
+    response_description="Top companies",
 )
 def get_top_companies():
+    """Return the top-ranked companies from each cluster."""
 
     top_file = PROJECT_ROOT / "output" / "cluster_top_companies.csv"
 
     if not top_file.exists():
 
         return JSONResponse(
-            status_code=404,
-            content={
-                "message": "cluster_top_companies.csv not found."
-            }
+            status_code=404, content={"message": "cluster_top_companies.csv not found."}
         )
 
     top_companies = pd.read_csv(top_file)
 
     top_companies["company_name"] = (
-        top_companies["company_name"]
-        .str.replace("\n", " ", regex=False)
-        .str.strip()
+        top_companies["company_name"].str.replace("\n", " ", regex=False).str.strip()
     )
 
     return top_companies.to_dict(orient="records")
 
+
 # ==========================================================
 # API Information Endpoint
 # ==========================================================
+
 
 @app.get(
     "/info",
     tags=["System"],
     summary="Project information",
     description="Returns project metadata, API version and configuration details.",
-    response_description="Project information"
+    response_description="Project information",
 )
 def api_info():
+    """Return project metadata and API information."""
 
     return {
         "project": "Nifty100 Financial Intelligence Platform",
@@ -475,8 +455,8 @@ def api_info():
             "/clusters",
             "/clusters/summary",
             "/clusters/sectors",
-            "/clusters/top-companies"
-        ]
+            "/clusters/top-companies",
+        ],
     }
 
 
@@ -484,14 +464,16 @@ def api_info():
 # API Validation Endpoint
 # ==========================================================
 
+
 @app.get(
     "/validate",
     tags=["System"],
     summary="Validate API resources",
     description="Checks database connection and required output files.",
-    response_description="Validation status"
+    response_description="Validation status",
 )
 def validate_api():
+    """Validate required project resources and output files."""
 
     output_dir = PROJECT_ROOT / "output"
 
@@ -502,29 +484,23 @@ def validate_api():
         "cluster_sector_distribution": (
             output_dir / "cluster_sector_distribution.csv"
         ).exists(),
-        "cluster_top_companies": (
-            output_dir / "cluster_top_companies.csv"
-        ).exists()
+        "cluster_top_companies": (output_dir / "cluster_top_companies.csv").exists(),
     }
 
     return validation
+
 
 # ==========================================================
 # Global Exception Handler
 # ==========================================================
 
+
 @app.exception_handler(Exception)
-async def global_exception_handler(
-    request: Request,
-    exc: Exception
-):
+async def global_exception_handler(request: Request, exc: Exception):
+    """Handle unexpected server errors and return a JSON response."""
 
     return JSONResponse(
-        status_code=500,
-        content={
-            "status": "error",
-            "message": str(exc)
-        }
+        status_code=500, content={"status": "error", "message": str(exc)}
     )
 
 
@@ -532,19 +508,15 @@ async def global_exception_handler(
 # Request Validation Handler
 # ==========================================================
 
+
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(
-    request: Request,
-    exc: RequestValidationError
-):
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    """Handle request validation errors and return error details."""
 
     return JSONResponse(
-        status_code=422,
-        content={
-            "status": "validation_error",
-            "errors": exc.errors()
-        }
+        status_code=422, content={"status": "validation_error", "errors": exc.errors()}
     )
+
 
 # ==========================================================
 # Run API
@@ -554,9 +526,4 @@ if __name__ == "__main__":
 
     import uvicorn
 
-    uvicorn.run(
-        "main:app",
-        host="127.0.0.1",
-        port=8000,
-        reload=True
-    )
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

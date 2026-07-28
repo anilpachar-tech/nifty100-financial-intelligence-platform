@@ -11,7 +11,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
 DB_PATH = "db/nifty100.db"
 OUTPUT_DIR = "reports/radar_charts"
 
@@ -23,15 +22,9 @@ def load_data():
 
     conn = sqlite3.connect(DB_PATH)
 
-    ratios = pd.read_sql(
-        "SELECT * FROM financial_ratios",
-        conn
-    )
+    ratios = pd.read_sql("SELECT * FROM financial_ratios", conn)
 
-    peers = pd.read_sql(
-        "SELECT company_id, peer_group_name FROM peer_groups",
-        conn
-    )
+    peers = pd.read_sql("SELECT company_id, peer_group_name FROM peer_groups", conn)
 
     conn.close()
 
@@ -45,11 +38,7 @@ def prepare_master():
 
     ratios, peers = load_data()
 
-    master = ratios.merge(
-        peers,
-        on="company_id",
-        how="left"
-    )
+    master = ratios.merge(peers, on="company_id", how="left")
 
     return master
 
@@ -64,7 +53,7 @@ def check_metrics(master):
         "free_cash_flow_cr",
         "pat_cagr_5yr",
         "revenue_cagr_5yr",
-        "composite_quality_score"
+        "composite_quality_score",
     ]
 
     print("=" * 60)
@@ -89,6 +78,7 @@ def check_metrics(master):
 
     print(master.head())
 
+
 def normalize_metrics(data, metrics):
     """
     Normalize all metrics to 0-100 scale.
@@ -110,24 +100,16 @@ def normalize_metrics(data, metrics):
 
         else:
             normalized[metric] = (
-                (normalized[metric] - minimum)
-                / (maximum - minimum)
+                (normalized[metric] - minimum) / (maximum - minimum)
             ) * 100
 
     # Lower Debt/Equity is better
-    normalized["debt_to_equity"] = (
-        100 - normalized["debt_to_equity"]
-    )
+    normalized["debt_to_equity"] = 100 - normalized["debt_to_equity"]
 
     return normalized
 
 
-def create_radar_chart(
-    company,
-    peer_average,
-    company_name,
-    peer_group
-):
+def create_radar_chart(company, peer_average, company_name, peer_group):
 
     labels = [
         "ROE",
@@ -137,7 +119,7 @@ def create_radar_chart(
         "FCF",
         "PAT CAGR",
         "Revenue CAGR",
-        "Composite"
+        "Composite",
     ]
 
     company_values = company.tolist()
@@ -146,70 +128,35 @@ def create_radar_chart(
     company_values += company_values[:1]
     peer_values += peer_values[:1]
 
-    angles = np.linspace(
-        0,
-        2 * np.pi,
-        len(labels),
-        endpoint=False
-    ).tolist()
+    angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
 
     angles += angles[:1]
 
-    fig, ax = plt.subplots(
-        figsize=(8, 8),
-        subplot_kw={"polar": True}
-    )
+    fig, ax = plt.subplots(figsize=(8, 8), subplot_kw={"polar": True})
 
-    ax.plot(
-        angles,
-        company_values,
-        linewidth=2,
-        label=company_name
-    )
+    ax.plot(angles, company_values, linewidth=2, label=company_name)
 
-    ax.fill(
-        angles,
-        company_values,
-        alpha=0.25
-    )
+    ax.fill(angles, company_values, alpha=0.25)
 
-    ax.plot(
-        angles,
-        peer_values,
-        linewidth=2,
-        linestyle="--",
-        label="Peer Average"
-    )
+    ax.plot(angles, peer_values, linewidth=2, linestyle="--", label="Peer Average")
 
     ax.set_xticks(angles[:-1])
     ax.set_xticklabels(labels, fontsize=10)
 
     ax.set_ylim(0, 100)
 
-    ax.set_title(
-        f"{company_name}\n{peer_group}",
-        fontsize=12
-    )
+    ax.set_title(f"{company_name}\n{peer_group}", fontsize=12)
 
     ax.legend(loc="upper right")
 
-    os.makedirs(
-        OUTPUT_DIR,
-        exist_ok=True
-    )
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    filename = os.path.join(
-        OUTPUT_DIR,
-        f"{company_name}_radar.png"
-    )
+    filename = os.path.join(OUTPUT_DIR, f"{company_name}_radar.png")
 
-    plt.savefig(
-        filename,
-        dpi=150,
-        bbox_inches="tight"
-    )
+    plt.savefig(filename, dpi=150, bbox_inches="tight")
 
     plt.close()
+
 
 if __name__ == "__main__":
 
@@ -226,8 +173,7 @@ if __name__ == "__main__":
 
     # Latest record for each company
     latest = (
-        master
-        .sort_values("year")
+        master.sort_values("year")
         .groupby("company_id", as_index=False)
         .tail(1)
         .reset_index(drop=True)
@@ -241,20 +187,14 @@ if __name__ == "__main__":
         "free_cash_flow_cr",
         "pat_cagr_5yr",
         "revenue_cagr_5yr",
-        "composite_quality_score"
+        "composite_quality_score",
     ]
 
     # Normalize metrics
-    normalized = normalize_metrics(
-        latest,
-        metrics
-    )
+    normalized = normalize_metrics(latest, metrics)
 
     # Nifty100 average
-    nifty_average = (
-        normalized[metrics]
-        .mean()
-    )
+    nifty_average = normalized[metrics].mean()
 
     count = 0
 
@@ -264,39 +204,23 @@ if __name__ == "__main__":
 
         peer_group = row["peer_group_name"]
 
-        company_values = (
-            row[metrics]
-            .fillna(0)
-        )
+        company_values = row[metrics].fillna(0)
 
         # No peer group
         if pd.isna(peer_group):
 
             create_radar_chart(
-                company_values,
-                nifty_average,
-                company_name,
-                "Nifty 100 Average"
+                company_values, nifty_average, company_name, "Nifty 100 Average"
             )
 
             count += 1
             continue
 
-        peer_data = normalized[
-            normalized["peer_group_name"] == peer_group
-        ]
+        peer_data = normalized[normalized["peer_group_name"] == peer_group]
 
-        peer_average = (
-            peer_data[metrics]
-            .mean()
-        )
+        peer_average = peer_data[metrics].mean()
 
-        create_radar_chart(
-            company_values,
-            peer_average,
-            company_name,
-            peer_group
-        )
+        create_radar_chart(company_values, peer_average, company_name, peer_group)
 
         count += 1
 

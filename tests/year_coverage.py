@@ -3,13 +3,7 @@ import pandas as pd
 
 conn = sqlite3.connect("db/nifty100.db")
 
-companies = [
-    "PFC",
-    "VEDL",
-    "IOC",
-    "BRITANNIA",
-    "EICHERMOT"
-]
+companies = ["PFC", "VEDL", "IOC", "BRITANNIA", "EICHERMOT"]
 
 summary = []
 
@@ -25,12 +19,7 @@ for company in companies:
 
     years = len(df)
 
-    summary.append(
-        {
-            "company": company,
-            "years_available": years
-        }
-    )
+    summary.append({"company": company, "years_available": years})
 
 summary_df = pd.DataFrame(summary)
 

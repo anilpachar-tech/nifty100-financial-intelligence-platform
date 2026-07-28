@@ -10,7 +10,7 @@ CORE_FILES = [
     "cashflow.xlsx",
     "analysis.xlsx",
     "documents.xlsx",
-    "prosandcons.xlsx"
+    "prosandcons.xlsx",
 ]
 
 SUPPLEMENTARY_FILES = [
@@ -18,7 +18,7 @@ SUPPLEMENTARY_FILES = [
     "stock_prices.xlsx",
     "market_cap.xlsx",
     "financial_ratios.xlsx",
-    "peer_groups.xlsx"
+    "peer_groups.xlsx",
 ]
 
 
@@ -32,17 +32,14 @@ def load_core_files():
 
             file_path = RAW_PATH / file
 
-            df = pd.read_excel(
-                file_path,
-                header=1
-            )
+            df = pd.read_excel(file_path, header=1)
 
             results.append(
                 {
                     "file_name": file,
                     "rows": df.shape[0],
                     "columns": df.shape[1],
-                    "status": "SUCCESS"
+                    "status": "SUCCESS",
                 }
             )
 
@@ -51,12 +48,7 @@ def load_core_files():
         except Exception as e:
 
             results.append(
-                {
-                    "file_name": file,
-                    "rows": 0,
-                    "columns": 0,
-                    "status": f"FAILED : {e}"
-                }
+                {"file_name": file, "rows": 0, "columns": 0, "status": f"FAILED : {e}"}
             )
 
     return results
@@ -81,7 +73,7 @@ def load_supporting_files():
                     "file_name": file,
                     "rows": df.shape[0],
                     "columns": df.shape[1],
-                    "status": "SUCCESS"
+                    "status": "SUCCESS",
                 }
             )
 
@@ -90,12 +82,7 @@ def load_supporting_files():
         except Exception as e:
 
             results.append(
-                {
-                    "file_name": file,
-                    "rows": 0,
-                    "columns": 0,
-                    "status": f"FAILED : {e}"
-                }
+                {"file_name": file, "rows": 0, "columns": 0, "status": f"FAILED : {e}"}
             )
 
     return results
@@ -110,9 +97,6 @@ if __name__ == "__main__":
 
     Path("output").mkdir(exist_ok=True)
 
-    audit.to_csv(
-        "output/load_audit.csv",
-        index=False
-    )
+    audit.to_csv("output/load_audit.csv", index=False)
 
     print("\nLoad Audit Generated")

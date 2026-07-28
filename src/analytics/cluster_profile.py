@@ -3,7 +3,6 @@ from pathlib import Path
 
 import pandas as pd
 
-
 # ==========================================================
 # Project Paths
 # ==========================================================
@@ -23,6 +22,7 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 # Database Connection
 # ==========================================================
 
+
 def connect_database():
     return sqlite3.connect(DATABASE_PATH)
 
@@ -30,6 +30,7 @@ def connect_database():
 # ==========================================================
 # Load Cluster Labels
 # ==========================================================
+
 
 def load_cluster_labels():
 
@@ -41,6 +42,7 @@ def load_cluster_labels():
 # ==========================================================
 # Load Financial Data
 # ==========================================================
+
 
 def load_financial_data():
 
@@ -101,49 +103,32 @@ def load_financial_data():
 # Merge Data
 # ==========================================================
 
+
 def merge_data():
 
     clusters = load_cluster_labels()
 
     financials = load_financial_data()
 
-    merged = financials.merge(
-        clusters,
-        on="company_id",
-        how="left"
-    )
+    merged = financials.merge(clusters, on="company_id", how="left")
 
     return merged
+
 
 # ==========================================================
 # Cluster Summary Statistics
 # ==========================================================
 
+
 def generate_cluster_summary(df):
 
-    summary = (
-
-        df.groupby(
-            ["cluster_id", "cluster_name"],
-            as_index=False
-        )
-
-        .agg(
-
-            companies=("company_id", "count"),
-
-            average_roe=("return_on_equity_pct", "mean"),
-
-            average_debt=("debt_to_equity", "mean"),
-
-            average_revenue_cagr=("revenue_cagr_5yr", "mean"),
-
-            average_fcf=("free_cash_flow_cr", "mean"),
-
-            average_opm=("operating_profit_margin_pct", "mean")
-
-        )
-
+    summary = df.groupby(["cluster_id", "cluster_name"], as_index=False).agg(
+        companies=("company_id", "count"),
+        average_roe=("return_on_equity_pct", "mean"),
+        average_debt=("debt_to_equity", "mean"),
+        average_revenue_cagr=("revenue_cagr_5yr", "mean"),
+        average_fcf=("free_cash_flow_cr", "mean"),
+        average_opm=("operating_profit_margin_pct", "mean"),
     )
 
     summary = summary.round(2)
@@ -155,29 +140,13 @@ def generate_cluster_summary(df):
 # Sector Distribution
 # ==========================================================
 
+
 def generate_sector_distribution(df):
 
     sector_distribution = (
-
-        df.groupby(
-            ["cluster_name", "broad_sector"],
-            as_index=False
-        )
-
-        .agg(
-
-            companies=("company_id", "count")
-
-        )
-
-        .sort_values(
-
-            ["cluster_name", "companies"],
-
-            ascending=[True, False]
-
-        )
-
+        df.groupby(["cluster_name", "broad_sector"], as_index=False)
+        .agg(companies=("company_id", "count"))
+        .sort_values(["cluster_name", "companies"], ascending=[True, False])
     )
 
     return sector_distribution
@@ -187,63 +156,34 @@ def generate_sector_distribution(df):
 # Top Companies in Each Cluster
 # ==========================================================
 
+
 def generate_top_companies(df):
 
-    ranking = (
-
-        df.sort_values(
-
-            [
-
-                "cluster_name",
-
-                "return_on_equity_pct"
-
-            ],
-
-            ascending=[True, False]
-
-        )
-
+    ranking = df.sort_values(
+        ["cluster_name", "return_on_equity_pct"], ascending=[True, False]
     )
 
-    top_companies = (
-
-        ranking.groupby("cluster_name")
-
-        .head(5)
-
+    top_companies = ranking.groupby("cluster_name").head(5)[
         [
-
-            [
-
-                "cluster_name",
-
-                "company_id",
-
-                "company_name",
-
-                "return_on_equity_pct",
-
-                "debt_to_equity",
-
-                "revenue_cagr_5yr",
-
-                "free_cash_flow_cr"
-
-            ]
-
+            "cluster_name",
+            "company_id",
+            "company_name",
+            "return_on_equity_pct",
+            "debt_to_equity",
+            "revenue_cagr_5yr",
+            "free_cash_flow_cr",
         ]
-
-    )
+    ]
 
     top_companies = top_companies.round(2)
 
     return top_companies
 
+
 # ==========================================================
 # Save Reports
 # ==========================================================
+
 
 def save_reports(summary, sector_distribution, top_companies):
 
@@ -253,20 +193,11 @@ def save_reports(summary, sector_distribution, top_companies):
 
     top_file = OUTPUT_DIR / "cluster_top_companies.csv"
 
-    summary.to_csv(
-        summary_file,
-        index=False
-    )
+    summary.to_csv(summary_file, index=False)
 
-    sector_distribution.to_csv(
-        sector_file,
-        index=False
-    )
+    sector_distribution.to_csv(sector_file, index=False)
 
-    top_companies.to_csv(
-        top_file,
-        index=False
-    )
+    top_companies.to_csv(top_file, index=False)
 
     return summary_file, sector_file, top_file
 
@@ -274,6 +205,7 @@ def save_reports(summary, sector_distribution, top_companies):
 # ==========================================================
 # Validation
 # ==========================================================
+
 
 def validate(summary, sector_distribution, top_companies):
 
@@ -287,13 +219,7 @@ def validate(summary, sector_distribution, top_companies):
 
     print("\nCluster Summary\n")
 
-    print(summary[
-        [
-            "cluster_name",
-            "companies",
-            "average_roe"
-        ]
-    ])
+    print(summary[["cluster_name", "companies", "average_roe"]])
 
     if summary.shape[0] == 5:
         print("\nPASS : All 5 clusters profiled.")
@@ -305,6 +231,7 @@ def validate(summary, sector_distribution, top_companies):
 # ==========================================================
 # Main
 # ==========================================================
+
 
 def main():
 
@@ -329,16 +256,10 @@ def main():
     print("Saving reports...")
 
     summary_file, sector_file, top_file = save_reports(
-        summary,
-        sector_distribution,
-        top_companies
+        summary, sector_distribution, top_companies
     )
 
-    validate(
-        summary,
-        sector_distribution,
-        top_companies
-    )
+    validate(summary, sector_distribution, top_companies)
 
     print("\nGenerated Files")
 

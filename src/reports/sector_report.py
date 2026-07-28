@@ -6,10 +6,7 @@ import pandas as pd
 
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
-from reportlab.lib.styles import (
-    ParagraphStyle,
-    getSampleStyleSheet
-)
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import (
     Paragraph,
@@ -17,7 +14,7 @@ from reportlab.platypus import (
     Table,
     TableStyle,
     SimpleDocTemplate,
-    PageBreak
+    PageBreak,
 )
 
 from tearsheet import connect_database
@@ -30,29 +27,20 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 REPORT_DIR = PROJECT_ROOT / "reports" / "sector"
 
-REPORT_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
+REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
 styles = getSampleStyleSheet()
 
 heading_style = ParagraphStyle(
-    "Heading",
-    parent=styles["Heading1"],
-    alignment=TA_CENTER,
-    spaceAfter=16
+    "Heading", parent=styles["Heading1"], alignment=TA_CENTER, spaceAfter=16
 )
 
-sub_heading = ParagraphStyle(
-    "SubHeading",
-    parent=styles["Heading2"],
-    spaceAfter=10
-)
+sub_heading = ParagraphStyle("SubHeading", parent=styles["Heading2"], spaceAfter=10)
 
 # ==========================================================
 # Sector Loader
 # ==========================================================
+
 
 def get_all_sectors(conn):
 
@@ -67,14 +55,13 @@ def get_all_sectors(conn):
 
     return df["broad_sector"].tolist()
 
+
 # ==========================================================
 # Company Loader
 # ==========================================================
 
-def load_sector_companies(
-    conn,
-    sector
-):
+
+def load_sector_companies(conn, sector):
 
     query = """
     SELECT
@@ -95,19 +82,13 @@ def load_sector_companies(
     ORDER BY c.id
     """
 
-    return pd.read_sql(
+    return pd.read_sql(query, conn, params=[sector])
 
-        query,
-
-        conn,
-
-        params=[sector]
-
-    )
 
 # ==========================================================
 # Latest Financial Ratios
 # ==========================================================
+
 
 def load_latest_ratios(conn):
 
@@ -123,111 +104,55 @@ def load_latest_ratios(conn):
 
         return df
 
-    df["year"] = (
+    df["year"] = df["year"].astype(str).str.extract(r"(\d+)").astype(float)
 
-        df["year"]
-
-        .astype(str)
-
-        .str.extract(r"(\d+)")
-
-        .astype(float)
-
-    )
-
-    df = (
-
-        df
-
-        .sort_values("year")
-
-        .groupby("company_id")
-
-        .tail(1)
-
-    )
+    df = df.sort_values("year").groupby("company_id").tail(1)
 
     return df
+
 
 # ==========================================================
 # Sector KPI Summary
 # ==========================================================
 
-def sector_summary(
 
-    ratios,
+def sector_summary(ratios, companies):
 
-    companies
-
-):
-
-    merged = companies.merge(
-
-        ratios,
-
-        left_on="id",
-
-        right_on="company_id",
-
-        how="left"
-
-    )
+    merged = companies.merge(ratios, left_on="id", right_on="company_id", how="left")
 
     summary = {
-
-        "Median ROE":
-
-        merged[
-            "return_on_equity_pct"
-        ].median(),
-
-        "Median ROCE":
-
-        merged[
-            "return_on_capital_employed_pct"
-        ].median(),
-
-        "Median PE":
-
-        merged[
-            "pe"
-        ].median(),
-
-        "Median Debt/Equity":
-
-        merged[
-            "debt_to_equity"
-        ].median()
-
+        "Median ROE": merged["return_on_equity_pct"].median(),
+        "Median ROCE": merged["return_on_capital_employed_pct"].median(),
+        "Median PE": merged["pe"].median(),
+        "Median Debt/Equity": merged["debt_to_equity"].median(),
     }
 
     return summary
+
 
 # ==========================================================
 # Company Table
 # ==========================================================
 
+
 def build_company_table(companies, ratios):
 
-    merged = companies.merge(
-        ratios,
-        left_on="id",
-        right_on="company_id",
-        how="left"
-    )
+    merged = companies.merge(ratios, left_on="id", right_on="company_id", how="left")
 
-    table_data = [[
-        "Ticker",
-        "Company",
-        "ROE",
-        "ROCE",
-        "PE",
-        "Debt/Eq",
-        "Current",
-        "EPS",
-        "Book Value",
-        "Div Yield"
-    ]]
+    table_data = [
+        [
+            "Ticker",
+            "Company",
+            "ROE",
+            "ROCE",
+            "PE",
+            "Debt/Eq",
+            "Current",
+            "EPS",
+            "Book Value",
+            "Div Yield",
+        ]
+    ]
 
     for _, row in merged.iterrows():
 
@@ -245,16 +170,10 @@ def build_company_table(companies, ratios):
             else round(row["return_on_capital_employed_pct"], 2)
         )
 
-        pe = (
-            "-"
-            if pd.isna(row["pe"])
-            else round(row["pe"], 2)
-        )
+        pe = "-" if pd.isna(row["pe"]) else round(row["pe"], 2)
 
         debt = (
-            "-"
-            if pd.isna(row["debt_to_equity"])
-            else round(row["debt_to_equity"], 2)
+            "-" if pd.isna(row["debt_to_equity"]) else round(row["debt_to_equity"], 2)
         )
 
         current_ratio = "-"
@@ -272,50 +191,46 @@ def build_company_table(companies, ratios):
         )
 
         dividend = (
-            "-"
-            if pd.isna(row["dividend_yield"])
-            else round(row["dividend_yield"], 2)
+            "-" if pd.isna(row["dividend_yield"]) else round(row["dividend_yield"], 2)
         )
 
-        table_data.append([
-            ticker,
-            row["company_name"],
-            roe,
-            roce,
-            pe,
-            debt,
-            current_ratio,
-            eps,
-            book,
-            dividend
-        ])
+        table_data.append(
+            [
+                ticker,
+                row["company_name"],
+                roe,
+                roce,
+                pe,
+                debt,
+                current_ratio,
+                eps,
+                book,
+                dividend,
+            ]
+        )
 
-    table = Table(
-        table_data,
-        repeatRows=1
+    table = Table(table_data, repeatRows=1)
+
+    table.setStyle(
+        TableStyle(
+            [
+                ("GRID", (0, 0), (-1, -1), 0.4, colors.black),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#D9EAD3")),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+                ("FONTSIZE", (0, 0), (-1, -1), 8),
+            ]
+        )
     )
 
-    table.setStyle(TableStyle([
-
-        ("GRID",(0,0),(-1,-1),0.4,colors.black),
-
-        ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#D9EAD3")),
-
-        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
-
-        ("ALIGN",(0,0),(-1,-1),"CENTER"),
-
-        ("BOTTOMPADDING",(0,0),(-1,0),8),
-
-        ("FONTSIZE",(0,0),(-1,-1),8)
-
-    ]))
-
     return table
+
 
 # ==========================================================
 # Build Sector PDF
 # ==========================================================
+
 
 def build_sector_pdf(conn, sector):
 
@@ -323,19 +238,12 @@ def build_sector_pdf(conn, sector):
 
     ratios = load_latest_ratios(conn)
 
-    summary = sector_summary(
-        ratios,
-        companies
-    )
+    summary = sector_summary(ratios, companies)
 
     pdf_path = REPORT_DIR / f"{sector}_report.pdf"
 
     doc = SimpleDocTemplate(
-        str(pdf_path),
-        rightMargin=25,
-        leftMargin=25,
-        topMargin=30,
-        bottomMargin=30
+        str(pdf_path), rightMargin=25, leftMargin=25, topMargin=30, bottomMargin=30
     )
 
     elements = []
@@ -344,27 +252,15 @@ def build_sector_pdf(conn, sector):
     # Title
     # -------------------------------
 
-    elements.append(
-        Paragraph(
-            f"{sector} Sector Report",
-            heading_style
-        )
-    )
+    elements.append(Paragraph(f"{sector} Sector Report", heading_style))
+
+    elements.append(Spacer(1, 0.20 * inch))
 
     elements.append(
-        Spacer(1, 0.20 * inch)
+        Paragraph(f"<b>Total Companies:</b> {len(companies)}", styles["Normal"])
     )
 
-    elements.append(
-        Paragraph(
-            f"<b>Total Companies:</b> {len(companies)}",
-            styles["Normal"]
-        )
-    )
-
-    elements.append(
-        Spacer(1, 0.20 * inch)
-    )
+    elements.append(Spacer(1, 0.20 * inch))
 
     # -------------------------------
     # Summary Table
@@ -379,52 +275,29 @@ def build_sector_pdf(conn, sector):
         else:
             display = f"{value:.2f}"
 
-        summary_rows.append([
-            metric,
-            display
-        ])
+        summary_rows.append([metric, display])
 
-    summary_table = Table(
-        summary_rows,
-        colWidths=[260, 120]
+    summary_table = Table(summary_rows, colWidths=[260, 120])
+
+    summary_table.setStyle(
+        TableStyle(
+            [
+                ("GRID", (0, 0), (-1, -1), 0.4, colors.black),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#D9EAD3")),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+            ]
+        )
     )
-
-    summary_table.setStyle(TableStyle([
-
-        ("GRID", (0,0), (-1,-1), 0.4, colors.black),
-
-        ("BACKGROUND", (0,0), (-1,0),
-         colors.HexColor("#D9EAD3")),
-
-        ("FONTNAME", (0,0), (-1,0),
-         "Helvetica-Bold"),
-
-        ("ALIGN", (0,0), (-1,-1),
-         "CENTER"),
-
-        ("BOTTOMPADDING", (0,0), (-1,0), 8)
-
-    ]))
 
     elements.append(summary_table)
 
-    elements.append(
-        Spacer(1, 0.35 * inch)
-    )
+    elements.append(Spacer(1, 0.35 * inch))
 
-    elements.append(
-        Paragraph(
-            "Company Financial Snapshot",
-            sub_heading
-        )
-    )
+    elements.append(Paragraph("Company Financial Snapshot", sub_heading))
 
-    elements.append(
-        build_company_table(
-            companies,
-            ratios
-        )
-    )
+    elements.append(build_company_table(companies, ratios))
 
     doc.build(elements)
 
@@ -434,6 +307,7 @@ def build_sector_pdf(conn, sector):
 # ==========================================================
 # Generate All Sector Reports
 # ==========================================================
+
 
 def generate_all_sector_reports(conn):
 
@@ -456,10 +330,7 @@ def generate_all_sector_reports(conn):
 
         try:
 
-            build_sector_pdf(
-                conn,
-                sector
-            )
+            build_sector_pdf(conn, sector)
 
             generated += 1
 
@@ -475,11 +346,10 @@ def generate_all_sector_reports(conn):
 # Validation
 # ==========================================================
 
+
 def validate_sector_reports(expected_count):
 
-    pdf_files = sorted(
-        REPORT_DIR.glob("*_report.pdf")
-    )
+    pdf_files = sorted(REPORT_DIR.glob("*_report.pdf"))
 
     print()
     print("=" * 60)
@@ -510,6 +380,7 @@ def validate_sector_reports(expected_count):
 # Main
 # ==========================================================
 
+
 def main():
 
     conn = connect_database()
@@ -534,4 +405,3 @@ def main():
 if __name__ == "__main__":
 
     main()
-
